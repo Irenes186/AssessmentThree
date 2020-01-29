@@ -46,6 +46,8 @@ import static com.config.Constants.TILE_DIMS;
 import static com.config.Constants.DEBUG_ENABLED;
 import static com.config.Constants.FiretruckOneProperties;
 import static com.config.Constants.FiretruckTwoProperties;
+import static com.config.Constants.FiretruckThreeProperties;
+import static com.config.Constants.FiretruckFourProperties;
 import static com.config.Constants.FIRETRUCK_DAMAGE;
 import static com.config.Constants.PROJECTILE_DAMAGE;
 
@@ -156,6 +158,8 @@ public class GameScreen implements Screen {
 		ArrayList<Texture> waterFrames = new ArrayList<Texture>();
 		ArrayList<Texture> firetruckBlue = new ArrayList<Texture>();
 		ArrayList<Texture> firetruckRed = new ArrayList<Texture>();
+		ArrayList<Texture> firetruckYellow = new ArrayList<Texture>();
+		ArrayList<Texture> firetruckGreen = new ArrayList<Texture>();
 
 		for (int i = 1; i <= 3; i++) {
 			Texture texture = new Texture("waterSplash" + i + ".png");
@@ -165,17 +169,29 @@ public class GameScreen implements Screen {
 			if (i == 6) { // Texture 5 contains identical slices except the lights are different
 				Texture blue = new Texture("FiretruckBlue/FiretruckBLUE (6) A.png");
 				Texture red = new Texture("FiretruckRed/FiretruckRED (6) A.png");
+				Texture yellow = new Texture("FiretruckYellow/FiretruckYELLOW (6) A.png");
+				Texture green = new Texture("FiretruckGreen/FiretruckGREEN (6) A.png");
 				firetruckBlue.add(blue);
 				firetruckRed.add(red);
+				firetruckYellow.add(yellow);
+				firetruckGreen.add(green);
 				blue = new Texture("FiretruckBlue/FiretruckBLUE (6) B.png");
 				red = new Texture("FiretruckRed/FiretruckRED (6) B.png");
+				yellow = new Texture("FiretruckYellow/FiretruckYELLOW (6) B.png");
+				green = new Texture("FiretruckGreen/FiretruckGREEN (6) B.png");
 				firetruckBlue.add(blue);
 				firetruckRed.add(red);
+				firetruckRed.add(yellow);
+				firetruckGreen.add(green);
 			} else {
 				Texture blue = new Texture("FiretruckBlue/FiretruckBLUE (" + i + ").png");
 				Texture red = new Texture("FiretruckRed/FiretruckRED (" + i + ").png");
+				Texture yellow = new Texture("FiretruckYellow/FiretruckYELLOW (" + i + ").png");
+				Texture green = new Texture("FiretruckGreen/FiretruckGREEN (" + i + ").png");
 				firetruckBlue.add(blue);
 				firetruckRed.add(red);
+				firetruckYellow.add(yellow);
+				firetruckGreen.add(green);
 			}
 		}
 
@@ -188,6 +204,8 @@ public class GameScreen implements Screen {
 		this.firetrucks = new ArrayList<Firetruck>();
 		this.firetrucks.add(new Firetruck(firetruckBlue, waterFrames, FiretruckOneProperties, (TiledMapTileLayer) map.getLayers().get("Collision"), 1, 80 * TILE_DIMS, 30 * TILE_DIMS));
 		this.firetrucks.add(new Firetruck(firetruckRed, waterFrames, FiretruckTwoProperties, (TiledMapTileLayer) map.getLayers().get("Collision"), 2, 80 * TILE_DIMS, 32 * TILE_DIMS));
+		this.firetrucks.add(new Firetruck(firetruckYellow, waterFrames, FiretruckThreeProperties, (TiledMapTileLayer) map.getLayers().get("Collision"), 3, 80 * TILE_DIMS, 28 * TILE_DIMS));
+		this.firetrucks.add(new Firetruck(firetruckGreen, waterFrames, FiretruckFourProperties, (TiledMapTileLayer) map.getLayers().get("Collision"), 4, 80 * TILE_DIMS, 26 * TILE_DIMS));
 
 		// Initialise ETFortresses array and add ETFortresses to it
 		this.ETFortresses = new ArrayList<ETFortress>();

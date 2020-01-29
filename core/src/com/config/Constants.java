@@ -29,6 +29,24 @@ public final class Constants {
         300,  // WATER MAX
     };
 
+    public static final float[] FiretruckThreeProperties = {
+            100,  // HEALTH
+            15f,  // ACCELERATION
+            400f, // MAX_SPEED
+            0.6f, // RESTITUTION
+            1.01f,// RANGE
+            300,  // WATER MAX
+    };
+
+    public static final float[] FiretruckFourProperties = {
+            100,  // HEALTH
+            15f,  // ACCELERATION
+            400f, // MAX_SPEED
+            0.6f, // RESTITUTION
+            1.01f,// RANGE
+            300,  // WATER MAX
+    };
+
      // Enums
      public static enum Direction {
         UP,
