@@ -92,6 +92,7 @@ public class GameScreen implements Screen {
 	 */
 	public GameScreen(final Kroy gam) {
 		// Assign the game to a property so it can be used when transitioning screens
+                System.out.println ("HashCode");
 		this.game = gam;
 
 		// ---- 1) Create new instance for all the objects needed for the game ---- //
