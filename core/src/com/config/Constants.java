@@ -16,35 +16,35 @@ public final class Constants {
         300f, // MAX_SPEED
         0.8f, // RESTITUTION
         1.2f, // RANGE
-        400,  // WATER MAX
+        300,  // WATER MAX
     };
 
     // Firetruck Two properties
     public static final float[] FiretruckTwoProperties = {
-        100,  // HEALTH
+        110,  // HEALTH
         15f,  // ACCELERATION
         400f, // MAX_SPEED
         0.6f, // RESTITUTION
-        1.01f,// RANGE
-        300,  // WATER MAX
+        1.1f,// RANGE
+        200,  // WATER MAX
     };
-
+    // Firetruck Three properties
     public static final float[] FiretruckThreeProperties = {
-            100,  // HEALTH
+            120,  // HEALTH
             15f,  // ACCELERATION
-            400f, // MAX_SPEED
+            500f, // MAX_SPEED
             0.6f, // RESTITUTION
-            1.01f,// RANGE
-            300,  // WATER MAX
+            1.5f,// RANGE
+            500,  // WATER MAX
     };
-
+    // Firetruck Four properties
     public static final float[] FiretruckFourProperties = {
-            100,  // HEALTH
+            150,  // HEALTH
             15f,  // ACCELERATION
-            400f, // MAX_SPEED
+            100f, // MAX_SPEED
             0.6f, // RESTITUTION
-            1.01f,// RANGE
-            300,  // WATER MAX
+            1.3f,// RANGE
+            400,  // WATER MAX
     };
 
      // Enums
