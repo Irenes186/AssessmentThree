@@ -175,14 +175,6 @@ public class GameScreen implements Screen {
 				firetruckRed.add(red);
 				firetruckYellow.add(yellow);
 				firetruckGreen.add(green);
-				blue = new Texture("FiretruckBlue/FiretruckBLUE (6) B.png");
-				red = new Texture("FiretruckRed/FiretruckRED (6) B.png");
-				yellow = new Texture("FiretruckYellow/FiretruckYELLOW (6) B.png");
-				green = new Texture("FiretruckGreen/FiretruckGREEN (6) B.png");
-				firetruckBlue.add(blue);
-				firetruckRed.add(red);
-				firetruckRed.add(yellow);
-				firetruckGreen.add(green);
 			} else {
 				Texture blue = new Texture("FiretruckBlue/FiretruckBLUE (" + i + ").png");
 				Texture red = new Texture("FiretruckRed/FiretruckRED (" + i + ").png");
