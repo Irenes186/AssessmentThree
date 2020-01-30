@@ -1,0 +1,14 @@
+.DS_Store
+core/.DS_Store
+core/assets/.DS_Store
+core/assets/MapAssets/.DS_Store
+core/assets/FiretruckGreen/.DS_Store
+core/assets/MapAssets/.DS_Store
+.gradle/6.0/executionHistory/executionHistory.bin
+.gradle/6.0/executionHistory/executionHistory.lock
+.gradle/6.0/fileHashes/fileHashes.bin
+.gradle/6.0/fileHashes/fileHashes.lock
+.gradle/6.0/fileHashes/resourceHashesCache.bin
+.gradle/6.0/javaCompile/classAnalysis.bin
+.gradle/6.0/javaCompile/javaCompile.lock
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
