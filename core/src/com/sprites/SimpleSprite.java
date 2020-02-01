@@ -24,12 +24,14 @@ public class SimpleSprite extends Sprite {
     private float width, height, internalTime;
     private ResourceBar healthBar;
     private Polygon hitBox;
+    private int maxHealth;
 
     /**
      * Constructor that creates a sprite at a given position using a given texture..
      * Creates a sprite at (0,0) using a given texture.
      * 
      * @param spriteTexture  The texture the sprite should use.
+     * @param maxHealth  The maximum health of this entity.
      */
     public SimpleSprite(Texture spriteTexture) {
         super(spriteTexture);

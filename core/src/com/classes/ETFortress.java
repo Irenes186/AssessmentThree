@@ -7,13 +7,13 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import com.config.ETFortressParameters;
 import com.badlogic.gdx.graphics.Texture;
 
 // Custom class import
 import com.sprites.SimpleSprite;
 
 // Constants import
-import static com.config.Constants.ETFORTRESS_HEALTH;
 import static com.config.Constants.ETFORTRESS_HEIGHT;
 import static com.config.Constants.ETFORTRESS_WIDTH;
 import static com.config.Constants.ETFORTRESS_HEALING;
@@ -29,6 +29,8 @@ public class ETFortress extends SimpleSprite {
     // Private values for this class to use
     private Texture destroyed;
     private Circle detectionRange;
+	private int projectileDamage;
+    private int maxHealth;
 
     /**
      * Overloaded constructor containing all possible parameters.
@@ -41,16 +43,18 @@ public class ETFortress extends SimpleSprite {
      * @param xPos              The x-coordinate for the ETFortress.
      * @param yPos              The y-coordinate for the ETFortress.
      */
-    public ETFortress(Texture texture, Texture destroyedTexture, float scaleX, float scaleY, float xPos, float yPos) {
-        super(texture);
-        this.destroyed = destroyedTexture;
+    public ETFortress(ETFortressParameters params, float scaleX, float scaleY, float xPos, float yPos) {
+        super(params.texture);
+        this.maxHealth = params.maxHealth;
+        this.destroyed = params.destroyedTexture;
         this.setScale(scaleX, scaleY);
         this.setPosition(xPos, yPos);
+        this.projectileDamage = params.projectileDamage;
         this.create();
     }
 
     /**
-     * Overloaded constructor containing all possible parameters.
+     * Overloaded constructor containing most parameters.
      * Drawn with the given texture at the given position.
      * 
      * @param texture           The texture used to draw the ETFortress with.
@@ -58,23 +62,27 @@ public class ETFortress extends SimpleSprite {
      * @param scaleX            The scaling in the x-axis.
      * @param scaleY            The scaling in the y-axis.
      */
-    public ETFortress(Texture texture, Texture destroyedTexture, float scaleX, float scaleY) {
-        super(texture);
-        this.destroyed = destroyedTexture;
+    public ETFortress(ETFortressParameters params, float scaleX, float scaleY) {
+        super(params.texture);
+        this.maxHealth = params.maxHealth;
+        this.destroyed = params.destroyedTexture;
+        this.projectileDamage = params.projectileDamage;
         this.setScale(scaleX, scaleY);
         this.create();
     }
 
     /**
-     * Simplfied constructor for the ETFortress, that doesn't require a position.
+     * Simplified constructor for the ETFortress, that doesn't require a position.
      * Drawn with the given texture at (0,0).
      * 
      * @param texture           The texture used to draw the ETFortress with.
      * @param destroyedTexture  The texture used to draw the ETFortress with. when it has been destroyed.
      */
-    public ETFortress(Texture texture, Texture destroyedTexture) {
-        super(texture);
-        this.destroyed = destroyedTexture;
+    public ETFortress(ETFortressParameters params) {
+        super(params.texture);
+        this.maxHealth = params.maxHealth;
+        this.destroyed = params.destroyedTexture;
+        this.projectileDamage = params.projectileDamage;
         this.create();
     }
 
@@ -82,7 +90,7 @@ public class ETFortress extends SimpleSprite {
      * Sets the health of the ETFortress and its size provided in CONSTANTS.
      */
     private void create() {
-        this.getHealthBar().setMaxResource((int) (ETFORTRESS_HEALTH * Math.max(ETFORTRESS_WIDTH * this.getScaleX(), ETFORTRESS_HEIGHT * this.getScaleY())));
+        this.getHealthBar().setMaxResource((int) (this.maxHealth * Math.max(ETFORTRESS_WIDTH * this.getScaleX(), ETFORTRESS_HEIGHT * this.getScaleY())));
         this.setSize(ETFORTRESS_WIDTH * this.getScaleX(), ETFORTRESS_HEIGHT * this.getScaleY());
         this.detectionRange = new Circle(this.getCentreX(), this.getCentreY(), this.getWidth() * 2);
     }
@@ -153,4 +161,12 @@ public class ETFortress extends SimpleSprite {
         super.drawDebug(renderer);
         renderer.circle(this.detectionRange.x, this.detectionRange.y, this.detectionRange.radius);
     }
+
+    public void setProjectileDamage(int damage) {
+    	this.projectileDamage = damage;
+    }
+    
+	public int getProjectileDamage() {
+		return this.projectileDamage;
+	}
 }
