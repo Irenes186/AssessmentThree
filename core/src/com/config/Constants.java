@@ -85,9 +85,7 @@ public final class Constants {
     // Sprite properties
     // Damage
     public static final int FIRETRUCK_DAMAGE = 2;
-    public static final int PROJECTILE_DAMAGE = 10;
     // Health
-    public static final int ETFORTRESS_HEALTH = 2000;
     public static final int ETFORTRESS_HEALING = 1;
     public static final int FIRESTATION_HEALTH = 1000;
     // Speed

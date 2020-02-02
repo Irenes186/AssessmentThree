@@ -42,6 +42,7 @@ public class Firetruck extends MovementSprite {
     private ArrayList<Texture> firetruckSlices, waterFrames;
     private Polygon hoseRange;
     private ResourceBar waterBar;
+    private int maxWater;
 
     /**
      * Overloaded constructor containing all possible parameters.
@@ -93,6 +94,7 @@ public class Firetruck extends MovementSprite {
      * Also initialises any properties needed by the firetruck.
      */
     private void create() {
+        maxWater = 100;
         this.isSpraying = true;
         this.setSize(FIRETRUCK_WIDTH, FIRETRUCK_HEIGHT);
         this.getHealthBar().setMaxResource((int) this.firetruckProperties[0]);

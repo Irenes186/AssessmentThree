@@ -3,6 +3,7 @@ package com.classes;
 // LibGDX imports
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.ProgressBarStyle;
@@ -34,8 +35,9 @@ public class ResourceBar {
      * 
      * @param spriteWidth  The width of the sprite.
      * @param spriteHeight The height of the sprite.
+     * @param maxResourceAmount The maximum value of the resource bar.
      */
-    public ResourceBar(float spriteWidth, float spriteHeight ) {
+    public ResourceBar(float spriteWidth, float spriteHeight) {
         // Adjust bar to fit sprite dimensions
         this.barWidth = (int) (0.7 * spriteWidth);
         this.barHeight = (int) (0.3 * spriteHeight);
@@ -47,9 +49,9 @@ public class ResourceBar {
      */
     private void create() {
         this.maxResourceAmount = 100;
-        this.currentResourceAmount = 100;
+        this.currentResourceAmount = this.maxResourceAmount;
         this.colourRange = new Color[] { Color.RED, Color.ORANGE, Color.GREEN };
-        this.bar = new ProgressBar(0, 100, 0.5f, false, getResourceBarStyle());
+        this.bar = new ProgressBar(0, this.maxResourceAmount, 0.5f, false, getResourceBarStyle());
         this.bar.setSize(this.barWidth, this.barHeight);
         this.bar.getColor().a = 0;
         this.setFade(false, true);
