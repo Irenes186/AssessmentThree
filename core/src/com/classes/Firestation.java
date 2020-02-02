@@ -3,9 +3,9 @@ package com.classes;
 // LibGDX imports
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -27,7 +27,7 @@ import static com.config.Constants.FIRETRUCK_REPAIR_SPEED;
 public class Firestation extends SimpleSprite {
 
     // Private values for this class to use
-    private Circle repairRange;
+	private Rectangle repairRange;
 
     /**
      * Overloaded constructor containing all possible parameters.
@@ -44,7 +44,7 @@ public class Firestation extends SimpleSprite {
     }
 
     /**
-     * Simplfied constructor for the Firestation, that doesn't require a position.
+     * Simplified constructor for the Firestation, that doesn't require a position.
      * Drawn with the given texture at (0,0).
      * 
      * @param texture  The texture used to draw the Firestation with.
@@ -62,7 +62,7 @@ public class Firestation extends SimpleSprite {
     private void create() {
         this.getHealthBar().setMaxResource(FIRESTATION_HEALTH);
         this.setSize(FIRESTATION_WIDTH, FIRESTATION_HEIGHT);
-        this.repairRange = new Circle(this.getCentreX(), this.getCentreY(), this.getWidth());
+        this.repairRange = new Rectangle(this.getCentreX() - 1.9f * com.config.Constants.TILE_DIMS + 10, this.getY() - 9 * com.config.Constants.TILE_DIMS, 4 * com.config.Constants.TILE_DIMS, 7 * com.config.Constants.TILE_DIMS);
     }
 
     /**
@@ -72,7 +72,6 @@ public class Firestation extends SimpleSprite {
      */
     public void update(Batch batch) {
         super.update(batch);
-        this.repairRange.setPosition(this.getCentreX(), this.getCentreY());
     }
 
     /**
@@ -91,20 +90,22 @@ public class Firestation extends SimpleSprite {
      * Checks if a polygon is within the range of the firestation.
      * Usually used to see if a firetruck is close enough to be repaired.
      * 
+     * [!] Repair range originally handled intersecting a circular radius around the Firestation.
+     * This is now handled with a rectangle covering the car park area outside of the Firestation.
+     * The positioning of this rectangle is currently hard coded.
+     * 
      * @param polygon  The polygon that needs to be checked.
      * @return         Whether the given polygon is in the radius of the Firestation
      */
     public boolean isInRadius(Polygon polygon) {
         float []vertices = polygon.getTransformedVertices();
-        Vector2 center = new Vector2(this.repairRange.x, this.repairRange.y);
-        float squareRadius = this.repairRange.radius * this.repairRange.radius;
         for (int i = 0; i < vertices.length; i+=2){
             if (i == 0){
-                if (Intersector.intersectSegmentCircle(new Vector2(vertices[vertices.length - 2], vertices[vertices.length - 1]), new Vector2(vertices[i], vertices[i + 1]), center, squareRadius))
-                    return true;
+                if (Intersector.intersectSegmentRectangle(new Vector2(vertices[vertices.length - 2], vertices[vertices.length - 1]), new Vector2(vertices[i], vertices[i + 1]), this.repairRange))
+                	return true;
             } else {
-                if (Intersector.intersectSegmentCircle(new Vector2(vertices[i-2], vertices[i-1]), new Vector2(vertices[i], vertices[i+1]), center, squareRadius))
-                    return true;
+                if (Intersector.intersectSegmentRectangle(new Vector2(vertices[i-2], vertices[i-1]), new Vector2(vertices[i], vertices[i+1]), this.repairRange))
+                	return true;
             }
         }
         return polygon.contains(this.repairRange.x, this.repairRange.y);
@@ -119,6 +120,6 @@ public class Firestation extends SimpleSprite {
     @Override
     public void drawDebug(ShapeRenderer renderer) {
         super.drawDebug(renderer);
-        renderer.circle(this.repairRange.x, this.repairRange.y, this.repairRange.radius);
+        renderer.rect(this.repairRange.x, this.repairRange.y, this.repairRange.width, this.repairRange.height);
     }
 }

@@ -16,7 +16,7 @@ import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-// Tiled map imports fro LibGDX
+// Tiled map imports for LibGDX
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -31,6 +31,10 @@ import com.classes.Firetruck;
 import com.classes.Projectile;
 import com.classes.Firestation;
 import com.classes.ETFortress;
+
+// Config imports
+import com.config.ETFortressParameters;
+import com.config.ETFortressType;
 
 // Constants import
 import static com.config.Constants.SCREEN_HEIGHT;
@@ -49,7 +53,6 @@ import static com.config.Constants.FiretruckTwoProperties;
 import static com.config.Constants.FiretruckThreeProperties;
 import static com.config.Constants.FiretruckFourProperties;
 import static com.config.Constants.FIRETRUCK_DAMAGE;
-import static com.config.Constants.PROJECTILE_DAMAGE;
 
 /**
  * Display the main game.
@@ -146,12 +149,6 @@ public class GameScreen implements Screen {
 
 		// Initialise textures to use for spites
 		Texture firestationTexture = new Texture("MapAssets/UniqueBuildings/firestation.png");
-		Texture cliffordsTowerTexture = new Texture("MapAssets/UniqueBuildings/cliffordstower.png");
-		Texture cliffordsTowerWetTexture = new Texture("MapAssets/UniqueBuildings/cliffordstower_wet.png");
-		Texture railstationTexture = new Texture("MapAssets/UniqueBuildings/railstation.png");
-		Texture railstationWetTexture = new Texture("MapAssets/UniqueBuildings/railstation_wet.png");
-		Texture yorkMinisterTexture = new Texture("MapAssets/UniqueBuildings/Yorkminster.png");
-		Texture yorkMinisterWetTexture = new Texture("MapAssets/UniqueBuildings/Yorkminster_wet.png");
 		this.projectileTexture = new Texture("alienProjectile.png");
 		
 		// Create arrays of textures for animations
@@ -201,9 +198,9 @@ public class GameScreen implements Screen {
 
 		// Initialise ETFortresses array and add ETFortresses to it
 		this.ETFortresses = new ArrayList<ETFortress>();
-		this.ETFortresses.add(new ETFortress(cliffordsTowerTexture, cliffordsTowerWetTexture, 1, 1, 69 * TILE_DIMS, 51 * TILE_DIMS));
-		this.ETFortresses.add(new ETFortress(yorkMinisterTexture, yorkMinisterWetTexture, 2, 3.25f, 68.25f * TILE_DIMS, 82.25f * TILE_DIMS));
-		this.ETFortresses.add(new ETFortress(railstationTexture, railstationWetTexture, 2, 2.5f, 1 * TILE_DIMS, 72.75f * TILE_DIMS));
+		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.CLIFFORDS_TOWER), 1, 1, 69 * TILE_DIMS, 51 * TILE_DIMS));
+		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.YORK_MINSTER), 2, 3.25f, 68.25f * TILE_DIMS, 82.25f * TILE_DIMS));
+		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.RAIL_STATION), 2, 2.5f, 1 * TILE_DIMS, 72.75f * TILE_DIMS));
 	}
 
 	/**
@@ -403,7 +400,7 @@ public class GameScreen implements Screen {
 					this.score += 10;
 				}
 				if (ETFortress.isInRadius(firetruckA.getHitBox()) && ETFortress.canShootProjectile()) {
-					Projectile projectile = new Projectile(this.projectileTexture, ETFortress.getCentreX(), ETFortress.getCentreY());
+					Projectile projectile = new Projectile(this.projectileTexture, ETFortress.getCentreX(), ETFortress.getCentreY(), ETFortress.getProjectileDamage());
 					projectile.calculateTrajectory(firetruckA.getHitBox());
 					this.projectiles.add(projectile);
 				}
@@ -411,7 +408,7 @@ public class GameScreen implements Screen {
 			// Check if firetruck is hit with a projectile
 			for (Projectile projectile : this.projectiles) {
 				if (Intersector.overlapConvexPolygons(firetruckA.getHitBox(), projectile.getHitBox())) {
-					firetruckA.getHealthBar().subtractResourceAmount(PROJECTILE_DAMAGE);
+					firetruckA.getHealthBar().subtractResourceAmount(projectile.getDamage());
 					if (this.score > 10) this.score -= 10;
 					projectilesToRemove.add(projectile);
 				}
