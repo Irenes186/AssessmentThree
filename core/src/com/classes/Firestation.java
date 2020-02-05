@@ -28,6 +28,7 @@ public class Firestation extends SimpleSprite {
 
     // Private values for this class to use
 	private Rectangle repairRange;
+	private boolean destroyed;
 
     /**
      * Overloaded constructor containing all possible parameters.
@@ -63,6 +64,7 @@ public class Firestation extends SimpleSprite {
         this.getHealthBar().setMaxResource(FIRESTATION_HEALTH);
         this.setSize(FIRESTATION_WIDTH, FIRESTATION_HEIGHT);
         this.repairRange = new Rectangle(this.getCentreX() - 1.9f * com.config.Constants.TILE_DIMS + 10, this.getY() - 9 * com.config.Constants.TILE_DIMS, 4 * com.config.Constants.TILE_DIMS, 7 * com.config.Constants.TILE_DIMS);
+        this.destroyed = false;
     }
 
     /**
@@ -121,5 +123,17 @@ public class Firestation extends SimpleSprite {
     public void drawDebug(ShapeRenderer renderer) {
         super.drawDebug(renderer);
         renderer.rect(this.repairRange.x, this.repairRange.y, this.repairRange.width, this.repairRange.height);
+    }
+    
+    public void destroy() {
+        this.destroyed = true;
+    }
+    
+    public void undestroy() {
+        this.destroyed = false;
+    }
+    
+    public boolean isDestroyed() {
+        return this.destroyed;
     }
 }
