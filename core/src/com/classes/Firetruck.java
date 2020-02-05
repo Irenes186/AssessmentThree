@@ -65,6 +65,7 @@ public class Firetruck extends MovementSprite {
         this.firetruckSlices = textureSlices;
         this.firetruckProperties = properties;
         this.create();
+        this.setPosition(xPos, yPos);
     }
 
     /**
@@ -136,7 +137,7 @@ public class Firetruck extends MovementSprite {
       
         // Deplete water if spraying, toggle off when depleted
         if (this.isSpraying && this.waterBar.getCurrentAmount() > 0) {
-            this.waterBar.subtractResourceAmount(1);
+            this.waterBar.subtractResourceAmount(this.getDeliveryRate());
         } else if (this.isSpraying) {
             this.toggleHose();
         }
