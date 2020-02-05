@@ -42,7 +42,7 @@ public class Firetruck extends MovementSprite {
     private ArrayList<Texture> firetruckSlices, waterFrames;
     private Polygon hoseRange;
     private ResourceBar waterBar;
-    private int maxWater;
+    private int maxWater, deliveryRate;
 
     /**
      * Overloaded constructor containing all possible parameters.
@@ -64,8 +64,8 @@ public class Firetruck extends MovementSprite {
         this.waterFrames = frames;
         this.firetruckSlices = textureSlices;
         this.firetruckProperties = properties;
-        this.setPosition(xPos, yPos);
         this.create();
+        this.setPosition(xPos, yPos);
     }
 
     /**
@@ -105,6 +105,7 @@ public class Firetruck extends MovementSprite {
         this.createWaterHose();
         // Start the firetruck facing left
         this.rotate(-90);
+        this.setDeliveryRate((int) this.firetruckProperties[6]);
     }
 
     /**
@@ -136,7 +137,7 @@ public class Firetruck extends MovementSprite {
       
         // Deplete water if spraying, toggle off when depleted
         if (this.isSpraying && this.waterBar.getCurrentAmount() > 0) {
-            this.waterBar.subtractResourceAmount(1);
+            this.waterBar.subtractResourceAmount(this.getDeliveryRate());
         } else if (this.isSpraying) {
             this.toggleHose();
         }
