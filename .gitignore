@@ -14,3 +14,4 @@ core/assets/MapAssets/.DS_Store
 .gradle/buildOutputCleanup/buildOutputCleanup.lock
 /.gradle/
 gradle.properties
+gradle.properties
