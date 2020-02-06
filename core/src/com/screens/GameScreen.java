@@ -120,8 +120,8 @@ public class GameScreen implements Screen {
 		Timer.schedule(new Task() {
 			@Override
 			public void run() {
-			    if (decreaseTime()) {
-			        firestation.destroy();
+				if (ETFortresses.size() < 3) {
+					System.out.println("i'm in");
 			        firestation.removeSprite(new Texture("MapAssets/UniqueBuildings/firestation_destroyed.png"));
 			        Timer.instance().stop();
 			    }
