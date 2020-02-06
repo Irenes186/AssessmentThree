@@ -27,10 +27,12 @@ import java.util.ArrayList;
 
 // Class imports
 import com.kroy.Kroy;
+import com.sprites.SimpleSprite;
 import com.classes.Firetruck;
 import com.classes.Projectile;
 import com.classes.Firestation;
 import com.classes.ETFortress;
+import com.MiniGame.MiniGameScreen;
 
 // Config imports
 import com.config.ETFortressParameters;
@@ -119,7 +121,11 @@ public class GameScreen implements Screen {
 		Timer.schedule(new Task() {
 			@Override
 			public void run() {
-				decreaseTime();
+			    if (decreaseTime()) {
+			        firestation.destroy();
+			        firestation.removeSprite(new Texture("MapAssets/UniqueBuildings/firestation_destroyed.png"));
+			        Timer.instance().stop();
+			    }
 			}
 		}, 1, 1 );
 
@@ -281,6 +287,9 @@ public class GameScreen implements Screen {
 		if (Gdx.input.isKeyJustPressed(Keys.E)) {
 			focusedTruck.toggleHose();
 		}
+		if (Gdx.input.isKeyJustPressed(Keys.Q)) {
+                        this.game.setScreen (new MiniGameScreen (game));
+                }
 		if (Gdx.input.isKeyJustPressed(Keys.TAB)) {
 			this.focusedID += 1;
 			if (this.focusedID > this.firetrucks.size()) {
@@ -423,9 +432,15 @@ public class GameScreen implements Screen {
 
 	/**
 	 * Decreases time by 1, called every second by the timer
+	 * 
+	 * @return boolean  true when time has run out
 	 */
-	private void decreaseTime() {
-		if (this.time > 0) this.time -= 1;
+	private boolean decreaseTime() {
+		if (this.time > 0) {
+		    this.time -= 1;
+		    return false;
+		}
+		return true;
 	}
 
 	/**
