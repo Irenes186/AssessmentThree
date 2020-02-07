@@ -8,10 +8,16 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Vector2;
 import com.config.Constants.Direction;
+import com.pathfinding.AStarNode;
+import com.pathfinding.AStarNodeComparator;
+import com.pathfinding.PathFindUtil;
 
 // Constants import
 import static com.config.Constants.COLLISION_TILE;
 import static com.config.Constants.TILE_DIMS;
+
+// Java imports
+import java.util.PriorityQueue;
 
 /**
  * MovementSprite adds movement facilities to a sprite.
@@ -24,6 +30,12 @@ public class MovementSprite extends SimpleSprite {
     private float accelerationRate, decelerationRate, maxSpeed, restitution, rotationLockTime;
     private Vector2 speed;
     private TiledMapTileLayer collisionLayer;
+    // The coordinate the sprite is currently pathfinding to. null => no target.
+    private Vector2 currentTargetPos;
+    // The direction in which the sprite should move in order to reach currentTargetPos.
+    private Vector2 currentPathFindDirection;
+    // Comparator implementation that decides a total ordering over AStarNodes. Only used during pathfinding.
+    private AStarNodeComparator nodeComp;
 
     /**
      * Creates a sprite capable of moving and colliding with the tiledMap and other sprites.
@@ -57,6 +69,9 @@ public class MovementSprite extends SimpleSprite {
         this.rotationLockTime = 0;
         this.restitution = 0.8f;
         this.maxSpeed = 200;
+        this.currentTargetPos = null;
+        this.currentPathFindDirection = new Vector2(0, 0);
+        this.nodeComp = new AStarNodeComparator();
     }
 
     /**
@@ -250,5 +265,114 @@ public class MovementSprite extends SimpleSprite {
      */
     public Vector2 getSpeed() {
         return this.speed;
+    }
+    
+    /**
+     * Calculate the next turning point along the road to travel to in order to reach a certain point
+     * 
+     * @param targetPos  The coordinate, in terms of cells, to pathfind to (must be on a road)
+     * @return a Vector2 representing the next road turning point to travel to. null if at destination or no path found
+     */
+    private Vector2 nextAStar(Vector2 targetPos) {
+        // Find the position of the sprite in terms of cells
+        Vector2 currentCellPos = new Vector2((int) (this.getCentreX() / TILE_DIMS), (int) (targetPos.y / TILE_DIMS));
+        // Check whether the target position has been reached
+        if (currentCellPos.equals(targetPos)) {
+            return null;
+            
+        // if not, execute A*
+        } else {
+            // The list of unexpanded nodes
+            PriorityQueue<AStarNode> open = new PriorityQueue<AStarNode>(4, nodeComp);
+            // The list of expanded nodes
+            PriorityQueue<AStarNode> closed = new PriorityQueue<AStarNode>(10, nodeComp);
+            // Initialise open to the sprite's current position
+            open.add(new AStarNode(currentCellPos, currentCellPos, targetPos, null, 0));
+            // Track whether or not targetPos has been found
+            boolean goalFound = false;
+            // The node with the current maximum value of f
+            AStarNode bestNode = null;
+            
+            // While there are still nodes to expand and targetPos has not been found
+            while (!open.isEmpty() && !goalFound) {
+                // Get the unexpanded node with the highest value of f, and move it to the closed list
+                bestNode = open.peek();
+                open.remove();
+                closed.add(bestNode);
+                // If this is the target node, stop searching
+                if (bestNode.getPos().equals(targetPos)) {
+                    goalFound = true;
+                    break;
+                }
+                
+                // Add the node's children to the open list
+                for (Vector2 currentChild: PathFindUtil.getChildNodes(bestNode.getPos(), collisionLayer)) {
+                    // TODO: If child is already in closed list, or in open list with lower g, ignore
+                    open.add(new AStarNode(currentCellPos, currentChild, targetPos, bestNode, bestNode.getPos().dst(currentChild)));
+                }
+            }
+            
+            // If a goal was not found, return null
+            if (!goalFound || bestNode == null) {
+                return null;
+            // Otherwise, backtrack along each node's parents, until the sprite's position is found.
+            } else {
+                while (bestNode != null) {
+                    if (bestNode.getParent().getPos().equals(currentCellPos)) {
+                        // If the sprite's position was found, return the next road corner
+                        return bestNode.getPos();
+                    } else if (bestNode.getParent() != null) {
+                        bestNode = bestNode.getParent();
+                    // If the sprite's position was not found, return null
+                    } else {
+                        return null;
+                    }
+                }
+            }
+            
+            // Return null if some error occurred
+            return null;
+        }
+    }
+    
+    /**
+     * Return a unit Vector2 representing the direction in which the sprite should travel
+     * in order to reach this.currentTargetPos. Currently only supports four directions.
+     * @param targetPos  The coordinate, in terms of cells, the sprite should pathfind to.
+     * @return the direction in which the sprite should travel. Can be: (0, 0), (1, 0), (-1, 0), (0, 1), (0, -1) or null (use previous)
+     */
+    public void pathFindTo (Vector2 targetPos) {
+        Cell targetCell = collisionLayer.getCell((int) targetPos.x, (int) targetPos.y);
+        // Make sure the requested location is not blocked
+        if ((targetCell != null && targetCell.getTile() != null) && !targetCell.getTile().getProperties().containsKey(COLLISION_TILE)) {
+            // Has the intermediary location been reached?
+            if (this.getCentreX() == this.currentTargetPos.x && this.getCentreY() == this.currentTargetPos.y) {
+                // Has the final destination been reached?
+                if (this.currentTargetPos.equals(targetPos)) {
+                    // Zero out the movement direction
+                    this.currentPathFindDirection.setZero();
+                // Is the Sprite at an intermediary location?
+                } else {
+                    // Get the next intermediary location
+                    this.currentTargetPos = nextAStar(targetPos);
+                    // Set the movement direction
+                    // Is the next location along the Y axis?
+                    if (this.currentTargetPos.x == this.getCentreX()) {
+                        if (this.currentTargetPos.y > this.getCentreY()) {
+                            this.currentPathFindDirection.set(0, -1);
+                        } else {
+                            this.currentPathFindDirection.set(0, 1);
+                        }
+                    // Is the next location along the X axis?
+                    } else {
+                        if (this.currentTargetPos.x > this.getCentreX()) {
+                            this.currentPathFindDirection.set(-1, 0); 
+                        } else {
+                            this.currentPathFindDirection.set(1, 0);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

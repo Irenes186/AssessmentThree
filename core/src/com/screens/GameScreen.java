@@ -146,7 +146,7 @@ public class GameScreen implements Screen {
         this.foregroundLayers = new int[] {
 			mapLayers.getIndex("Buildings"),
 			mapLayers.getIndex("Trees"),
-        };
+        };  
         this.backgroundLayers = new int[] {
 			mapLayers.getIndex("River"),
 			mapLayers.getIndex("Road")
