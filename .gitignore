@@ -13,6 +13,8 @@ core/assets/MapAssets/.DS_Store
 .gradle/6.0/javaCompile/javaCompile.lock
 .gradle/buildOutputCleanup/buildOutputCleanup.lock
 /.gradle/
+gradle.properties
+gradle.properties
 .gradle/6.0/executionHistory/executionHistory.bin
 .gradle/6.0/executionHistory/executionHistory.lock
 .gradle/6.0/fileHashes/fileHashes.bin
@@ -31,3 +33,6 @@ core/build/classes/java/main/com/config/Constants.class
 core/build/classes/java/main/com/screens/GameScreen.class
 core/build/classes/java/main/com/sprites/MovementSprite.class
 core/build/libs/junit5-gradle-consumer-1.0.0-SNAPSHOT.jar
+*.bin
+*.lock
+*.bin

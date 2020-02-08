@@ -32,6 +32,7 @@ import com.classes.Firetruck;
 import com.classes.Projectile;
 import com.classes.Firestation;
 import com.classes.ETFortress;
+import com.MiniGame.MiniGameScreen;
 
 // Config imports
 import com.config.ETFortressParameters;
@@ -121,14 +122,12 @@ public class GameScreen implements Screen {
 		Timer.schedule(new Task() {
 			@Override
 			public void run() {
-			    if (decreaseTime()) {
-			        firestation.destroy();
+				if (decreaseTime()) {
 			        firestation.removeSprite(new Texture("MapAssets/UniqueBuildings/firestation_destroyed.png"));
 			        Timer.instance().stop();
 			    }
 			}
 		}, 1, 1 );
-
 		// ---- 2) Initialise and set game properties ----------------------------- //
 
 		// Initialise map renderer as batch to draw textures to
@@ -287,6 +286,9 @@ public class GameScreen implements Screen {
 		if (Gdx.input.isKeyJustPressed(Keys.E)) {
 			focusedTruck.toggleHose();
 		}
+		if (Gdx.input.isKeyJustPressed(Keys.Q)) {
+                        this.game.setScreen (new MiniGameScreen (game));
+                }
 		if (Gdx.input.isKeyJustPressed(Keys.TAB)) {
 			this.focusedID += 1;
 			if (this.focusedID > this.firetrucks.size()) {
@@ -325,6 +327,14 @@ public class GameScreen implements Screen {
 		// Render sprites
 		for (ETFortress ETFortress : this.ETFortresses) {
 			ETFortress.update(batch);
+			int destroyedETFortresses =0 ;
+			if (ETFortress.getHealthBar().getCurrentAmount() <= 0) {
+				destroyedETFortresses++;
+			}
+			//time and number of destroyed et fortresses can change over time
+			if (destroyedETFortresses == 1 && this.time < 160){
+				firestation.removeSprite(new Texture("MapAssets/UniqueBuildings/firestation_destroyed.png"));
+			}
 			if (DEBUG_ENABLED) ETFortress.drawDebug(shapeRenderer);
 		}
 		for (Projectile projectile : this.projectiles) {
