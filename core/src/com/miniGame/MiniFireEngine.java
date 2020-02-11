@@ -1,4 +1,4 @@
-package com.MiniGame;
+package com.miniGame;
 
 
 // LibGDX imports
