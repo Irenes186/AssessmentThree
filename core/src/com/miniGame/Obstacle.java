@@ -1,4 +1,4 @@
-//package com.MiniGame;
+//package com.miniGame;
 //
 //import com.sprites.SimpleSprite;
 //

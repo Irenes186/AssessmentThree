@@ -34,7 +34,7 @@ import com.classes.Projectile;
 import com.classes.Firestation;
 import com.classes.Alientruck;
 import com.classes.ETFortress;
-import com.MiniGame.MiniGameScreen;
+import com.miniGame.MiniGameScreen;
 
 // Config imports
 import com.config.ETFortressParameters;
@@ -83,10 +83,10 @@ public class GameScreen implements Screen {
     private int[] backgroundLayers;
 
 	// Private values for the game
-	private int score, time, focusedID;
+	private int score, time, startTime, fortressAmount, focusedID;
 	private float zoomDelay;
 	private Texture projectileTexture;
-
+	private boolean upgraded;
 	// Private arrays to group sprites
 	private ArrayList<Firetruck> firetrucks;
 	private ArrayList<Alientruck> alientrucks;
@@ -107,7 +107,7 @@ public class GameScreen implements Screen {
 		// Assign the game to a property so it can be used when transitioning screens
                 System.out.println ("HashCode");
 		this.game = gam;
-
+		this.upgraded = true;
 		// ---- 1) Create new instance for all the objects needed for the game ---- //
 		
 		// Create an orthographic camera
@@ -122,19 +122,18 @@ public class GameScreen implements Screen {
 		// Create an array to store all projectiles in motion
 		this.projectiles = new ArrayList<Projectile>();
 
-		// Decrease time every second, starting at 3 minutes
-		this.time = 3 * 60;
+		// Decrease time every second, starting at 5 minutes.
+		this.time = 5 * 60;
+		this.startTime = this.time;
 		Timer.schedule(new Task() {
 			@Override
 			public void run() {
-			    if (decreaseTime()) {
-			        firestation.destroy();
+				if (decreaseTime()) {
 			        firestation.removeSprite(new Texture("MapAssets/UniqueBuildings/firestation_destroyed.png"));
 			        Timer.instance().stop();
 			    }
 			}
 		}, 1, 1 );
-
 		// ---- 2) Initialise and set game properties ----------------------------- //
 
 		// Initialise map renderer as batch to draw textures to
@@ -365,6 +364,14 @@ public class GameScreen implements Screen {
 		// Render sprites
 		for (ETFortress ETFortress : this.ETFortresses) {
 			ETFortress.update(batch);
+			int destroyedETFortresses =0 ;
+			if (ETFortress.getHealthBar().getCurrentAmount() <= 0) {
+				destroyedETFortresses++;
+			}
+			//time and number of destroyed et fortresses can change over time
+			if (destroyedETFortresses == 1 && this.time < 160){
+				firestation.removeSprite(new Texture("MapAssets/UniqueBuildings/firestation_destroyed.png"));
+			}
 			if (DEBUG_ENABLED) ETFortress.drawDebug(shapeRenderer);
 		}
 		for (Projectile projectile : this.projectiles) {
@@ -402,6 +409,9 @@ public class GameScreen implements Screen {
 		// Check for any collisions
 		checkForCollisions();
 
+		//Check if fortress has to be upgraded and if so upgrade it.
+		checkForUpgrade();
+		
 		// Check if the game should end
 		checkIfGameOver();
 	}
@@ -486,6 +496,23 @@ public class GameScreen implements Screen {
 		    return false;
 		}
 		return true;
+	}
+	
+	/*This method will:
+	check if it is time for ET fortresses to be upgraded.
+	If it is time: upgrade() method will be called in the class ETFortress.
+	*/
+	private void checkForUpgrade() {
+		if((this.time % 60 == 0) && (this.upgraded == false)) {
+			int fortressAmount = this.ETFortresses.size();
+			for(int i = 0; i < fortressAmount; i++) {
+				this.ETFortresses.get(i).upgrade();
+			}
+			
+			this.upgraded = true;
+		} else if((this.time % 5 == 0) && (this.time % 60 != 0) && (this.upgraded == true) && (this.time < this.startTime)) {
+			this.upgraded = false;
+		}
 	}
 
 	/**
