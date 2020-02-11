@@ -62,13 +62,15 @@ public final class PathFindUtil {
      * @return                  True if the cell is valid and not a collision tile, false otherwise
      */
     public static boolean validCell(Vector2 cell, TiledMapTileLayer collisionLayer) {
+        TiledMapTileLayer.Cell targetCell = collisionLayer.getCell((int) cell.x, (int) cell.y);
         return 0 < cell.x && cell.x < MAP_WIDTH && 
                 0 < cell.y && cell.y < MAP_HEIGHT &&
-                !collisionLayer.getCell((int) cell.x, (int) cell.y).getTile().getProperties().containsKey(COLLISION_TILE);
+                (targetCell == null || targetCell.getTile() == null || !targetCell.getTile().getProperties().containsKey(COLLISION_TILE));
     }
     
     /**
      * Tests whether the given Vector is one of: (1, 0), (-1, 0), (0, 1) or (0, -1)
+     * TODO: is this function necessary? we are changing direction vector2 to Constants.Direction
      * @param direction The vector to test
      * @return          True if direction is a unit vector directly along the y or x axis
      */
@@ -78,6 +80,8 @@ public final class PathFindUtil {
     
     /**
      * Negates both components of a vector. In other words, reflect along the x axis and then along the y axis.
+     * TODO: change direction vector2 to Constants.Direction
+     * 
      * @param direction The vector to reverse
      * @return          A new instance of Vector2, with components equal to the negated components of direction
      */
@@ -88,6 +92,8 @@ public final class PathFindUtil {
     /**
      * Get all corners, crossroads and junctions etc, by tracing a line along a straight
      * line of grid cells, until a collision tile is found.
+     * TODO: change direction vector2 to Constants.Direction
+     * 
      * @param startCell         The cell to begin tracing from
      * @param direction         The direction along the road to trace, must abide by validQuadUnitVector
      * @param collisionLayer    The layer containing all currently present collision tiles
@@ -116,6 +122,8 @@ public final class PathFindUtil {
         
         // Until a collision tile is detected or the search goes out of range
         while (validCell(currentCell, collisionLayer)) {
+//            System.out.println("Check cell: " + currentCell);
+//            System.out.println("Direction: " + direction);
             // Step right of the current cell
             currentCell.add(dir90);
             testCell = currentCell;
@@ -123,17 +131,21 @@ public final class PathFindUtil {
             // If this is in range and not a collision cell, add the current cell to the list of corners
             if (validCell(testCell, collisionLayer)) {
                 corners.add(currentCell);
-                continue;
+//                System.out.println("Child added: " + currentCell);
+            } else {
+                // Step left of the current cell
+                currentCell.add(dir90rev);
+                testCell = currentCell;
+                currentCell.sub(dir90rev);
+                // If this is in range and not a collision cell, add the current cell to the list of corners
+                if (validCell(testCell, collisionLayer)) {
+                    corners.add(currentCell);
+//                    System.out.println("Child added: " + currentCell);
+                }
             }
             
-            // Step left of the current cell
-            currentCell.add(dir90rev);
-            testCell = currentCell;
-            currentCell.sub(dir90rev);
-            // If this is in range and not a collision cell, add the current cell to the list of corners
-            if (validCell(testCell, collisionLayer)) {
-                corners.add(currentCell);
-            }
+            currentCell.add(direction);
+//            System.out.println("New cell: " + currentCell.add(direction));
         }
         
         // Return the complete list of corners along this road and direction (may be empty)
@@ -142,11 +154,14 @@ public final class PathFindUtil {
     
     /**
      * Get all corners, crossroads and junctions along roads connecting in every direction from a cell
+     * TODO: change direction vector2 to Constants.Direction
+     * 
      * @param node              The source node to find corners from
      * @param collisionLayer    The layer containing all currently present collision cells
      * @return                  A HashSet containing all reachable corners, crossroads and junctions along the cell's road. Can be empty
      */
     public static HashSet<Vector2> getChildNodes (Vector2 node, TiledMapTileLayer collisionLayer) {
+//        System.out.println("Expand node: " + node);
         // The working set of children
         HashSet<Vector2> children = new HashSet<Vector2>();
         
