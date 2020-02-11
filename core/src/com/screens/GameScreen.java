@@ -87,6 +87,8 @@ public class GameScreen implements Screen {
 	private float zoomDelay;
 	private Texture projectileTexture;
 	private boolean upgraded;
+	private boolean baseDestroyed;
+	
 	// Private arrays to group sprites
 	private ArrayList<Firetruck> firetrucks;
 	private ArrayList<Alientruck> alientrucks;
@@ -104,6 +106,7 @@ public class GameScreen implements Screen {
 	 * @param gam The game object.
 	 */
 	public GameScreen(final Kroy gam) {
+	    this.baseDestroyed = false;
 		// Assign the game to a property so it can be used when transitioning screens
                 System.out.println ("HashCode");
 		this.game = gam;
@@ -130,10 +133,11 @@ public class GameScreen implements Screen {
 			public void run() {
 				if (decreaseTime()) {
 			        firestation.removeSprite(new Texture("MapAssets/UniqueBuildings/firestation_destroyed.png"));
-			        Timer.instance().stop();
+//			        Timer.instance().stop();
 			    }
 			}
 		}, 1, 1 );
+		Timer.instance().start();
 		// ---- 2) Initialise and set game properties ----------------------------- //
 
 		// Initialise map renderer as batch to draw textures to
@@ -235,6 +239,9 @@ public class GameScreen implements Screen {
 		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.CLIFFORDS_TOWER), 1, 1, 69 * TILE_DIMS, 51 * TILE_DIMS));
 		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.YORK_MINSTER), 2, 3.25f, 68.25f * TILE_DIMS, 82.25f * TILE_DIMS));
 		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.RAIL_STATION), 2, 2.5f, 1 * TILE_DIMS, 72.75f * TILE_DIMS));
+		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.STADIUM), 1, 1, 36 * TILE_DIMS, 69 * TILE_DIMS));
+		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.FIBBERS), 1, 1, 91 * TILE_DIMS, 70 * TILE_DIMS));
+		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.WINDMILL), 1, 1, 25 * TILE_DIMS, 48 * TILE_DIMS));
 	}
 
 	/**
@@ -266,7 +273,6 @@ public class GameScreen implements Screen {
 	 */
 	@Override
 	public void render(float delta) {
-
 		// MUST BE FIRST: Clear the screen each frame to stop textures blurring
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -369,8 +375,9 @@ public class GameScreen implements Screen {
 				destroyedETFortresses++;
 			}
 			//time and number of destroyed et fortresses can change over time
-			if (destroyedETFortresses == 1 && this.time < 160){
-				firestation.removeSprite(new Texture("MapAssets/UniqueBuildings/firestation_destroyed.png"));
+			if (destroyedETFortresses == 1){
+//				firestation.removeSprite(new Texture("MapAssets/UniqueBuildings/firestation_destroyed.png"));
+			    this.baseDestroyed = true;
 			}
 			if (DEBUG_ENABLED) ETFortress.drawDebug(shapeRenderer);
 		}
@@ -491,11 +498,14 @@ public class GameScreen implements Screen {
 	 * @return boolean  true when time has run out
 	 */
 	private boolean decreaseTime() {
-		if (this.time > 0) {
-		    this.time -= 1;
-		    return false;
-		}
-		return true;
+	    if (this.baseDestroyed) {
+	        if (this.time > 0) {
+	            this.time -= 1;
+	            return false;
+	        }
+	        return true;
+	    }
+		return false;
 	}
 	
 	/*This method will:
