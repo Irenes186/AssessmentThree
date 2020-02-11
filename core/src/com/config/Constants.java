@@ -16,8 +16,8 @@ public final class Constants {
         300f, // MAX_SPEED
         0.8f, // RESTITUTION
         1.2f, // RANGE
-        300,  // WATER MAX
-        4,    //deliver rate
+        10000000,  // WATER MAX
+        10000,    //deliver rate
     };
 
     // Firetruck Two properties
@@ -49,6 +49,13 @@ public final class Constants {
             1.3f,// RANGE
             400,  // WATER MAX
             1,    //deliver rate
+    };
+    // Alientruck properties
+    public static final float[] AlientruckProperties = {
+            20,  // HEALTH
+            15f,  // ACCELERATION
+            100f, // MAX_SPEED
+            0.6f, // RESTITUTION
     };
 
      // Enums
