@@ -129,7 +129,7 @@ public class Alientruck extends MovementSprite {
      * @param batch  The batch to draw onto.
      * @param camera Used to get the centre of the screen.
      */
-    public void update(Batch batch, Firetruck targetTruck, ShapeRenderer renderer) {
+    public void update(Batch batch, Firetruck targetTruck) { //ShapeRenderer renderer
         super.update(batch);
         drawVoxelImage(batch);
         
