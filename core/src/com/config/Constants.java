@@ -11,7 +11,7 @@ public final class Constants {
 
     // Firetruck One properties.
     public static final float[] FiretruckOneProperties = {
-        40000,  // HEALTH
+        100,  // HEALTH
         10f,  // ACCELERATION
         300f, // MAX_SPEED
         0.8f, // RESTITUTION
@@ -50,6 +50,13 @@ public final class Constants {
             400,  // WATER MAX
             1,    //deliver rate
     };
+    // Alientruck properties
+    public static final float[] AlientruckProperties = {
+            20,  // HEALTH
+            15f,  // ACCELERATION
+            100f, // MAX_SPEED
+            0.6f, // RESTITUTION
+    };
 
      // Enums
      public static enum Direction {
@@ -60,7 +67,7 @@ public final class Constants {
     }
 
     // Debug mode
-    public static final boolean DEBUG_ENABLED = false;
+    public static final boolean DEBUG_ENABLED = true;
 
     // Game settings
     public static final String GAME_NAME = "Kroy";

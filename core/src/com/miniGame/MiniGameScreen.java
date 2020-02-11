@@ -1,7 +1,7 @@
-package com.MiniGame;
+package com.miniGame;
 
 import com.sprites.SimpleSprite;
-import com.MiniGame.MiniFireEngine;
+import com.miniGame.MiniFireEngine;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

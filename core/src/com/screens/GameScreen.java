@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.utils.Timer;
@@ -31,8 +32,9 @@ import com.sprites.SimpleSprite;
 import com.classes.Firetruck;
 import com.classes.Projectile;
 import com.classes.Firestation;
+import com.classes.Alientruck;
 import com.classes.ETFortress;
-import com.MiniGame.MiniGameScreen;
+import com.miniGame.MiniGameScreen;
 
 // Config imports
 import com.config.ETFortressParameters;
@@ -54,7 +56,9 @@ import static com.config.Constants.FiretruckOneProperties;
 import static com.config.Constants.FiretruckTwoProperties;
 import static com.config.Constants.FiretruckThreeProperties;
 import static com.config.Constants.FiretruckFourProperties;
+import static com.config.Constants.AlientruckProperties;
 import static com.config.Constants.FIRETRUCK_DAMAGE;
+import static com.config.Constants.Direction;
 
 /**
  * Display the main game.
@@ -85,7 +89,9 @@ public class GameScreen implements Screen {
 	private boolean upgraded;
 	// Private arrays to group sprites
 	private ArrayList<Firetruck> firetrucks;
+	private ArrayList<Alientruck> alientrucks;
 	private ArrayList<Firetruck> firetrucksToRemove;
+	private ArrayList<Alientruck> alientrucksToRemove;
 	private ArrayList<ETFortress> ETFortresses;
 	private ArrayList<Projectile> projectiles;
 	private ArrayList<Projectile> projectilesToRemove;
@@ -146,7 +152,7 @@ public class GameScreen implements Screen {
         this.foregroundLayers = new int[] {
 			mapLayers.getIndex("Buildings"),
 			mapLayers.getIndex("Trees"),
-        };
+        };  
         this.backgroundLayers = new int[] {
 			mapLayers.getIndex("River"),
 			mapLayers.getIndex("Road")
@@ -162,6 +168,8 @@ public class GameScreen implements Screen {
 		ArrayList<Texture> firetruckRed = new ArrayList<Texture>();
 		ArrayList<Texture> firetruckYellow = new ArrayList<Texture>();
 		ArrayList<Texture> firetruckGreen = new ArrayList<Texture>();
+		
+		ArrayList<Texture> alientruckPink = new ArrayList<Texture>();
 
 		for (int i = 1; i <= 3; i++) {
 			Texture texture = new Texture("waterSplash" + i + ".png");
@@ -173,6 +181,7 @@ public class GameScreen implements Screen {
 				Texture red = new Texture("FiretruckRed/FiretruckRED (6) A.png");
 				Texture yellow = new Texture("FiretruckYellow/FiretruckYELLOW (6) A.png");
 				Texture green = new Texture("FiretruckGreen/FiretruckGREEN (6) A.png");
+				Texture alienPink = new Texture("AlientruckPink/AlientruckPINK (6) A.png");
 				firetruckBlue.add(blue);
 				firetruckRed.add(red);
 				firetruckYellow.add(yellow);
@@ -182,10 +191,12 @@ public class GameScreen implements Screen {
 				Texture red = new Texture("FiretruckRed/FiretruckRED (" + i + ").png");
 				Texture yellow = new Texture("FiretruckYellow/FiretruckYELLOW (" + i + ").png");
 				Texture green = new Texture("FiretruckGreen/FiretruckGREEN (" + i + ").png");
+				Texture alienPink = new Texture("AlientruckPink/AlientruckPINK (" + i + ").png");
 				firetruckBlue.add(blue);
 				firetruckRed.add(red);
 				firetruckYellow.add(yellow);
 				firetruckGreen.add(green);
+				alientruckPink.add(alienPink);
 			}
 		}
 
@@ -200,7 +211,25 @@ public class GameScreen implements Screen {
 		this.firetrucks.add(new Firetruck(firetruckRed, waterFrames, FiretruckTwoProperties, (TiledMapTileLayer) map.getLayers().get("Collision"), 2, 80 * TILE_DIMS, 32 * TILE_DIMS));
 		this.firetrucks.add(new Firetruck(firetruckYellow, waterFrames, FiretruckThreeProperties, (TiledMapTileLayer) map.getLayers().get("Collision"), 3, 80 * TILE_DIMS, 28 * TILE_DIMS));
 		this.firetrucks.add(new Firetruck(firetruckGreen, waterFrames, FiretruckFourProperties, (TiledMapTileLayer) map.getLayers().get("Collision"), 4, 80 * TILE_DIMS, 26 * TILE_DIMS));
-
+		
+		// Initialise alientrucks array and add alientrucks to it
+		Vector2[] alientruckPath1 = new Vector2[] {new Vector2(80, 57), new Vector2(80, 43), new Vector2(85, 43), new Vector2(85, 39), new Vector2(70, 39), new Vector2(70, 45), new Vector2(66, 45), new Vector2(66, 57)};
+	    Vector2[] alientruckPath2 = new Vector2[] {new Vector2(14, 83), new Vector2(14, 65), new Vector2(23, 65), new Vector2(23, 88), new Vector2(23, 65), new Vector2(14, 65)};
+	    Vector2[] alientruckPath3 = new Vector2[] {new Vector2(62, 100), new Vector2(64, 100), new Vector2(64, 102), new Vector2(88, 102), new Vector2(88, 77), new Vector2(62, 77)};
+	    
+	    
+	    this.alientrucks = new ArrayList<Alientruck>();
+		this.alientrucks.add(new Alientruck(alientruckPink, AlientruckProperties, (TiledMapTileLayer) map.getLayers().get("Collision"),
+		        80 * TILE_DIMS, 57 * TILE_DIMS, 
+		        alientruckPath1));
+		this.alientrucks.add(new Alientruck(alientruckPink, AlientruckProperties, (TiledMapTileLayer) map.getLayers().get("Collision"),
+                14 * TILE_DIMS, 83 * TILE_DIMS, 
+                alientruckPath2));
+		this.alientrucks.add(new Alientruck(alientruckPink, AlientruckProperties, (TiledMapTileLayer) map.getLayers().get("Collision"),
+                62 * TILE_DIMS, 100 * TILE_DIMS, 
+                alientruckPath3));
+//		        new Direction[] {Direction.RIGHT, Direction.DOWN, Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP, Direction.LEFT, Direction.UP}));
+		
 		// Initialise ETFortresses array and add ETFortresses to it
 		this.ETFortresses = new ArrayList<ETFortress>();
 		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.CLIFFORDS_TOWER), 1, 1, 69 * TILE_DIMS, 51 * TILE_DIMS));
@@ -227,6 +256,7 @@ public class GameScreen implements Screen {
 		// Create array to collect entities that are no longer used
 		this.projectilesToRemove = new ArrayList<Projectile>();
 		this.firetrucksToRemove = new ArrayList<Firetruck>();
+		this.alientrucksToRemove = new ArrayList<Alientruck>();
 	}
 
 	/**
@@ -251,6 +281,7 @@ public class GameScreen implements Screen {
 
 		// Get the firetruck thats being driven so that the camera can follow it
 		Firetruck focusedTruck = getFiretruckInFocus();
+//		System.out.println((int) focusedTruck.getCentreX() / TILE_DIMS + ", " + (int) focusedTruck.getCentreY() / TILE_DIMS);
 
 		// Tell the camera to update to the sprites position with a delay based on lerp and game time
 		Vector3 cameraPosition = this.camera.position;
@@ -312,6 +343,12 @@ public class GameScreen implements Screen {
 			if (firetruck.getHealthBar().getCurrentAmount() <= 0) this.firetrucksToRemove.add(firetruck);
 			if (DEBUG_ENABLED) firetruck.drawDebug(shapeRenderer);
 		}
+		
+		for (Alientruck alientruck : this.alientrucks) {
+		    alientruck.update(batch, this.getFiretruckInFocus(), shapeRenderer);
+		    if (alientruck.getHealthBar().getCurrentAmount() <= 0) this.alientrucksToRemove.add(alientruck);
+            if (DEBUG_ENABLED) alientruck.drawDebug(shapeRenderer);
+		}
 
 		// Close layer 
 		batch.end();
@@ -367,6 +404,7 @@ public class GameScreen implements Screen {
 		// Remove projectiles that are off the screen and firetrucks that are dead
 		this.projectiles.removeAll(this.projectilesToRemove);
 		this.firetrucks.removeAll(this.firetrucksToRemove);
+		this.alientrucks.removeAll(this.alientrucksToRemove);
 
 		// Check for any collisions
 		checkForCollisions();
@@ -424,6 +462,13 @@ public class GameScreen implements Screen {
 					this.projectiles.add(projectile);
 				}
 			}
+			// Check if it overlaps with an Alientruck
+            for (Alientruck alientruck : this.alientrucks) {
+                if (alientruck.getHealthBar().getCurrentAmount() > 0 && firetruckA.isInHoseRange(alientruck.getHitBox())) {
+                    alientruck.getHealthBar().subtractResourceAmount(FIRETRUCK_DAMAGE);
+                    this.score += 10;
+                }
+            }
 			// Check if firetruck is hit with a projectile
 			for (Projectile projectile : this.projectiles) {
 				if (Intersector.overlapConvexPolygons(firetruckA.getHitBox(), projectile.getHitBox())) {
@@ -549,6 +594,9 @@ public class GameScreen implements Screen {
 		}
 		for (ETFortress ETFortress : this.ETFortresses) {
 			ETFortress.dispose();
+		}
+		for (Alientruck alientruck : this.alientrucks) {
+		    alientruck.dispose();
 		}
 	}
 
