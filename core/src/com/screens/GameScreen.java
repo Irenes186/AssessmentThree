@@ -207,7 +207,7 @@ public class GameScreen implements Screen {
 
 		// Initialise firetrucks array and add firetrucks to it
 		this.firetrucks = new ArrayList<Firetruck>();
-		this.firetrucks.add(new Firetruck(firetruckBlue, waterFrames, FiretruckOneProperties, (TiledMapTileLayer) map.getLayers().get("Collision"), 1, 61 * TILE_DIMS, 101 * TILE_DIMS)); //80, 30
+		this.firetrucks.add(new Firetruck(firetruckBlue, waterFrames, FiretruckOneProperties, (TiledMapTileLayer) map.getLayers().get("Collision"), 1, 80 * TILE_DIMS, 30 * TILE_DIMS));
 		this.firetrucks.add(new Firetruck(firetruckRed, waterFrames, FiretruckTwoProperties, (TiledMapTileLayer) map.getLayers().get("Collision"), 2, 80 * TILE_DIMS, 32 * TILE_DIMS));
 		this.firetrucks.add(new Firetruck(firetruckYellow, waterFrames, FiretruckThreeProperties, (TiledMapTileLayer) map.getLayers().get("Collision"), 3, 80 * TILE_DIMS, 28 * TILE_DIMS));
 		this.firetrucks.add(new Firetruck(firetruckGreen, waterFrames, FiretruckFourProperties, (TiledMapTileLayer) map.getLayers().get("Collision"), 4, 80 * TILE_DIMS, 26 * TILE_DIMS));
