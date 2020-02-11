@@ -133,11 +133,11 @@ public class GameScreen implements Screen {
 			public void run() {
 				if (decreaseTime()) {
 			        firestation.removeSprite(new Texture("MapAssets/UniqueBuildings/firestation_destroyed.png"));
-			        Timer.instance().stop();
+//			        Timer.instance().stop();
 			    }
 			}
 		}, 1, 1 );
-		Timer.instance().stop();
+		Timer.instance().start();
 		// ---- 2) Initialise and set game properties ----------------------------- //
 
 		// Initialise map renderer as batch to draw textures to
@@ -374,7 +374,6 @@ public class GameScreen implements Screen {
 			//time and number of destroyed et fortresses can change over time
 			if (destroyedETFortresses == 1){
 //				firestation.removeSprite(new Texture("MapAssets/UniqueBuildings/firestation_destroyed.png"));
-			    Timer.instance().start();
 			    this.baseDestroyed = true;
 			}
 			if (DEBUG_ENABLED) ETFortress.drawDebug(shapeRenderer);
