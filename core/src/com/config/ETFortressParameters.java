@@ -48,8 +48,26 @@ public class ETFortressParameters {
                 projectileDamage = 5;
                 maxHealth = 150;
 		        break;
+		    case STADIUM:
+		        texture = new Texture("MapAssets/UniqueBuildings/YorkStadium.png");
+                destroyedTexture = new Texture("MapAssets/UniqueBuildings/YorkStadium_wet.png");
+                projectileDamage = 7;
+                maxHealth = 125;
+		        break;
+		    case FIBBERS:
+		        texture = new Texture("MapAssets/UniqueBuildings/Fibbers.png");
+                destroyedTexture = new Texture("MapAssets/UniqueBuildings/Fibbers_wet.png");
+                projectileDamage = 13;
+                maxHealth = 75;
+		        break;
+		    case WINDMILL:
+		        texture = new Texture("MapAssets/UniqueBuildings/windmill.png");
+                destroyedTexture = new Texture("MapAssets/UniqueBuildings/windmill_wet.png");
+                projectileDamage = 9;
+                maxHealth = 110;
+		        break;
 	        default:
-	            throw new RuntimeException("Requested ETFortresType " + type + " does not exist.");
+	            throw new RuntimeException("Requested ETFortressType " + type + " does not exist.");
 		}
 	}
 }
