@@ -38,6 +38,7 @@ public class MovementSprite extends SimpleSprite {
     protected Vector2 currentPathFindDirection;
     // Comparator implementation that decides a total ordering over AStarNodes. Only used during pathfinding.
     private AStarNodeComparator nodeComp;
+    private int deliveryRate;
 
     /**
      * Creates a sprite capable of moving and colliding with the tiledMap and other sprites.
@@ -74,6 +75,7 @@ public class MovementSprite extends SimpleSprite {
         this.currentTargetPos = null;
         this.currentPathFindDirection = new Vector2(0, 0);
         this.nodeComp = new AStarNodeComparator();
+        this.deliveryRate = 0;
     }
 
     /**
@@ -220,12 +222,9 @@ public class MovementSprite extends SimpleSprite {
         this.restitution = bounce;
     }
 
-    /**
-     * Sets the rate at which the sprite will accelerate.
-     * @param rate The acceleration rate for the sprite.
-     */
-    public void setAccelerationRate(float rate) {
-        this.accelerationRate = rate;
+
+    public void setDeliveryRate(int deliveryRate) {
+        this.deliveryRate = deliveryRate;
     }
 
     /**
@@ -235,7 +234,14 @@ public class MovementSprite extends SimpleSprite {
     public void setDecelerationRate(float rate) {
         this.decelerationRate = rate;
     }
+    /**
+     * Sets the rate at which the sprite will accelerate.
+     * @param rate The acceleration rate for the sprite.
+     */
 
+    public void setAccelerationRate(float rate) {
+        this.accelerationRate = rate;
+    }
 
     /**
      * Sets the max speed the sprite can accelerate to.
@@ -251,6 +257,10 @@ public class MovementSprite extends SimpleSprite {
      */
     public float getMaxSpeed() {
         return this.maxSpeed;
+    }
+
+    public int getDeliveryRate() {
+        return this.deliveryRate;
     }
 
     /**

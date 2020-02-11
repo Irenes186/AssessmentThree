@@ -34,6 +34,7 @@ import com.classes.Projectile;
 import com.classes.Firestation;
 import com.classes.Alientruck;
 import com.classes.ETFortress;
+import com.MiniGame.MiniGameScreen;
 
 // Config imports
 import com.config.ETFortressParameters;
@@ -317,6 +318,9 @@ public class GameScreen implements Screen {
 		if (Gdx.input.isKeyJustPressed(Keys.E)) {
 			focusedTruck.toggleHose();
 		}
+		if (Gdx.input.isKeyJustPressed(Keys.Q)) {
+                        this.game.setScreen (new MiniGameScreen (game));
+                }
 		if (Gdx.input.isKeyJustPressed(Keys.TAB)) {
 			this.focusedID += 1;
 			if (this.focusedID > this.firetrucks.size()) {
