@@ -16,7 +16,8 @@ public final class Constants {
         300f, // MAX_SPEED
         0.8f, // RESTITUTION
         1.2f, // RANGE
-        300,  // WATER MAX
+        10000000,  // WATER MAX
+        10000,    //deliver rate
     };
 
     // Firetruck Two properties
@@ -27,6 +28,7 @@ public final class Constants {
         0.6f, // RESTITUTION
         1.1f,// RANGE
         200,  // WATER MAX
+        3,    //deliver rate
     };
     // Firetruck Three properties
     public static final float[] FiretruckThreeProperties = {
@@ -36,6 +38,7 @@ public final class Constants {
             0.6f, // RESTITUTION
             1.5f,// RANGE
             500,  // WATER MAX
+            2,    //deliver rate
     };
     // Firetruck Four properties
     public static final float[] FiretruckFourProperties = {
@@ -45,6 +48,14 @@ public final class Constants {
             0.6f, // RESTITUTION
             1.3f,// RANGE
             400,  // WATER MAX
+            1,    //deliver rate
+    };
+    // Alientruck properties
+    public static final float[] AlientruckProperties = {
+            20,  // HEALTH
+            15f,  // ACCELERATION
+            100f, // MAX_SPEED
+            0.6f, // RESTITUTION
     };
 
      // Enums
@@ -56,7 +67,7 @@ public final class Constants {
     }
 
     // Debug mode
-    public static final boolean DEBUG_ENABLED = false;
+    public static final boolean DEBUG_ENABLED = true;
 
     // Game settings
     public static final String GAME_NAME = "Kroy";
@@ -85,9 +96,7 @@ public final class Constants {
     // Sprite properties
     // Damage
     public static final int FIRETRUCK_DAMAGE = 2;
-    public static final int PROJECTILE_DAMAGE = 10;
     // Health
-    public static final int ETFORTRESS_HEALTH = 2000;
     public static final int ETFORTRESS_HEALING = 1;
     public static final int FIRESTATION_HEALTH = 1000;
     // Speed
