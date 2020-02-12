@@ -115,7 +115,7 @@ public class Alientruck extends Truck {
      * @param batch  The batch to draw onto.
      * @param camera Used to get the centre of the screen.
      */
-    public void update(Batch batch) { //ShapeRenderer renderer
+    public void update(Batch batch) { //, Firetruck targetTruck, ShapeRenderer renderer
         super.update(batch);
         drawVoxelImage(batch);
         

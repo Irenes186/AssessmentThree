@@ -359,7 +359,7 @@ public class GameScreen implements Screen {
 		}
 		
 		for (Alientruck alientruck : this.alientrucks) {
-		    alientruck.update(batch, this.getFiretruckInFocus());
+		    alientruck.update(batch); //this.getFiretruckInFocus()
 		    if (alientruck.getHealthBar().getCurrentAmount() <= 0) this.alientrucksToRemove.add(alientruck);
             if (DEBUG_ENABLED) alientruck.drawDebug(shapeRenderer);
 		}
