@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
-import com.config.ETFortressParameters;
+import com.config.ETFortressFactory;
 import com.badlogic.gdx.graphics.Texture;
 
 // Custom class import
@@ -43,13 +43,33 @@ public class ETFortress extends SimpleSprite {
      * @param xPos              The x-coordinate for the ETFortress.
      * @param yPos              The y-coordinate for the ETFortress.
      */
-    public ETFortress(ETFortressParameters params, float scaleX, float scaleY, float xPos, float yPos) {
+    public ETFortress(ETFortressFactory params, float scaleX, float scaleY, float xPos, float yPos) {
         super(params.texture);
         this.maxHealth = params.maxHealth;
         this.destroyed = params.destroyedTexture;
         this.setScale(scaleX, scaleY);
         this.setPosition(xPos, yPos);
         this.projectileDamage = params.projectileDamage;
+        this.create();
+    }
+    
+    public ETFortress(Texture texture, Texture destroyedTexture, int projectileDamage, int maxHealth, float scaleX, float scaleY, float xPos, float yPos) {
+        super(texture);
+        this.maxHealth = maxHealth;
+        this.destroyed = destroyedTexture;
+        this.setScale(scaleX, scaleY);
+        this.setPosition(xPos, yPos);
+        this.projectileDamage = projectileDamage;
+        this.create();
+    }
+    
+    public ETFortress(Texture texture, Texture destroyedTexture, int projectileDamage, int maxHealth) {
+        super(texture);
+        this.maxHealth = maxHealth;
+        this.destroyed = destroyedTexture;
+        this.setScale(1, 1);
+        this.setPosition(0, 0);
+        this.projectileDamage = projectileDamage;
         this.create();
     }
 
@@ -62,7 +82,7 @@ public class ETFortress extends SimpleSprite {
      * @param scaleX            The scaling in the x-axis.
      * @param scaleY            The scaling in the y-axis.
      */
-    public ETFortress(ETFortressParameters params, float scaleX, float scaleY) {
+    public ETFortress(ETFortressFactory params, float scaleX, float scaleY) {
         super(params.texture);
         this.maxHealth = params.maxHealth;
         this.destroyed = params.destroyedTexture;
@@ -78,7 +98,7 @@ public class ETFortress extends SimpleSprite {
      * @param texture           The texture used to draw the ETFortress with.
      * @param destroyedTexture  The texture used to draw the ETFortress with. when it has been destroyed.
      */
-    public ETFortress(ETFortressParameters params) {
+    public ETFortress(ETFortressFactory params) {
         super(params.texture);
         this.maxHealth = params.maxHealth;
         this.destroyed = params.destroyedTexture;
