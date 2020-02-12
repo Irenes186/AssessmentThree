@@ -37,7 +37,7 @@ import com.classes.ETFortress;
 import com.miniGame.MiniGameScreen;
 
 // Config imports
-import com.config.ETFortressParameters;
+import com.config.ETFortressFactory;
 import com.config.ETFortressType;
 
 // Constants import
@@ -234,14 +234,22 @@ public class GameScreen implements Screen {
                 alientruckPath3));
 //		        new Direction[] {Direction.RIGHT, Direction.DOWN, Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP, Direction.LEFT, Direction.UP}));
 		
-		// Initialise ETFortresses array and add ETFortresses to it
+//		// Initialise ETFortresses array and add ETFortresses to it
 		this.ETFortresses = new ArrayList<ETFortress>();
-		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.CLIFFORDS_TOWER), 1, 1, 69 * TILE_DIMS, 51 * TILE_DIMS));
-		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.YORK_MINSTER), 2, 3.25f, 68.25f * TILE_DIMS, 82.25f * TILE_DIMS));
-		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.RAIL_STATION), 2, 2.5f, 1 * TILE_DIMS, 72.75f * TILE_DIMS));
-		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.STADIUM), 1, 1, 36 * TILE_DIMS, 69 * TILE_DIMS));
-		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.FIBBERS), 1, 1, 91 * TILE_DIMS, 70 * TILE_DIMS));
-		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.WINDMILL), 1, 1, 25 * TILE_DIMS, 48 * TILE_DIMS));
+//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.CLIFFORDS_TOWER), 1, 1, 69 * TILE_DIMS, 51 * TILE_DIMS));
+//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.YORK_MINSTER), 2, 3.25f, 68.25f * TILE_DIMS, 82.25f * TILE_DIMS));
+//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.RAIL_STATION), 2, 2.5f, 1 * TILE_DIMS, 72.75f * TILE_DIMS));
+//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.STADIUM), 1, 1, 36 * TILE_DIMS, 69 * TILE_DIMS));
+//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.FIBBERS), 1, 1, 91 * TILE_DIMS, 70 * TILE_DIMS));
+//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.WINDMILL), 1, 1, 25 * TILE_DIMS, 48 * TILE_DIMS));
+		
+		ETFortressFactory factory = new ETFortressFactory();
+		this.ETFortresses.add(factory.createETFortress((ETFortressType.CLIFFORDS_TOWER)));
+		this.ETFortresses.add(factory.createETFortress((ETFortressType.YORK_MINSTER)));
+		this.ETFortresses.add(factory.createETFortress((ETFortressType.RAIL_STATION)));
+		this.ETFortresses.add(factory.createETFortress((ETFortressType.STADIUM)));
+		this.ETFortresses.add(factory.createETFortress((ETFortressType.FIBBERS)));
+		this.ETFortresses.add(factory.createETFortress((ETFortressType.WINDMILL)));
 	}
 
 	/**

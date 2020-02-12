@@ -32,14 +32,13 @@ import java.util.ArrayList;
  * @author Archie
  * @since 16/12/2019
  */
-public class Firetruck extends MovementSprite {
+public class Firetruck extends Truck {
 
     // Private values to be used in this class only
     private Boolean isFocused, isSpraying;
     private int focusID, internalTime, toggleDelay;
     private float hoseWidth, hoseHeight;
-    private float[] firetruckProperties;
-    private ArrayList<Texture> firetruckSlices, waterFrames;
+    private ArrayList<Texture> waterFrames;
     private Polygon hoseRange;
     private ResourceBar waterBar;
     private int maxWater, deliveryRate;
@@ -59,11 +58,9 @@ public class Firetruck extends MovementSprite {
      * @param yPos           The y-coordinate for the firetruck.
      */
     public Firetruck(ArrayList<Texture> textureSlices, ArrayList<Texture> frames, float[] properties, TiledMapTileLayer collisionLayer, int ID, float xPos, float yPos) {
-        super(textureSlices.get(textureSlices.size() - 1), collisionLayer);
+        super(textureSlices, properties, collisionLayer, xPos, yPos);
         this.focusID = ID;
         this.waterFrames = frames;
-        this.firetruckSlices = textureSlices;
-        this.firetruckProperties = properties;
         this.create();
         this.setPosition(xPos, yPos);
     }
@@ -81,11 +78,9 @@ public class Firetruck extends MovementSprite {
      * @param ID             The ID of the truck (for object focus).
      */
     public Firetruck(ArrayList<Texture> textureSlices, ArrayList<Texture> frames, float[] properties, TiledMapTileLayer collisionLayer, int ID) {
-        super(textureSlices.get(textureSlices.size() - 1), collisionLayer);
+        super(textureSlices, properties, collisionLayer, 0, 0);
         this.focusID = ID;
         this.waterFrames = frames;
-        this.firetruckSlices = textureSlices;
-        this.firetruckProperties = properties;
         this.create();
     }
 
@@ -96,16 +91,8 @@ public class Firetruck extends MovementSprite {
     private void create() {
         maxWater = 100;
         this.isSpraying = true;
-        this.setSize(FIRETRUCK_WIDTH, FIRETRUCK_HEIGHT);
-        this.getHealthBar().setMaxResource((int) this.firetruckProperties[0]);
-        this.setAccelerationRate(this.firetruckProperties[1]);
-        this.setDecelerationRate(this.firetruckProperties[1] * 0.6f);
-        this.setMaxSpeed(this.firetruckProperties[2]);
-        this.setRestitution(this.firetruckProperties[3]);
         this.createWaterHose();
-        // Start the firetruck facing left
-        this.rotate(-90);
-        this.setDeliveryRate((int) this.firetruckProperties[6]);
+        this.setDeliveryRate((int) this.truckProperties[6]);
     }
 
     /**
@@ -155,7 +142,7 @@ public class Firetruck extends MovementSprite {
         hoseVector.nor();
 
         // Update the hose size and position. Angle it towards the mouse
-        float scale = this.isSpraying && this.hoseRange.getScaleX() < this.firetruckProperties[4] ?
+        float scale = this.isSpraying && this.hoseRange.getScaleX() < this.truckProperties[4] ?
             0.05f : !this.isSpraying && this.hoseRange.getScaleX() > 0 ? -0.05f : 0;
         this.hoseRange.setScale(this.hoseRange.getScaleX() + scale, this.hoseRange.getScaleY() + scale);
         this.hoseRange.setPosition(this.getCentreX(), this.getCentreY());
@@ -173,44 +160,12 @@ public class Firetruck extends MovementSprite {
     }
 
     /**
-     * Draws the voxel representation of the firetruck. Incrementally builds the firetruck
-     * from layers of images with each image slightly higher than the last
-     */
-    private void drawVoxelImage(Batch batch) {
-        // Length of array containing image slices
-        int slicesLength = this.firetruckSlices.size() - 1;
-        float x = getX(), y = getY(), angle = this.getRotation();
-        float width = this.getWidth(), height = this.getHeight();
-        for (int i = 0; i < slicesLength; i++) {
-            Texture texture = animateLights(i);
-            batch.draw(new TextureRegion(texture), x, (y - slicesLength / 3) + i, width / 2, height / 2, width, height, 1, 1, angle, true);
-        }
-    }
-
-    /**
-     * Alternates between showing the red and blue light on the truck.
-     * Returns the texture at the given index offset to the correct index.
-     * 
-     * @param index The index of the next texture to draw the sprite with.
-     * @return      The next texture to draw the sprite with.
-     */
-    private Texture animateLights(int index) {
-        if (index == 14) { // The index of the texture containing the first light colour
-            Texture texture = this.getInternalTime() / 5 > 15 ? this.firetruckSlices.get(index + 1) : this.firetruckSlices.get(index);
-            return texture;
-        } else if (index > 14) { // Offset remaining in order to not repeat a texture
-            return this.firetruckSlices.get(index + 1);
-        }
-        return this.firetruckSlices.get(index);
-    }
-
-    /**
      * Creates the polygon for the hose and the water bar to store the firetruck's
      * water level.
      */
     private void createWaterHose() {
         // Get the scale of the hose and create its shape
-        float rangeScale = this.firetruckProperties[4];
+        float rangeScale = this.truckProperties[4];
         this.hoseWidth = this.getHeight() * 4.5f * rangeScale;
         this.hoseHeight =  this.getWidth() * 0.65f * rangeScale;
         float[] hoseVertices = { // Starts facing right
@@ -226,7 +181,7 @@ public class Firetruck extends MovementSprite {
         // Create the water bar
         this.waterBar = new ResourceBar(Math.max(this.getWidth(), this.getHeight()), Math.min(this.getWidth(), this.getHeight()));
         this.waterBar.setColourRange(new Color[] { Color.BLUE });
-        this.waterBar.setMaxResource((int) this.firetruckProperties[5]);
+        this.waterBar.setMaxResource((int) this.truckProperties[5]);
         // Start with the hose off
         this.toggleHose();
     } 
@@ -240,15 +195,6 @@ public class Firetruck extends MovementSprite {
     public boolean isInHoseRange(Polygon polygon) {
         if (this.getInternalTime() % 10 != 0) return false;
         return Intersector.overlapConvexPolygons(polygon, this.hoseRange);
-    }
-
-    /**
-     * Gets whether the firetruck is damaged.
-     * 
-     * @return Whether the firetruck is damaged.
-     */
-    public boolean isDamaged() {
-        return this.getHealthBar().getCurrentAmount() < this.firetruckProperties[0];
     }
 
     /**
@@ -266,7 +212,7 @@ public class Firetruck extends MovementSprite {
      * @return Whether the firetruck has used any water.
      */
     public boolean isLowOnWater() {
-        return this.waterBar.getCurrentAmount() < this.firetruckProperties[5];
+        return this.waterBar.getCurrentAmount() < this.truckProperties[5];
     }
 
     /**
@@ -337,7 +283,7 @@ public class Firetruck extends MovementSprite {
     @Override
     public void dispose() {
         super.dispose();
-        for (Texture texture : this.firetruckSlices) {
+        for (Texture texture : this.textureSlices) {
             texture.dispose();
         }
         for (Texture texture : this.waterFrames) {
