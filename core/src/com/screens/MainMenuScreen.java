@@ -1,6 +1,7 @@
 package com.screens;
 
 // LibGDX imports
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -81,6 +82,7 @@ public class MainMenuScreen implements Screen {
 
 		// Create a stage for buttons
 		stage = new Stage(viewport, batch);
+
 	}
 
 	/**
@@ -95,6 +97,7 @@ public class MainMenuScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		// Draw the button stage
+		//stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 	}
 
@@ -132,10 +135,10 @@ public class MainMenuScreen implements Screen {
 		quitButton.scaleBy(0.25f);
 
 		// Add listeners
-		playButton.addListener(new ClickListener() {
+		playButton.addListener(new ClickListener(){
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				// Transition to main game screen
+			//transition to game screen
+			public void clicked(InputEvent event, float x, float y){
 				game.setScreen(new GameScreen(game));
 				dispose();
 			}
@@ -156,8 +159,7 @@ public class MainMenuScreen implements Screen {
 
 		quitButton.addListener(new ClickListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				Gdx.app.exit();
+			public void clicked(InputEvent event, float x, float y) { Gdx.app.exit();
 			}
 		});
 		
