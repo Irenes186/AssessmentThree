@@ -74,7 +74,8 @@ public class GameScreen implements Screen {
     private int[] backgroundLayers;
 
 	// Private values for the game
-	private int score, time, focusedID;
+	public static int score;
+	private int time, focusedID;
 	private float zoomDelay;
 	private Texture projectileTexture;
 
@@ -85,6 +86,9 @@ public class GameScreen implements Screen {
 	private ArrayList<Projectile> projectiles;
 	private ArrayList<Projectile> projectilesToRemove;
 	private Firestation firestation;
+
+	//Win and lose variables
+	public static boolean gameWon = true, gameLost = true;
 
 	/**
 	 * The constructor for the main game screen. All main game logic is
@@ -367,7 +371,6 @@ public class GameScreen implements Screen {
 	 * if they won or lost.
      */
 	private void checkIfGameOver() {
-		boolean gameWon = true, gameLost = true;
 		// Check if any firetrucks are still alive
 		for (Firetruck firetruck : this.firetrucks) {
 			if (firetruck.getHealthBar().getCurrentAmount() > 0) gameLost = false;
