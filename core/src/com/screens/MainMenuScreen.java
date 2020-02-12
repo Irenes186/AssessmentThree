@@ -139,7 +139,7 @@ public class MainMenuScreen implements Screen {
 			@Override
 			//transition to game screen
 			public void clicked(InputEvent event, float x, float y){
-				game.setScreen(new ResultScreen(game));
+				game.setScreen(new GameScreen(game));
 				dispose();
 			}
 		});
