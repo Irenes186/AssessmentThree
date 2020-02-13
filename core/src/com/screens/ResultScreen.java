@@ -35,6 +35,7 @@ public class ResultScreen implements Screen {
     protected Stage stage;
     protected Texture texture;
     protected Skin skin;
+    protected Skin skin2;
     protected TextureAtlas atlas;
     private SpriteBatch batch;
     private Viewport viewport;
@@ -48,7 +49,9 @@ public class ResultScreen implements Screen {
 
         atlas = new TextureAtlas("skin/uiskin.atlas");
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"), atlas);
+        skin2 = new Skin(Gdx.files.internal("skin/uiskin2.json"), atlas);
         //skin.add("default", new Texture("button.png"));
+
 
         // Create new sprite batch
         batch = new SpriteBatch();
@@ -74,11 +77,11 @@ public class ResultScreen implements Screen {
         // Create a stage for buttons
         stage = new Stage(viewport, batch);
 
-        if (GameScreen.gameWon == true && GameScreen.gameLost == false){
-            displayText = "You win! Your score is " + GameScreen.score;
+        if (GameScreen.gameWon && !GameScreen.gameLost){
+            displayText = "YOU WIN! Your score is " + GameScreen.score;
         }
         else{
-            displayText = "You lose.";
+            displayText = "YOU LOSE";
         }
     }
 
@@ -99,7 +102,8 @@ public class ResultScreen implements Screen {
         //TextButton leaderboardButton = new TextButton("Leaderboard", skin);
 
         //Create label
-        Label winLabel = new Label(displayText,skin);
+        Label winLabel = new Label(displayText,skin2);
+        winLabel.setFontScale(2,2);
 
         // Increase size of text
         menuButton.setTransform(true);
@@ -116,7 +120,7 @@ public class ResultScreen implements Screen {
         });
 
         // Add buttons to table and style them
-        buttonTable.add(winLabel).padBottom(40).padRight(40).width(150).height(40);
+        buttonTable.add(winLabel).padBottom(40).padRight(40).width(150).height(150);
         buttonTable.row();
         buttonTable.add(menuButton).padBottom(40).padRight(40).width(150).height(40);
         buttonTable.row();
@@ -141,7 +145,6 @@ public class ResultScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        //** Don't think this is needed
         viewport.update(width, height);
         camera.update();
     }
