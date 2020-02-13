@@ -451,7 +451,7 @@ public class GameScreen implements Screen {
 		}
 		if (gameWon || gameLost) {
 			dispose();
-			this.game.setScreen(new MainMenuScreen(this.game));
+			this.game.setScreen(new ResultScreen(this.game));
 		}
 	}
 

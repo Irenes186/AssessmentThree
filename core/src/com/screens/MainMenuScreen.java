@@ -152,7 +152,7 @@ public class MainMenuScreen implements Screen {
 				// TO IMPLEMENT
 				//
 				// Currently main game screen
-				game.setScreen(new GameScreen(game));
+				game.setScreen(new LeaderboardScreen(game));
 				dispose();
 			}
 		});
