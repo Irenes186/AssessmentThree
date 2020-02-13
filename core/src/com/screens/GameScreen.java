@@ -11,12 +11,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-// Tiled map imports fro LibGDX
+// Tiled map imports for LibGDX
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -27,10 +28,17 @@ import java.util.ArrayList;
 
 // Class imports
 import com.kroy.Kroy;
+import com.sprites.SimpleSprite;
 import com.classes.Firetruck;
 import com.classes.Projectile;
 import com.classes.Firestation;
+import com.classes.Alientruck;
 import com.classes.ETFortress;
+import com.miniGame.MiniGameScreen;
+
+// Config imports
+import com.config.ETFortressParameters;
+import com.config.ETFortressType;
 
 // Constants import
 import static com.config.Constants.SCREEN_HEIGHT;
@@ -48,8 +56,9 @@ import static com.config.Constants.FiretruckOneProperties;
 import static com.config.Constants.FiretruckTwoProperties;
 import static com.config.Constants.FiretruckThreeProperties;
 import static com.config.Constants.FiretruckFourProperties;
+import static com.config.Constants.AlientruckProperties;
 import static com.config.Constants.FIRETRUCK_DAMAGE;
-import static com.config.Constants.PROJECTILE_DAMAGE;
+import static com.config.Constants.Direction;
 
 /**
  * Display the main game.
@@ -74,14 +83,17 @@ public class GameScreen implements Screen {
     private int[] backgroundLayers;
 
 	// Private values for the game
+
 	public static int score;
-	private int time, focusedID;
+	private int time, startTime, fortressAmount, focusedID;
 	private float zoomDelay;
 	private Texture projectileTexture;
-
+	private boolean upgraded;
 	// Private arrays to group sprites
 	private ArrayList<Firetruck> firetrucks;
+	private ArrayList<Alientruck> alientrucks;
 	private ArrayList<Firetruck> firetrucksToRemove;
+	private ArrayList<Alientruck> alientrucksToRemove;
 	private ArrayList<ETFortress> ETFortresses;
 	private ArrayList<Projectile> projectiles;
 	private ArrayList<Projectile> projectilesToRemove;
@@ -100,7 +112,7 @@ public class GameScreen implements Screen {
 		// Assign the game to a property so it can be used when transitioning screens
                 System.out.println ("HashCode");
 		this.game = gam;
-
+		this.upgraded = true;
 		// ---- 1) Create new instance for all the objects needed for the game ---- //
 		
 		// Create an orthographic camera
@@ -115,15 +127,18 @@ public class GameScreen implements Screen {
 		// Create an array to store all projectiles in motion
 		this.projectiles = new ArrayList<Projectile>();
 
-		// Decrease time every second, starting at 3 minutes
-		this.time = 3 * 60;
+		// Decrease time every second, starting at 5 minutes.
+		this.time = 5 * 60;
+		this.startTime = this.time;
 		Timer.schedule(new Task() {
 			@Override
 			public void run() {
-				decreaseTime();
+				if (decreaseTime()) {
+			        firestation.removeSprite(new Texture("MapAssets/UniqueBuildings/firestation_destroyed.png"));
+			        Timer.instance().stop();
+			    }
 			}
 		}, 1, 1 );
-
 		// ---- 2) Initialise and set game properties ----------------------------- //
 
 		// Initialise map renderer as batch to draw textures to
@@ -142,7 +157,7 @@ public class GameScreen implements Screen {
         this.foregroundLayers = new int[] {
 			mapLayers.getIndex("Buildings"),
 			mapLayers.getIndex("Trees"),
-        };
+        };  
         this.backgroundLayers = new int[] {
 			mapLayers.getIndex("River"),
 			mapLayers.getIndex("Road")
@@ -150,12 +165,6 @@ public class GameScreen implements Screen {
 
 		// Initialise textures to use for spites
 		Texture firestationTexture = new Texture("MapAssets/UniqueBuildings/firestation.png");
-		Texture cliffordsTowerTexture = new Texture("MapAssets/UniqueBuildings/cliffordstower.png");
-		Texture cliffordsTowerWetTexture = new Texture("MapAssets/UniqueBuildings/cliffordstower_wet.png");
-		Texture railstationTexture = new Texture("MapAssets/UniqueBuildings/railstation.png");
-		Texture railstationWetTexture = new Texture("MapAssets/UniqueBuildings/railstation_wet.png");
-		Texture yorkMinisterTexture = new Texture("MapAssets/UniqueBuildings/Yorkminster.png");
-		Texture yorkMinisterWetTexture = new Texture("MapAssets/UniqueBuildings/Yorkminster_wet.png");
 		this.projectileTexture = new Texture("alienProjectile.png");
 		
 		// Create arrays of textures for animations
@@ -164,6 +173,8 @@ public class GameScreen implements Screen {
 		ArrayList<Texture> firetruckRed = new ArrayList<Texture>();
 		ArrayList<Texture> firetruckYellow = new ArrayList<Texture>();
 		ArrayList<Texture> firetruckGreen = new ArrayList<Texture>();
+		
+		ArrayList<Texture> alientruckPink = new ArrayList<Texture>();
 
 		for (int i = 1; i <= 3; i++) {
 			Texture texture = new Texture("waterSplash" + i + ".png");
@@ -175,6 +186,7 @@ public class GameScreen implements Screen {
 				Texture red = new Texture("FiretruckRed/FiretruckRED (6) A.png");
 				Texture yellow = new Texture("FiretruckYellow/FiretruckYELLOW (6) A.png");
 				Texture green = new Texture("FiretruckGreen/FiretruckGREEN (6) A.png");
+				Texture alienPink = new Texture("AlientruckPink/AlientruckPINK (6) A.png");
 				firetruckBlue.add(blue);
 				firetruckRed.add(red);
 				firetruckYellow.add(yellow);
@@ -184,10 +196,12 @@ public class GameScreen implements Screen {
 				Texture red = new Texture("FiretruckRed/FiretruckRED (" + i + ").png");
 				Texture yellow = new Texture("FiretruckYellow/FiretruckYELLOW (" + i + ").png");
 				Texture green = new Texture("FiretruckGreen/FiretruckGREEN (" + i + ").png");
+				Texture alienPink = new Texture("AlientruckPink/AlientruckPINK (" + i + ").png");
 				firetruckBlue.add(blue);
 				firetruckRed.add(red);
 				firetruckYellow.add(yellow);
 				firetruckGreen.add(green);
+				alientruckPink.add(alienPink);
 			}
 		}
 
@@ -202,12 +216,30 @@ public class GameScreen implements Screen {
 		this.firetrucks.add(new Firetruck(firetruckRed, waterFrames, FiretruckTwoProperties, (TiledMapTileLayer) map.getLayers().get("Collision"), 2, 80 * TILE_DIMS, 32 * TILE_DIMS));
 		this.firetrucks.add(new Firetruck(firetruckYellow, waterFrames, FiretruckThreeProperties, (TiledMapTileLayer) map.getLayers().get("Collision"), 3, 80 * TILE_DIMS, 28 * TILE_DIMS));
 		this.firetrucks.add(new Firetruck(firetruckGreen, waterFrames, FiretruckFourProperties, (TiledMapTileLayer) map.getLayers().get("Collision"), 4, 80 * TILE_DIMS, 26 * TILE_DIMS));
-
+		
+		// Initialise alientrucks array and add alientrucks to it
+		Vector2[] alientruckPath1 = new Vector2[] {new Vector2(80, 57), new Vector2(80, 43), new Vector2(85, 43), new Vector2(85, 39), new Vector2(70, 39), new Vector2(70, 45), new Vector2(66, 45), new Vector2(66, 57)};
+	    Vector2[] alientruckPath2 = new Vector2[] {new Vector2(14, 83), new Vector2(14, 65), new Vector2(23, 65), new Vector2(23, 88), new Vector2(23, 65), new Vector2(14, 65)};
+	    Vector2[] alientruckPath3 = new Vector2[] {new Vector2(62, 100), new Vector2(64, 100), new Vector2(64, 102), new Vector2(88, 102), new Vector2(88, 77), new Vector2(62, 77)};
+	    
+	    
+	    this.alientrucks = new ArrayList<Alientruck>();
+		this.alientrucks.add(new Alientruck(alientruckPink, AlientruckProperties, (TiledMapTileLayer) map.getLayers().get("Collision"),
+		        80 * TILE_DIMS, 57 * TILE_DIMS, 
+		        alientruckPath1));
+		this.alientrucks.add(new Alientruck(alientruckPink, AlientruckProperties, (TiledMapTileLayer) map.getLayers().get("Collision"),
+                14 * TILE_DIMS, 83 * TILE_DIMS, 
+                alientruckPath2));
+		this.alientrucks.add(new Alientruck(alientruckPink, AlientruckProperties, (TiledMapTileLayer) map.getLayers().get("Collision"),
+                62 * TILE_DIMS, 100 * TILE_DIMS, 
+                alientruckPath3));
+//		        new Direction[] {Direction.RIGHT, Direction.DOWN, Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP, Direction.LEFT, Direction.UP}));
+		
 		// Initialise ETFortresses array and add ETFortresses to it
 		this.ETFortresses = new ArrayList<ETFortress>();
-		this.ETFortresses.add(new ETFortress(cliffordsTowerTexture, cliffordsTowerWetTexture, 1, 1, 69 * TILE_DIMS, 51 * TILE_DIMS));
-		this.ETFortresses.add(new ETFortress(yorkMinisterTexture, yorkMinisterWetTexture, 2, 3.25f, 68.25f * TILE_DIMS, 82.25f * TILE_DIMS));
-		this.ETFortresses.add(new ETFortress(railstationTexture, railstationWetTexture, 2, 2.5f, 1 * TILE_DIMS, 72.75f * TILE_DIMS));
+		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.CLIFFORDS_TOWER), 1, 1, 69 * TILE_DIMS, 51 * TILE_DIMS));
+		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.YORK_MINSTER), 2, 3.25f, 68.25f * TILE_DIMS, 82.25f * TILE_DIMS));
+		this.ETFortresses.add(new ETFortress(new ETFortressParameters(ETFortressType.RAIL_STATION), 2, 2.5f, 1 * TILE_DIMS, 72.75f * TILE_DIMS));
 	}
 
 	/**
@@ -229,6 +261,7 @@ public class GameScreen implements Screen {
 		// Create array to collect entities that are no longer used
 		this.projectilesToRemove = new ArrayList<Projectile>();
 		this.firetrucksToRemove = new ArrayList<Firetruck>();
+		this.alientrucksToRemove = new ArrayList<Alientruck>();
 	}
 
 	/**
@@ -253,6 +286,7 @@ public class GameScreen implements Screen {
 
 		// Get the firetruck thats being driven so that the camera can follow it
 		Firetruck focusedTruck = getFiretruckInFocus();
+//		System.out.println((int) focusedTruck.getCentreX() / TILE_DIMS + ", " + (int) focusedTruck.getCentreY() / TILE_DIMS);
 
 		// Tell the camera to update to the sprites position with a delay based on lerp and game time
 		Vector3 cameraPosition = this.camera.position;
@@ -288,6 +322,9 @@ public class GameScreen implements Screen {
 		if (Gdx.input.isKeyJustPressed(Keys.E)) {
 			focusedTruck.toggleHose();
 		}
+		if (Gdx.input.isKeyJustPressed(Keys.Q)) {
+                        this.game.setScreen (new MiniGameScreen (game));
+                }
 		if (Gdx.input.isKeyJustPressed(Keys.TAB)) {
 			this.focusedID += 1;
 			if (this.focusedID > this.firetrucks.size()) {
@@ -311,6 +348,12 @@ public class GameScreen implements Screen {
 			if (firetruck.getHealthBar().getCurrentAmount() <= 0) this.firetrucksToRemove.add(firetruck);
 			if (DEBUG_ENABLED) firetruck.drawDebug(shapeRenderer);
 		}
+		
+		for (Alientruck alientruck : this.alientrucks) {
+		    alientruck.update(batch, this.getFiretruckInFocus(), shapeRenderer);
+		    if (alientruck.getHealthBar().getCurrentAmount() <= 0) this.alientrucksToRemove.add(alientruck);
+            if (DEBUG_ENABLED) alientruck.drawDebug(shapeRenderer);
+		}
 
 		// Close layer 
 		batch.end();
@@ -326,6 +369,14 @@ public class GameScreen implements Screen {
 		// Render sprites
 		for (ETFortress ETFortress : this.ETFortresses) {
 			ETFortress.update(batch);
+			int destroyedETFortresses =0 ;
+			if (ETFortress.getHealthBar().getCurrentAmount() <= 0) {
+				destroyedETFortresses++;
+			}
+			//time and number of destroyed et fortresses can change over time
+			if (destroyedETFortresses == 1 && this.time < 160){
+				firestation.removeSprite(new Texture("MapAssets/UniqueBuildings/firestation_destroyed.png"));
+			}
 			if (DEBUG_ENABLED) ETFortress.drawDebug(shapeRenderer);
 		}
 		for (Projectile projectile : this.projectiles) {
@@ -358,10 +409,14 @@ public class GameScreen implements Screen {
 		// Remove projectiles that are off the screen and firetrucks that are dead
 		this.projectiles.removeAll(this.projectilesToRemove);
 		this.firetrucks.removeAll(this.firetrucksToRemove);
+		this.alientrucks.removeAll(this.alientrucksToRemove);
 
 		// Check for any collisions
 		checkForCollisions();
 
+		//Check if fortress has to be upgraded and if so upgrade it.
+		checkForUpgrade();
+		
 		// Check if the game should end
 		checkIfGameOver();
 	}
@@ -406,15 +461,22 @@ public class GameScreen implements Screen {
 					this.score += 10;
 				}
 				if (ETFortress.isInRadius(firetruckA.getHitBox()) && ETFortress.canShootProjectile()) {
-					Projectile projectile = new Projectile(this.projectileTexture, ETFortress.getCentreX(), ETFortress.getCentreY());
+					Projectile projectile = new Projectile(this.projectileTexture, ETFortress.getCentreX(), ETFortress.getCentreY(), ETFortress.getProjectileDamage());
 					projectile.calculateTrajectory(firetruckA.getHitBox());
 					this.projectiles.add(projectile);
 				}
 			}
+			// Check if it overlaps with an Alientruck
+            for (Alientruck alientruck : this.alientrucks) {
+                if (alientruck.getHealthBar().getCurrentAmount() > 0 && firetruckA.isInHoseRange(alientruck.getHitBox())) {
+                    alientruck.getHealthBar().subtractResourceAmount(FIRETRUCK_DAMAGE);
+                    this.score += 10;
+                }
+            }
 			// Check if firetruck is hit with a projectile
 			for (Projectile projectile : this.projectiles) {
 				if (Intersector.overlapConvexPolygons(firetruckA.getHitBox(), projectile.getHitBox())) {
-					firetruckA.getHealthBar().subtractResourceAmount(PROJECTILE_DAMAGE);
+					firetruckA.getHealthBar().subtractResourceAmount(projectile.getDamage());
 					if (this.score > 10) this.score -= 10;
 					projectilesToRemove.add(projectile);
 				}
@@ -429,9 +491,32 @@ public class GameScreen implements Screen {
 
 	/**
 	 * Decreases time by 1, called every second by the timer
+	 * 
+	 * @return boolean  true when time has run out
 	 */
-	private void decreaseTime() {
-		if (this.time > 0) this.time -= 1;
+	private boolean decreaseTime() {
+		if (this.time > 0) {
+		    this.time -= 1;
+		    return false;
+		}
+		return true;
+	}
+	
+	/*This method will:
+	check if it is time for ET fortresses to be upgraded.
+	If it is time: upgrade() method will be called in the class ETFortress.
+	*/
+	private void checkForUpgrade() {
+		if((this.time % 60 == 0) && (this.upgraded == false)) {
+			int fortressAmount = this.ETFortresses.size();
+			for(int i = 0; i < fortressAmount; i++) {
+				this.ETFortresses.get(i).upgrade();
+			}
+			
+			this.upgraded = true;
+		} else if((this.time % 5 == 0) && (this.time % 60 != 0) && (this.upgraded == true) && (this.time < this.startTime)) {
+			this.upgraded = false;
+		}
 	}
 
 	/**
@@ -513,6 +598,9 @@ public class GameScreen implements Screen {
 		}
 		for (ETFortress ETFortress : this.ETFortresses) {
 			ETFortress.dispose();
+		}
+		for (Alientruck alientruck : this.alientrucks) {
+		    alientruck.dispose();
 		}
 	}
 
