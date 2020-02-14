@@ -2,8 +2,6 @@ package com.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-
-//Class imports
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,23 +9,22 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kroy.Kroy;
-//import javafx.util.Pair;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 
 import static com.config.Constants.SCREEN_HEIGHT;
 import static com.config.Constants.SCREEN_WIDTH;
 
-public class LeaderboardScreen implements Screen {
+//Class imports
+
+
+public class StoryLineScreen implements Screen {
 
     // A constant variable to store the game
     final Kroy game;
@@ -42,8 +39,12 @@ public class LeaderboardScreen implements Screen {
     protected TextureAtlas atlas;
     private SpriteBatch batch;
     private Viewport viewport;
+    private String displayText;
 
-    public LeaderboardScreen (Kroy gam){
+
+
+    //Constructor
+    public StoryLineScreen(Kroy gam) {
         this.game = gam;
 
         atlas = new TextureAtlas("skin/uiskin.atlas");
@@ -75,53 +76,8 @@ public class LeaderboardScreen implements Screen {
 
         // Create a stage for buttons
         stage = new Stage(viewport, batch);
-
+            displayText = "The storyline";
     }
-/*
-    public ArrayList<Pair<String,Integer>> readLeaderboardFile2() throws IOException {
-        //read names and scores, add to
-        BufferedReader reader;
-        File leaderboardFile = new File("../../../assets/leaderboard.txt");
-        reader = new BufferedReader(new FileReader(leaderboardFile));
-
-
-        ArrayList<Pair<String,Integer>> pairs = new ArrayList<Pair<String,Integer>>();
-        String line;
-        String[] pair;
-        line = reader.readLine();
-        while (line != null){
-            pair = line.split(",");
-            pairs.add(new Pair<String,Integer>(pair[0], Integer.parseInt(pair[1])));
-            line = reader.readLine();
-        }
-        return pairs;
-    }
-
-
- */
-
-    public String[] readLeaderboardFile() throws IOException{
-        //read names and scores, add to
-        BufferedReader reader;
-        File leaderboardFile = new File("leaderboard.txt");
-        reader = new BufferedReader(new FileReader(leaderboardFile));
-
-
-        String [] pairs = new String[5];
-        String line;
-        line = reader.readLine();
-        int index=0;
-        while (line != null){
-            pairs[index] = line.replace(","," ");
-            line = reader.readLine();
-            index++;
-        }
-        System.out.println(pairs);
-        return pairs;
-    }
-
-
-
 
 
     @Override
@@ -139,26 +95,9 @@ public class LeaderboardScreen implements Screen {
         TextButton menuButton = new TextButton("Menu", skin);
         //TextButton leaderboardButton = new TextButton("Leaderboard", skin);
 
-
-        String[] pairs = new String[5];
-        try{
-            pairs = readLeaderboardFile();
-        }
-        catch(Exception e){
-            System.out.println("hello");
-        }
-
-        System.out.println("hello");
-
         //Create label
-        Label titleLabel = new Label("LEADERBOARD",skin2);
-        titleLabel.setFontScale(2,2);
-        Label firstLabel = new Label(pairs[0],skin);
-        Label secondLabel = new Label(pairs[1],skin);
-        Label thirdLabel = new Label(pairs[2],skin);
-        Label fourthLabel = new Label(pairs[3],skin);
-        Label fifthLabel = new Label(pairs[4],skin);
-
+        Label winLabel = new Label(displayText,skin2);
+        winLabel.setFontScale(2,2);
 
         // Increase size of text
         menuButton.setTransform(true);
@@ -175,24 +114,12 @@ public class LeaderboardScreen implements Screen {
         });
 
         // Add buttons to table and style them
-        buttonTable.add(titleLabel).padBottom(40).padRight(40).width(150).height(50);
-        buttonTable.row();
-        buttonTable.add(firstLabel).padBottom(40).padRight(40).width(150).height(30);
-        buttonTable.row();
-        buttonTable.add(secondLabel).padBottom(40).padRight(40).width(150).height(30);
-        buttonTable.row();
-        buttonTable.add(thirdLabel).padBottom(40).padRight(40).width(150).height(30);
-        buttonTable.row();
-        buttonTable.add(fourthLabel).padBottom(40).padRight(40).width(150).height(30);
-        buttonTable.row();
-        buttonTable.add(fifthLabel).padBottom(40).padRight(40).width(150).height(30);
+        buttonTable.add(winLabel).padBottom(40).padRight(40).width(150).height(150);
         buttonTable.row();
         buttonTable.add(menuButton).padBottom(40).padRight(40).width(150).height(40);
         buttonTable.row();
-
         // Add table to stage
         stage.addActor(buttonTable);
-
 
 
     }
@@ -206,6 +133,7 @@ public class LeaderboardScreen implements Screen {
         // Draw the button stage
         //stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+
     }
 
     @Override
@@ -213,24 +141,20 @@ public class LeaderboardScreen implements Screen {
         viewport.update(width, height);
         camera.update();
     }
-
     @Override
     public void pause() {
 
     }
-
     @Override
     public void resume() {
 
     }
-
     @Override
     public void hide() {
 
     }
-
     @Override
     public void dispose() {
-
+        skin.dispose();
     }
 }
