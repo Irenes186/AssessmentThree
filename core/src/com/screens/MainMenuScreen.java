@@ -149,7 +149,7 @@ public class MainMenuScreen implements Screen {
 				dispose();
 			}
 		});
-
+		tutorialButton.addListener(new ClickListener(){
 		@Override
 		//transition to tutorial screen
 		public void clicked(InputEvent event, float x, float y){
@@ -170,7 +170,6 @@ public class MainMenuScreen implements Screen {
 				dispose();
 			}
 		});
-		tutorialButton.addListener(new ClickListener(){
 
 		storylineButton.addListener(new ClickListener(){
 			@Override
@@ -183,7 +182,8 @@ public class MainMenuScreen implements Screen {
 
 		quitButton.addListener(new ClickListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) { Gdx.app.exit();
+			public void clicked(InputEvent event, float x, float y) {
+				Gdx.app.exit();
 			}
 		});
 		
