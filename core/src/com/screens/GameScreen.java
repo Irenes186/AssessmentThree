@@ -337,7 +337,7 @@ public class GameScreen implements Screen {
 			focusedTruck.toggleHose();
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.Q)) {
-                        this.game.setScreen (new MiniGameScreen (game));
+                        this.game.setScreen (new MiniGameScreen (game, this));
                 }
 		if (Gdx.input.isKeyJustPressed(Keys.TAB)) {
 			this.focusedID += 1;
