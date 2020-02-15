@@ -190,7 +190,7 @@ public class GameScreen implements Screen {
 				Texture red = new Texture("FiretruckRed/FiretruckRED (6) A.png");
 				Texture yellow = new Texture("FiretruckYellow/FiretruckYELLOW (6) A.png");
 				Texture green = new Texture("FiretruckGreen/FiretruckGREEN (6) A.png");
-				Texture alienPink = new Texture("AlientruckPink/AlientruckPINK (6) A.png");
+				Texture alienPink = new Texture("AlienTruckPink/AlientruckPINK (6) A.png");
 				firetruckBlue.add(blue);
 				firetruckRed.add(red);
 				firetruckYellow.add(yellow);
@@ -200,7 +200,7 @@ public class GameScreen implements Screen {
 				Texture red = new Texture("FiretruckRed/FiretruckRED (" + i + ").png");
 				Texture yellow = new Texture("FiretruckYellow/FiretruckYELLOW (" + i + ").png");
 				Texture green = new Texture("FiretruckGreen/FiretruckGREEN (" + i + ").png");
-				Texture alienPink = new Texture("AlientruckPink/AlientruckPINK (" + i + ").png");
+				Texture alienPink = new Texture("AlienTruckPink/AlientruckPINK (" + i + ").png");
 				firetruckBlue.add(blue);
 				firetruckRed.add(red);
 				firetruckYellow.add(yellow);
