@@ -1,5 +1,5 @@
-char,170
-char,170
-char,170
-char,170
-char,170
+empty,0
+empty,0
+empty,0
+empty,0
+empty,0

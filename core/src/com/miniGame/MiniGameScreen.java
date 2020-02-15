@@ -61,7 +61,7 @@ public class MiniGameScreen implements Screen {
     private Label obstacleLabel;
     private Label endGameLabel;
 
-    public MiniGameScreen (final Kroy game, GameScreen gameScreen) {
+    public MiniGameScreen (final Kroy game, GameScreen gameScreen, int focusID) {
         this.game = game;
         this.gameScreen = gameScreen;
         this.endGame = false;
