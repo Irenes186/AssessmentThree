@@ -76,7 +76,15 @@ public class StoryLineScreen implements Screen {
 
         // Create a stage for buttons
         stage = new Stage(viewport, batch);
-            displayText = "The storyline";
+            displayText = "It is a period of wars in the galaxy. A brave alliance of underground fire fighters has challenged the tyranny and oppression of the awesome ET EMPIRE.\n" +
+                    "\n" +
+                    "Striking from a fortress hidden among the billion buildings of york, rebel fire engines have won\n" +
+                    "their first victory in a battle with the powerful ET Starfleet. The Kroy EMPIRE fears that\n" +
+                    "another defeat could bring a thousand more cites into the rebellion, and kroy control over the\n" +
+                    "world would be lost forever.\n" +
+                    "\n" +
+                    "To crush the rebellion once and for all, the EMPIRE is constructing a sinister new ignition\n" +
+                    "system. Powerful enough to burn an entire city, its completion spells certain doom for the champions of freedom.";
     }
 
 

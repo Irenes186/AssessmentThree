@@ -76,7 +76,9 @@ public class TutorialScreen implements Screen {
 
         // Create a stage for buttons
         stage = new Stage(viewport, batch);
-            displayText = "The storyline";
+            displayText = "Keyboard buttons “W”, “A”, “S”, and “D”, as well as the arrow keys, are used to move the truck up, left, down, and right respectively. The truck will rotate as you change direction.\n" +
+                    "There are two fire trucks available, these can be switched between by using the keyboard button “TAB”. \n Using the keyboard button “E”, you are able to toggle your hose water on and off. The water will aim in the direction of your mouse cursor." +
+                    "You must go back to the fire station in order to repair and refill.";
     }
 
 
