@@ -89,11 +89,14 @@ public class MiniGameScreen implements Screen {
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
         camera.update();
 
-        // Create a stage for buttons
+        // Create a stage for labels
         stage = new Stage(viewport, batch);
 
-        //stage.aj
+        initSprites();
+        initLabels();
+    }
 
+    private void initSprites () {
         roadSprite = new SimpleSprite (new Texture ("MiniGame/road.png"));
         engine = new MiniFireEngine (50, 175);
 
@@ -110,8 +113,6 @@ public class MiniGameScreen implements Screen {
         obstacles.add (new Obstacle (SCREEN_WIDTH, engine.getY(), speed));
         obstacles.add (new Obstacle (SCREEN_WIDTH * 4/3, engine.getY(), speed));
         obstacles.add (new Obstacle (SCREEN_WIDTH * 5/3, engine.getY(), speed));
-
-        initLabels();
     }
 
     private void initLabels () {
