@@ -1,5 +1,5 @@
-name1,score1
-name2,score2
-name3,score3
-name4,score4
-name5,score5
+char,170
+char,170
+char,170
+char,170
+char,170

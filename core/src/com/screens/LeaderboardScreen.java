@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kroy.Kroy;
+import com.classes.LeaderboardPair;
 //import javafx.util.Pair;
 
 import java.io.BufferedReader;
@@ -77,28 +78,8 @@ public class LeaderboardScreen implements Screen {
         stage = new Stage(viewport, batch);
 
     }
-/*
-    public ArrayList<Pair<String,Integer>> readLeaderboardFile2() throws IOException {
-        //read names and scores, add to
-        BufferedReader reader;
-        File leaderboardFile = new File("../../../assets/leaderboard.txt");
-        reader = new BufferedReader(new FileReader(leaderboardFile));
 
 
-        ArrayList<Pair<String,Integer>> pairs = new ArrayList<Pair<String,Integer>>();
-        String line;
-        String[] pair;
-        line = reader.readLine();
-        while (line != null){
-            pair = line.split(",");
-            pairs.add(new Pair<String,Integer>(pair[0], Integer.parseInt(pair[1])));
-            line = reader.readLine();
-        }
-        return pairs;
-    }
-
-
- */
 
     public String[] readLeaderboardFile() throws IOException{
         //read names and scores, add to

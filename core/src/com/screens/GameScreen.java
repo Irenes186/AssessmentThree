@@ -290,6 +290,10 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+		// Check if the game should end
+		checkIfGameOver();
+
 		// ---- 1) Update camera and map properties each iteration -------- //
 		
 		// Set the TiledMapRenderer view based on what the camera sees
@@ -359,7 +363,7 @@ public class GameScreen implements Screen {
 		// Call the update function of the sprites to draw and update them
 		for (Firetruck firetruck : this.firetrucks) {
 			firetruck.update(batch, this.camera);
-			if (firetruck.getHealthBar().getCurrentAmount() <= 0) this.firetrucksToRemove.add(firetruck);
+			if (firetruck.getHealthBar().getCurrentAmount() <= 0 && firetrucks.size() > 1) this.firetrucksToRemove.add(firetruck);
 			if (DEBUG_ENABLED) firetruck.drawDebug(shapeRenderer);
 		}
 		
@@ -431,9 +435,14 @@ public class GameScreen implements Screen {
 
 		//Check if fortress has to be upgraded and if so upgrade it.
 		checkForUpgrade();
-		
-		// Check if the game should end
-		checkIfGameOver();
+
+		//FOR fucks sake remove this it is for debugging clive
+		if (Gdx.input.isKeyJustPressed(Keys.P)){
+			for (ETFortress a: ETFortresses){
+				a.getHealthBar().subtractResourceAmount(5);
+			}
+		}
+
 	}
 
 	/**
@@ -441,8 +450,13 @@ public class GameScreen implements Screen {
 	 * if they won or lost.
      */
 	private void checkIfGameOver() {
+		gameLost = true;
+		gameWon = true;
+		System.out.println("checks");
 		// Check if any firetrucks are still alive
 		for (Firetruck firetruck : this.firetrucks) {
+			System.out.println(firetruck.getHealthBar().getCurrentAmount());
+			System.out.println(gameLost);
 			if (firetruck.getHealthBar().getCurrentAmount() > 0) gameLost = false;
 		}
 		// Check if any fortresses are still alive
@@ -450,8 +464,9 @@ public class GameScreen implements Screen {
 			if (ETFortress.getHealthBar().getCurrentAmount() > 0) gameWon = false;
 		}
 		if (gameWon || gameLost) {
+			System.out.println("check2");
 			dispose();
-			this.game.setScreen(new ResultScreen(this.game));
+			this.game.setScreen(new ResultScreen(this.game, this.score));
 		}
 	}
 
