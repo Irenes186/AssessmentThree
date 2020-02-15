@@ -569,7 +569,7 @@ public class GameScreen implements Screen {
 	 * 
 	 * @return The firetruck with user's focus.
 	 */
-	private Firetruck getFiretruckInFocus() {
+	public Firetruck getFiretruckInFocus() {
 		for (Firetruck firetruck : this.firetrucks) {
 			if (firetruck.isFocused() && firetruck.getHealthBar().getCurrentAmount() > 0) {
 				return firetruck;

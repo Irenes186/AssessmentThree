@@ -169,7 +169,8 @@ public class MiniGameScreen implements Screen {
 
         if (this.lives <= 0) {
             //game.setScreen (gameScreen);
-            endGameLabel.setText ("You have won the mini game, press enter to continue!");
+            endGameLabel.setText ("You have failed the mini game, press enter to continue!");
+            gameScreen.getFiretruckInFocus().getHealthBar().setResourcePercentage(0);
             transitionToEndGame ();
 
         } else if (this.obstacleCount == 0) {
