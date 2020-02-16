@@ -35,7 +35,7 @@ public class BasicScreen implements Screen {
     /**
      * Constructor that takes the game object for the screen to be assigned to.
      * 
-     * @param game 
+     * @param game The game object that this screen will be displayed for.
      */
     protected BasicScreen(final Kroy game) {
         this.game = game;
@@ -67,7 +67,9 @@ public class BasicScreen implements Screen {
 
 
     /**
+     * Clears the screen buffer so that new objects can be rendered.
      * 
+     * @param delta Not used by this class.
      */
     @Override
     public void render(float delta) {
@@ -80,7 +82,10 @@ public class BasicScreen implements Screen {
     }
 
     /**
+     * Changes the size of the window for the application.
      * 
+     * @param width The new width in pixels of the screen.
+     * @param height The new height in pixels of the screen.
      */
     @Override
     public void resize(int width, int height) {
@@ -90,31 +95,31 @@ public class BasicScreen implements Screen {
 
     // TODO Auto-generated methods stub
     /**
-     * 
+     * Auto generated method.
      */
     @Override
     public void pause() {}
 
     /**
-     * 
+     * Auto generated method.
      */
     @Override
     public void resume() {}
 
     /**
-     * 
+     * Auto generated method.
      */
     @Override
     public void hide() {}
 
     /**
-     * 
+     * Auto generated method.
      */
     @Override
     public void show() {}
 
     /**
-     * 
+     * Removes the objects on the screen so that it doesn't leave artifacts.
      */
     @Override
     public void dispose() {

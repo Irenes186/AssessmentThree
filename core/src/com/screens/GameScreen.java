@@ -456,18 +456,22 @@ public class GameScreen extends BasicScreen {
 
 	}
 
-        private void detectPatrolCollision () {
-            Alientruck toRemove = null;
-            for (Firetruck truck : firetrucks) {
-                for (Alientruck alien : alientrucks) {
-                    if (truck.getHitBox().getBoundingRectangle().overlaps(alien.getHitBox().getBoundingRectangle())) {
-                        toRemove = alien;
-                        game.setScreen (new MiniGameScreen (game, this, this.focusedID));
-                    }
+	/**
+	 * Checks if any patrol is overlapping with a fireengine.
+	 * If is is it removes the patrol from the game and starts the minigame.
+	 */
+    private void detectPatrolCollision () {
+        Alientruck toRemove = null;
+        for (Firetruck truck : firetrucks) {
+            for (Alientruck alien : alientrucks) {
+                if (truck.getHitBox().getBoundingRectangle().overlaps(alien.getHitBox().getBoundingRectangle())) {
+                    toRemove = alien;
+                    game.setScreen (new MiniGameScreen (game, this, this.focusedID));
                 }
             }
-            alientrucks.remove (toRemove);
         }
+        alientrucks.remove (toRemove);
+    }
 
 	/**
      * Checks to see if the player has won or lost the game. Navigates back to the main menu
