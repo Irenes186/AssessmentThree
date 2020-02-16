@@ -146,7 +146,6 @@ public final class PathFindUtil {
             currentCell.add(direction);
 
         }
-        
         // Return the complete list of corners along this road and direction (may be empty)
         return corners;
     }

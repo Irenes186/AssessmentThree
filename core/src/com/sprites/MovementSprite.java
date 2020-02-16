@@ -326,7 +326,6 @@ public class MovementSprite extends SimpleSprite {
                     // TODO: If child is already in closed list, or in open list with lower g, ignore
                     open.add(new AStarNode(currentCellPos, currentChild, targetPos, bestNode, bestNode.getPos().dst(currentChild)));
                     renderer.rect(currentChild.x, currentChild.y, TILE_DIMS, TILE_DIMS, Color.RED, Color.RED, Color.RED, Color.RED);
-//                    renderer.rect(currentChild.x, currentChild.y, TILE_DIMS, TILE_DIMS);
                 }
             }
             
@@ -347,7 +346,6 @@ public class MovementSprite extends SimpleSprite {
                     }
                 }
             }
-            
             // Return null if some error occurred
             return null;
         }
@@ -369,7 +367,6 @@ public class MovementSprite extends SimpleSprite {
             if (this.currentTargetPos == null) {
                 // Get the next intermediary location
                 this.currentTargetPos = nextAStar(targetPos, renderer);
-                
                 // If a location could not be generated, just don't do anything
                 if (this.currentTargetPos == null) {
                     return;

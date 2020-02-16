@@ -100,7 +100,6 @@ public class SimpleSprite extends Sprite {
         this.height = height;
         this.create();
         this.hitBox.setOrigin(width/2, height/2);
-        //this.hitBox.setPosition (this.getX(), this.getY());
     }
 
     /**
@@ -177,5 +176,4 @@ public class SimpleSprite extends Sprite {
     public void dispose() {
         texture.dispose();
     }
-
 }

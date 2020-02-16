@@ -169,7 +169,6 @@ public class ETFortress extends SimpleSprite {
         return polygon.contains(this.detectionRange.x, this.detectionRange.y);
     }
 
-
     /**
      * Overloaded method for drawing debug information. Draws the hitbox as well
      * as the range circle.
@@ -193,11 +192,7 @@ public class ETFortress extends SimpleSprite {
 	public void setMaxHealth(int max) {
 		this.maxHealth = max;
 	}
-	
-	/*Procedure called upgrade:
-	 maxHealth upgraded by +5
-	 ProjectileDamage is doubled (by *2 upgrade).
-	 */
+
 	public void upgrade() {
 		setMaxHealth(this.maxHealth + 5);
 		setProjectileDamage(this.projectileDamage * 2);

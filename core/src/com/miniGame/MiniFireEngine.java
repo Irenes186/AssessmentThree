@@ -65,8 +65,6 @@ public class MiniFireEngine extends MovementSprite {
             jumpSpeed = 0;
             jumped = false;
         }
-
-
     }
 
     public float getOriginalY() {

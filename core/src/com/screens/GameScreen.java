@@ -310,9 +310,6 @@ public class GameScreen extends BasicScreen {
 		if (Gdx.input.isKeyJustPressed(Keys.E)) {
 			focusedTruck.toggleHose();
 		}
-		//if (Gdx.input.isKeyJustPressed(Keys.Q)) {
-                //        this.game.setScreen (new MiniGameScreen (game, this));
-                //}
 		if (Gdx.input.isKeyJustPressed(Keys.TAB)) {
 			this.focusedID += 1;
 			if (this.focusedID > this.firetrucks.size()) {
@@ -338,7 +335,7 @@ public class GameScreen extends BasicScreen {
 		}
 		
 		for (Alientruck alientruck : this.alientrucks) {
-		    alientruck.update(batch); //this.getFiretruckInFocus()
+		    alientruck.update(batch);
 		    if (alientruck.getHealthBar().getCurrentAmount() <= 0) this.alientrucksToRemove.add(alientruck);
             if (DEBUG_ENABLED) alientruck.drawDebug(shapeRenderer);
 		}
@@ -363,7 +360,6 @@ public class GameScreen extends BasicScreen {
 			}
 			//time and number of destroyed et fortresses can change over time
 			if (destroyedETFortresses == 1){
-//				firestation.removeSprite(new Texture("MapAssets/UniqueBuildings/firestation_destroyed.png"));
 			    this.baseDestroyed = true;
 			}
 			if (DEBUG_ENABLED) ETFortress.drawDebug(shapeRenderer);
@@ -402,7 +398,7 @@ public class GameScreen extends BasicScreen {
 
 		// Check for any collisions
 		checkForCollisions();
-                detectPatrolCollision ();
+		detectPatrolCollision ();
 
 		//Check if fortress has to be upgraded and if so upgrade it.
 		checkForUpgrade();
@@ -426,7 +422,6 @@ public class GameScreen extends BasicScreen {
                     }
                 }
             }
-
             alientrucks.remove (toRemove);
         }
 
