@@ -61,12 +61,12 @@ public class ResultScreen extends BasicScreen {
     }
 
     /**
+     * Given the new name, saves the new highscore to the internal leaderboard.
      * 
+     * @param leaderboard The internal leaderboard to be changed.
+     * @param name The name for the new highscore.
      * 
-     * @param leaderboard
-     * @param name
-     * 
-     * @return The list of pairs from 
+     * @return The list of pairs that form the leaderboard.
      */
     public ArrayList<LeaderboardPair> updateInternalLeaderboard(final ArrayList<LeaderboardPair> leaderboard, final String name){
         final ArrayList<LeaderboardPair> outputPairs = new ArrayList<>();
@@ -85,13 +85,20 @@ public class ResultScreen extends BasicScreen {
 
     /**
      * Check if the score large enough to be included in the leaderboard.
+     * 
      * @param leaderboard
+     * 
      * @return boolean true if score is greater than last leaderboard score, otherwise false.
      */
     public boolean wantNickname(final ArrayList<LeaderboardPair> leaderboard){
         return leaderboard.get(leaderboard.size()-1).score < this.score;
     }
 
+    /**
+     * Reads the leaderboard file into memory and saves the values in an arraylist data structure.
+     * 
+     * @return An arraylist of pairs that contain the information in the leaderboard file.
+     */
     public ArrayList<LeaderboardPair> readLeaderboardFile() throws IOException {
         //read names and scores, add to
         BufferedReader reader;
@@ -110,6 +117,11 @@ public class ResultScreen extends BasicScreen {
         return pairs;
     }
 
+    /**
+     * Stores the given leaderboard in the leaderboard file.
+     * 
+     * @param outputList The leaderboard data structure to be saved.
+     */
     public void writeLeaderboardFile(final ArrayList<LeaderboardPair> outputList) throws IOException{
         final File leaderboardFile = new File("leaderboard.txt");
         final FileWriter fileWriter = new FileWriter(leaderboardFile);
@@ -123,6 +135,9 @@ public class ResultScreen extends BasicScreen {
         writer.close();
     }
 
+    /**
+     * Displays all the buttons and text on the screen.
+     */
     @Override
     public void show() {
         // Allow stage to control screen inputs.
@@ -201,7 +216,21 @@ public class ResultScreen extends BasicScreen {
         // Add table to stage
         stage.addActor(buttonTable);
     }
+
+    /**
+     * Implements a click confirmer.
+     */
     class ConfirmClick extends ClickListener{
+
+        /**
+         * Constructor
+         * 
+         * @param event The event to be handled.
+         * @param x The x value.
+         * @param y The y value.
+         * @param field The field to be read.
+         * @param name The new name.
+         */
         public void clicked(final InputEvent event, final float x, final float y, final TextField field, final String name) {
             Gdx.app.log("button","clicked");
         }

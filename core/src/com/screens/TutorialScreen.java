@@ -11,14 +11,20 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.kroy.Kroy;
 
-//Class imports
+/**
+ * Implements the screen that shows the text for the tutorial.
+ */
 public class TutorialScreen extends BasicScreen {
 
     protected Texture texture;
     protected Skin skin2;
     private String displayText;
 
-    //Constructor
+    /**
+     * Constructor, saves the text to display to memory.
+     * 
+     * @param game The game object for the screen to be displayed on.
+     */
     public TutorialScreen(Kroy game) {
         super(game);
         skin2 = new Skin(Gdx.files.internal("skin/uiskin2.json"), atlas);
@@ -27,6 +33,9 @@ public class TutorialScreen extends BasicScreen {
                 "You must go back to the fire station in order to repair and refill.";
     }
 
+    /**
+     * Displays all the buttons and text on the screen.
+     */
     @Override
     public void show() {
 
