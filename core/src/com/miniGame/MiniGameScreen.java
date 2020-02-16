@@ -10,22 +10,30 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.utils.Align;
+
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Random;
 
 import static com.config.Constants.SCREEN_HEIGHT;
 import static com.config.Constants.SCREEN_WIDTH;
 
 import com.kroy.Kroy;
+import com.screens.GameScreen;
 
 public class MiniGameScreen implements Screen {
     final Kroy game;
+    GameScreen gameScreen;
 
     private OrthographicCamera camera;
 
@@ -38,8 +46,21 @@ public class MiniGameScreen implements Screen {
     private SimpleSprite roadSprite;
     private MiniFireEngine engine; 
 
-    public MiniGameScreen (final Kroy game) {
+    private Queue <Obstacle> obstacles;
+    private Random rand;
+    private int speed;
+    private int lives;
+    private int obstacleCount;
+    private boolean endGame;
+
+    private Label livesLabel;
+    private Label obstacleLabel;
+    private Label endGameLabel;
+
+    public MiniGameScreen (final Kroy game, GameScreen gameScreen, int focusID) {
         this.game = game;
+        this.gameScreen = gameScreen;
+        this.endGame = false;
 
         this.batch = new SpriteBatch ();
 
@@ -64,27 +85,57 @@ public class MiniGameScreen implements Screen {
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
         camera.update();
 
-        // Create a stage for buttons
+        // Create a stage for labels
         stage = new Stage(viewport, batch);
 
-        //stage.aj
-
-        roadSprite = new SimpleSprite (new Texture ("MiniGame/road.png"));
-        engine = new MiniFireEngine ();
-
-
-        System.out.println (SCREEN_WIDTH);
-        roadSprite.setSize (75, SCREEN_WIDTH * 2);
-        //roadSprite.rotate (90);
-        roadSprite.setPosition (SCREEN_WIDTH - 180, -1100);
-
+        initSprites();
+        initLabels();
     }
 
+    private void initSprites () {
+        roadSprite = new SimpleSprite (new Texture ("MiniGame/road.png"));
+        engine = new MiniFireEngine (50, 175);
 
-    @Override
-    public void show() {
-        // TODO Auto-generated method stub
 
+        roadSprite.setSize (75, SCREEN_WIDTH * 2);
+        roadSprite.setPosition (SCREEN_WIDTH - 180, -1100);
+
+        speed = 10;
+        lives = 5;
+        obstacleCount = 15;
+        obstacles = new LinkedList <>();
+        rand = new Random ();
+
+        obstacles.add (new Obstacle (SCREEN_WIDTH, engine.getY(), speed));
+        obstacles.add (new Obstacle (SCREEN_WIDTH * 4/3, engine.getY(), speed));
+        obstacles.add (new Obstacle (SCREEN_WIDTH * 5/3, engine.getY(), speed));
+    }
+
+    private void initLabels () {
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        BitmapFont font = new BitmapFont ();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("truetypefont/Franchise-Free-Bold.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        parameter.size = 30;
+
+        font = generator.generateFont (parameter);
+        generator.dispose();
+
+        labelStyle.font = font;
+
+        livesLabel = new Label ("temp", labelStyle);
+        obstacleLabel = new Label ("temp", labelStyle);
+        endGameLabel = new Label ("temp", labelStyle);
+
+        livesLabel.setPosition (50, 100);
+        obstacleLabel.setPosition (50, 50);
+        endGameLabel.setPosition (Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+
+        endGameLabel.setAlignment(Align.center);
+
+        stage.addActor (livesLabel);
+        stage.addActor (obstacleLabel);
     }
 
     @Override
@@ -94,50 +145,98 @@ public class MiniGameScreen implements Screen {
 
         batch.begin ();
 
-        // Draw the button stage
-        roadSprite.update(batch);
-        engine.update(batch);
+        if (endGame) {
+            batch.end ();
+            stage.draw();
 
-        //roadSprite.rotate (15);
-
-        roadSprite.setPosition(roadSprite.getX() - 10, roadSprite.getY());
-
-        if (roadSprite.getX() <=  180) {
-            roadSprite.setPosition (SCREEN_WIDTH - 180, -1100);
+            if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+                this.game.setScreen (this.gameScreen);
+            }
+            return;
         }
 
+        if (this.lives <= 0) {
+            //game.setScreen (gameScreen);
+            endGameLabel.setText ("You have failed the mini game, press enter to continue!");
+            gameScreen.getFiretruckInFocus().getHealthBar().setResourcePercentage(0);
+            transitionToEndGame ();
+
+        } else if (this.obstacleCount == 0) {
+            endGameLabel.setText ("You have won the mini game, press enter to continue!");
+            transitionToEndGame ();
+
+        } else {
+            livesLabel.setText ("Number of Lives left: " + this.lives);
+            obstacleLabel.setText ("Number of obstacles left: " + this.obstacleCount);
+
+            if (obstacles.peek().getBoundingRectangle().overlaps (engine.getBoundingRectangle())) {
+                obstacles.remove();
+                this.lives--;
+
+            }
+
+            if (obstacles.peek().getX() <= 0) {
+                obstacles.remove();
+            }
+
+            if (obstacles.size() < 3) {
+                this.obstacleCount--;
+                if (rand.nextBoolean ()) {
+                    obstacles.add (new Obstacle (SCREEN_WIDTH, engine.getOriginalY(), speed));
+                } else {
+                    obstacles.add (new Obstacle (SCREEN_WIDTH, engine.getOriginalY(), speed, this.getRandomNumberInRange (100, 300)));
+                }
+            }
+
+            // Draw the button stage
+            roadSprite.update(batch);
+            engine.update(batch);
+
+            roadSprite.translateX (-speed);
+
+            if (roadSprite.getX() <=  180) {
+                roadSprite.setPosition (SCREEN_WIDTH - 180, -1100);
+            }
+
+            for (Obstacle obstacle : obstacles) {
+                obstacle.translateX (-speed);
+                obstacle.update(batch);
+            }
+        }
         batch.end ();
         stage.draw();
     }
 
-    @Override
-    public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-
+    private int getRandomNumberInRange (int min, int max) {
+        return rand.nextInt ((max - min) + 1) + min;
     }
 
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-
+    private void transitionToEndGame () {
+        for (Actor actor : stage.getActors()) {
+            actor.remove();
+        }
+        stage.addActor (endGameLabel);
+        endGame = true;
     }
 
+    // TODO Auto-generated methods stub
     @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-
-    }
+    public void resize(int width, int height) {}
 
     @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-
-    }
+    public void pause() {}
 
     @Override
-    public void dispose() {
-        // TODO Auto-generated method stub
+    public void resume() {}
 
-    }
+    @Override
+    public void hide() {}
+
+    @Override
+    public void dispose() {}
+
+    @Override
+    public void show() {}
+
 
 }

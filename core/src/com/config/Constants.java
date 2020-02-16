@@ -17,7 +17,7 @@ public final class Constants {
         0.8f, // RESTITUTION
         1.2f, // RANGE
         10000000,  // WATER MAX
-        10000,    //deliver rate
+        10000,    //DELIVERY RATE
     };
 
     // Firetruck Two properties
@@ -28,7 +28,7 @@ public final class Constants {
         0.6f, // RESTITUTION
         1.1f,// RANGE
         200,  // WATER MAX
-        3,    //deliver rate
+        3,    //DELIVERY RATE
     };
     // Firetruck Three properties
     public static final float[] FiretruckThreeProperties = {
@@ -38,7 +38,7 @@ public final class Constants {
             0.6f, // RESTITUTION
             1.5f,// RANGE
             500,  // WATER MAX
-            2,    //deliver rate
+            2,    //DELIVERY RATE
     };
     // Firetruck Four properties
     public static final float[] FiretruckFourProperties = {
@@ -48,7 +48,7 @@ public final class Constants {
             0.6f, // RESTITUTION
             1.3f,// RANGE
             400,  // WATER MAX
-            1,    //deliver rate
+            1,    //DELIVERY RATE
     };
     // Alientruck properties
     public static final float[] AlientruckProperties = {
