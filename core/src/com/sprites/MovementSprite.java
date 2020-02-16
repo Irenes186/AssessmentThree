@@ -291,12 +291,10 @@ public class MovementSprite extends SimpleSprite {
      * @return a Vector2 representing the next road turning point to travel to. null if at destination or no path found
      */
     private Vector2 nextAStar(Vector2 targetPos, ShapeRenderer renderer) {
-        System.out.println("Generate new intermediary destination...");
         // Find the position of the sprite in terms of cells
         Vector2 currentCellPos = new Vector2((int) (this.getCentreX() / TILE_DIMS), (int) (this.getCentreY() / TILE_DIMS));
         // Check whether the target position has been reached
         if (currentCellPos.equals(targetPos)) {
-            System.out.println("Final destination reached.");
             return null;
             
         // if not, execute A*
@@ -307,8 +305,6 @@ public class MovementSprite extends SimpleSprite {
             PriorityQueue<AStarNode> closed = new PriorityQueue<AStarNode>(10, nodeComp);
             // Initialise open to the sprite's current position
             open.add(new AStarNode(currentCellPos, currentCellPos, targetPos, null, 0));
-            System.out.println("Initial node: " + open.peek());
-//            System.out.println("position: " + currentCellPos);
             // Track whether or not targetPos has been found
             boolean goalFound = false;
             // The node with the current maximum value of f
@@ -316,20 +312,17 @@ public class MovementSprite extends SimpleSprite {
             
             // While there are still nodes to expand and targetPos has not been found
             while (!open.isEmpty() && !goalFound) {
-                System.out.println("A* ITERATION HERE ==========");
                 // Get the unexpanded node with the highest value of f, and move it to the closed list
                 bestNode = open.peek();
                 open.remove();
                 closed.add(bestNode);
                 // If this is the target node, stop searching
                 if (bestNode.getPos().equals(targetPos)) {
-                    System.out.println("goal found!");
                     goalFound = true;
                     break;
                 }
                 
                 if (PathFindUtil.getChildNodes(bestNode.getPos(), collisionLayer).isEmpty()) {
-                    System.out.println("No children for node: " + bestNode.getPos());
                 }
                 
                 // Add the node's children to the open list
@@ -337,32 +330,26 @@ public class MovementSprite extends SimpleSprite {
                     // TODO: If child is already in closed list, or in open list with lower g, ignore
                     open.add(new AStarNode(currentCellPos, currentChild, targetPos, bestNode, bestNode.getPos().dst(currentChild)));
                     renderer.rect(currentChild.x, currentChild.y, TILE_DIMS, TILE_DIMS, Color.RED, Color.RED, Color.RED, Color.RED);
-                    System.out.println("Check child: " + currentChild);
-//                    renderer.rect(currentChild.x, currentChild.y, TILE_DIMS, TILE_DIMS);
                 }
             }
             
             // If a goal was not found, return null
             if (!goalFound || bestNode == null) {
-                System.out.println("A* failed, no goal found.");
                 return null;
             // Otherwise, backtrack along each node's parents, until the sprite's position is found.
             } else {
                 while (bestNode != null) {
                     if (bestNode.getParent().getPos().equals(currentCellPos)) {
-                        System.out.println("Next intermediary position generated at: " + bestNode.getPos());
                         // If the sprite's position was found, return the next road corner
                         return bestNode.getPos();
                     } else if (bestNode.getParent() != null) {
                         bestNode = bestNode.getParent();
                     // If the sprite's position was not found, return null
                     } else {
-                        System.out.println("Path extraction failed");
                         return null;
                     }
                 }
             }
-            
             // Return null if some error occurred
             return null;
         }
@@ -377,16 +364,13 @@ public class MovementSprite extends SimpleSprite {
      * @return the direction in which the sprite should travel. Can be: (0, 0), (1, 0), (-1, 0), (0, 1), (0, -1) or null (use previous)
      */
     public void pathFindTo (Vector2 targetPos, ShapeRenderer renderer) {
-        System.out.println("Path findto: " + targetPos);
         Cell targetCell = collisionLayer.getCell((int) targetPos.x, (int) targetPos.y);
         // Make sure the requested location is not blocked
         if ((targetCell == null || targetCell.getTile() == null) || !targetCell.getTile().getProperties().containsKey(COLLISION_TILE)) {
             // If we don't have a pathfinding location yet
             if (this.currentTargetPos == null) {
-                System.out.println("No pathfinding location.");
                 // Get the next intermediary location
                 this.currentTargetPos = nextAStar(targetPos, renderer);
-                
                 // If a location could not be generated, just don't do anything
                 if (this.currentTargetPos == null) {
                     return;
@@ -395,7 +379,6 @@ public class MovementSprite extends SimpleSprite {
                 // Set the movement direction
                 // Is the next location along the Y axis?
                 if (this.currentTargetPos.x == this.getCentreX()) {
-                    System.out.println("Move along X axis");
                     if (this.currentTargetPos.y > this.getCentreY()) {
                         this.currentPathFindDirection.set(0, -1);
                     } else {
@@ -403,7 +386,6 @@ public class MovementSprite extends SimpleSprite {
                     }
                 // Is the next location along the X axis?
                 } else {
-                    System.out.println("Move along Y axis");
                     if (this.currentTargetPos.x > this.getCentreX()) {
                         this.currentPathFindDirection.set(-1, 0); 
                     } else {
@@ -420,16 +402,13 @@ public class MovementSprite extends SimpleSprite {
                 if (currentCellPos.equals(targetPos)) {
                     // Zero out the movement direction
                     this.currentPathFindDirection.setZero();
-                    System.out.println("At final destination.");
                 // Is the Sprite at an intermediary location?
                 } else {
-                    System.out.println("Intermediary destination reached.");
                     // Get the next intermediary location
                     this.currentTargetPos = nextAStar(targetPos, renderer);
                     // Set the movement direction
                     // Is the next location along the Y axis?
                     if (this.currentTargetPos.x == this.getCentreX()) {
-                        System.out.println("Move along X axis");
                         if (this.currentTargetPos.y > this.getCentreY()) {
                             this.currentPathFindDirection.set(0, -1);
                         } else {
@@ -437,7 +416,6 @@ public class MovementSprite extends SimpleSprite {
                         }
                     // Is the next location along the X axis?
                     } else {
-                        System.out.println("Move along Y axis");
                         if (this.currentTargetPos.x > this.getCentreX()) {
                             this.currentPathFindDirection.set(-1, 0); 
                         } else {
@@ -447,18 +425,8 @@ public class MovementSprite extends SimpleSprite {
                 }
             }
         } else {
-            if (targetCell == null) {
-                if (targetPos.x < 0 || targetPos.x >= collisionLayer.getWidth() || targetPos.y < 0 || targetPos.y >= collisionLayer.getHeight()) {
-                    System.out.println("Requested grid cell out of range! width=" + collisionLayer.getWidth() + " height=" + collisionLayer.getHeight());
-                } else {
-                    System.out.println("Requested grid cell is in range, but null!");
-//                    System.out.println("cell: " + collisionLayer.getCell((int) targetPos.x, (int) targetPos.y));
-                    System.out.println("cell: " + collisionLayer.getCell(1, 1));
-                }
-            } else if (targetCell.getTile() == null) {
-                System.out.println("Requested cell's tile is null!");
+            if (targetCell.getTile() == null) {
             } else {
-                System.out.println("Target location blocked!");
             }
         }
     }

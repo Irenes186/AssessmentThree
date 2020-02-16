@@ -13,6 +13,7 @@ import com.kroy.Kroy;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.Polygon;
 import com.classes.Projectile;
 
 // Import test runner
@@ -72,10 +73,12 @@ class ProjectileTest {
 
 	/**
 	 * Test method for {@link com.classes.Projectile#isOutOfMap()}.
-	 */
+			*/
 	@Test
 	void testIsOutOfMap() {
-		fail("Not yet implemented");
-	}
 
+		Projectile projectile =  new Projectile("alienProjectile.png",0, 0, 1);
+		FireTruck firetruck = new FireTruck(); 
+		Polygon polygon = new Polygon();
+		AssertEquals();
 }

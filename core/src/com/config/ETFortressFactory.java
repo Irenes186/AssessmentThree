@@ -16,27 +16,7 @@ public class ETFortressFactory {
     private float y;
     private float scaleX;
     private float scaleY;
-	
-//	// default parameters
-//	public ETFortressFactory() {
-//		texture = new Texture("MapAssets/UniqueBuildings/cliffordstower.png");
-//		destroyedTexture = new Texture("MapAssets/UniqueBuildings/cliffordstower_wet.png");
-//		projectileDamage = 10;
-//		maxHealth = 100;
-//	}
-//	
-//	// providing values on creation
-//	public ETFortressFactory (Texture texture, Texture destroyedTexture, int projectileDamage, int maxHealth) {
-//		this.texture = texture;
-//		this.destroyedTexture = destroyedTexture;
-//		this.projectileDamage = projectileDamage;
-//		this.maxHealth = maxHealth;
-//	}
-//	
-//	public ETFortress createETFortress(Texture texture, Texture destroyedTexture, int projectileDamage, int maxHealth) {
-//	    return new 
-//	}
-//	
+
 	// Fortress-specific values
 	public ETFortress createETFortress (ETFortressType type) {
 		switch (type) {
@@ -81,8 +61,8 @@ public class ETFortressFactory {
                 scaleY = 1;
 		        break;
 		    case FIBBERS:
-		        texture = new Texture("MapAssets/UniqueBuildings/Fibbers.png");
-                destroyedTexture = new Texture("MapAssets/UniqueBuildings/Fibbers_wet.png");
+		        texture = new Texture("MapAssets/UniqueBuildings/fibbers.png");
+                destroyedTexture = new Texture("MapAssets/UniqueBuildings/fibbers_wet.png");
                 projectileDamage = 13;
                 maxHealth = 75;
                 x = 91;
