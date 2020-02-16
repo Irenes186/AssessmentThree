@@ -103,6 +103,6 @@ public class ETFortressFactory {
 	        default:
 	            throw new RuntimeException("Requested ETFortressType " + type + " does not exist.");
 		}
-		return new ETFortress(texture, destroyedTexture, projectileDamage, maxHealth, scaleX, scaleY, x * Constants.TILE_DIMS, y * Constants.TILE_DIMS);
+		return new ETFortress(texture, destroyedTexture, projectileDamage, maxHealth, scaleX, scaleY, x * Constants.TILE_DIMS, y * Constants.TILE_DIMS, type);
 	}
 }
