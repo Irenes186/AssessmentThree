@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 // Class imports
 import com.kroy.Kroy;
+import com.miniGame.MiniGameScreen;
 
 
 /**
@@ -49,6 +50,7 @@ public class MainMenuScreen extends BasicScreen {
 		final TextButton leaderboardButton = new TextButton("Leaderboard", skin);
 		final TextButton storylineButton = new TextButton("Story Line", skin);
 		final TextButton quitButton = new TextButton("Quit", skin);
+		final TextButton miniGameButton = new TextButton("MiniGame", skin);
 
 		// Increase size of text
 		playButton.setTransform(true);
@@ -61,6 +63,8 @@ public class MainMenuScreen extends BasicScreen {
 		storylineButton.scaleBy(0.25f);
 		quitButton.setTransform(true);
 		quitButton.scaleBy(0.25f);
+		miniGameButton.setTransform(true);
+		miniGameButton.scaleBy(0.25f);
 
 		// Add listeners
 		playButton.addListener(new ClickListener(){
@@ -104,6 +108,13 @@ public class MainMenuScreen extends BasicScreen {
 			}
 		});
 		
+		miniGameButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(final InputEvent event, final float x, final float y) {
+				game.setScreen(new MiniGameScreen (game, new GameScreen(game), 1));
+			}
+		});
+
 		// Add buttons to table and style them
 		buttonTable.add(playButton).padBottom(40).padRight(40).width(150).height(40);
 		buttonTable.row();
@@ -112,6 +123,8 @@ public class MainMenuScreen extends BasicScreen {
 		buttonTable.add(leaderboardButton).padBottom(40).padRight(40).width(150).height(40);
 		buttonTable.row();
 		buttonTable.add(tutorialButton).padBottom(40).padRight(40).width(150).height(40);
+		buttonTable.row();
+		buttonTable.add(miniGameButton).padBottom(40).padRight(40).width(150).height(40);
 		buttonTable.row();
 		buttonTable.add(quitButton).padBottom(40).padRight(40).width(150).height(40);
 

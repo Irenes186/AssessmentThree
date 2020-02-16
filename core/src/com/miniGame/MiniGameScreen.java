@@ -64,6 +64,11 @@ public class MiniGameScreen extends BasicScreen {
         initLabels();
     }
 
+    /**
+     * This creates the graphics parts of the minigame and a couple of logic variables.
+     * 
+     * @param focusID This is used to select the right fire engine texture.
+     */
     private void initSprites (int focusID) {
         List<String> engineTextures = Arrays.asList(
             "Fire_Engine_2D_blue.png",
@@ -88,6 +93,10 @@ public class MiniGameScreen extends BasicScreen {
         obstacles.add (new Obstacle (SCREEN_WIDTH * 5/3, engine.getY(), speed));
     }
 
+    /**
+     * This creates the text on the screen, it sets the text to temp to begin with
+     * and changes this text in the render function.
+     */
     private void initLabels () {
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         BitmapFont font = new BitmapFont ();
@@ -115,6 +124,10 @@ public class MiniGameScreen extends BasicScreen {
         stage.addActor (obstacleLabel);
     }
 
+    /**
+     * This is called every frame and handles the main game logic as well as
+     * drawring things to the screen.
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
@@ -174,10 +187,21 @@ public class MiniGameScreen extends BasicScreen {
         stage.draw();
     }
 
+    /**
+     * Generates a random number in a range.
+     * 
+     * @param min The beginning of the range.
+     * @param max The end of the range.
+     * 
+     * @return The random number chosen within the range.
+     */
     private int getRandomNumberInRange (int min, int max) {
         return rand.nextInt ((max - min) + 1) + min;
     }
 
+    /**
+     * Sets up the game to transition out of the minigame.
+     */
     private void transitionToEndGame () {
         for (Actor actor : stage.getActors()) {
             actor.remove();
