@@ -65,7 +65,7 @@ class ProjectileTest {
 		// TEXTURE NOT WORKING
 		assertTrue(Gdx.files.internal("../core/assets/button.png").exists());
 		Texture testTexture = new Texture("../core/assets/button.png");
-		Projectile testProjectile = new Projectile(testTexture, 0, 0);
+		Projectile testProjectile = new Projectile(testTexture, 0, 0, 1);
 		
 		// Test projectile is out of view.
 		assertTrue(testProjectile.isOutOfView(testCameraPosition));

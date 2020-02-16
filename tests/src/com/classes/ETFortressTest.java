@@ -16,6 +16,8 @@ import com.badlogic.gdx.graphics.Texture;
 //Import Kroy game
 import com.kroy.Kroy;
 import com.classes.ETFortress;
+import com.config.ETFortressFactory;
+import com.config.ETFortressType;
 
 import com.testrunner.GdxTestRunner;
 
@@ -52,6 +54,14 @@ class ETFortressTest {
             if (!file.exists()) {
                 fail("Missing asset " + correctAssets[i] + " at " + file.getAbsolutePath());
             }
-        }   
+        }
+	}
+	
+	void testCanShootProjectile() {
+	    ETFortressFactory factory = new ETFortressFactory();
+	    ETFortress test = factory.createETFortress(ETFortressType.FIBBERS);
+	    if (!test.canShootProjectile()) {
+	        fail("fortress unable to shoot projectile on spawn");
+	    }
 	}
 }

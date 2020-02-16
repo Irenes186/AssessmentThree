@@ -23,6 +23,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 // Java util imports
 import java.util.ArrayList;
+import java.util.HashMap;
 
 // Class imports
 import com.kroy.Kroy;
@@ -80,9 +81,11 @@ public class GameScreen extends BasicScreen {
 	private Texture projectileTexture;
 	private boolean upgraded;
 	private boolean baseDestroyed;
+	private HashMap<ETFortressType, Boolean> hasSpawned;
 	
 	// Private arrays to group sprites
 	private ArrayList<Firetruck> firetrucks;
+	private HashMap<ETFortressType, Alientruck> alienTrucksToAdd;
 	private ArrayList<Alientruck> alientrucks;
 	private ArrayList<Firetruck> firetrucksToRemove;
 	private ArrayList<Alientruck> alientrucksToRemove;
@@ -188,7 +191,7 @@ public class GameScreen extends BasicScreen {
 				firetruckGreen.add(green);
 				alientruckPink.add(alienPink);
 			}
-		}
+		} 
 
 		// ---- 4) Create entities that will be around for entire game duration - //
 
@@ -209,15 +212,18 @@ public class GameScreen extends BasicScreen {
 	    
 	    
 	    this.alientrucks = new ArrayList<Alientruck>();
-		this.alientrucks.add(new Alientruck(alientruckPink, AlientruckProperties, (TiledMapTileLayer) map.getLayers().get("Collision"),
+	    this.alienTrucksToAdd = new HashMap<ETFortressType, Alientruck>();
+	    // truck spawning moved to render
+		this.alienTrucksToAdd.put(ETFortressType.CLIFFORDS_TOWER, new Alientruck(alientruckPink, AlientruckProperties, (TiledMapTileLayer) map.getLayers().get("Collision"),
 		        80 * TILE_DIMS, 57 * TILE_DIMS, 
 		        alientruckPath1));
-		this.alientrucks.add(new Alientruck(alientruckPink, AlientruckProperties, (TiledMapTileLayer) map.getLayers().get("Collision"),
+		this.alienTrucksToAdd.put(ETFortressType.RAIL_STATION, new Alientruck(alientruckPink, AlientruckProperties, (TiledMapTileLayer) map.getLayers().get("Collision"),
                 14 * TILE_DIMS, 83 * TILE_DIMS, 
                 alientruckPath2));
-		this.alientrucks.add(new Alientruck(alientruckPink, AlientruckProperties, (TiledMapTileLayer) map.getLayers().get("Collision"),
+		this.alienTrucksToAdd.put(ETFortressType.YORK_MINSTER, new Alientruck(alientruckPink, AlientruckProperties, (TiledMapTileLayer) map.getLayers().get("Collision"),
                 62 * TILE_DIMS, 100 * TILE_DIMS, 
                 alientruckPath3));
+		
 //		        new Direction[] {Direction.RIGHT, Direction.DOWN, Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP, Direction.LEFT, Direction.UP}));
 		
 //		// Initialise ETFortresses array and add ETFortresses to it
@@ -230,6 +236,11 @@ public class GameScreen extends BasicScreen {
 		this.ETFortresses.add(factory.createETFortress((ETFortressType.STADIUM)));
 		this.ETFortresses.add(factory.createETFortress((ETFortressType.FIBBERS)));
 		this.ETFortresses.add(factory.createETFortress((ETFortressType.WINDMILL)));
+		
+		hasSpawned = new HashMap<ETFortressType, Boolean>();
+		for (ETFortress fortress: ETFortresses) {
+            hasSpawned.put(fortress.type, false);
+        }
 	}
 
 	/**
@@ -265,10 +276,43 @@ public class GameScreen extends BasicScreen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		
+		// spawn alien trucks
+		for (ETFortress fort: ETFortresses) {
+		    if (!hasSpawned.get(fort.type)) {
+		        if (fort.getHealthBar().getCurrentAmount() < fort.getHealthBar().getMaxAmount() &&
+		                alienTrucksToAdd.get(fort.type) != null) {
+		            alientrucks.add(alienTrucksToAdd.get(fort.type));
+//		            alienTrucksToAdd.remove(fort.type);
+		            hasSpawned.put(fort.type, true);
+		        }
+		    } else {
+		        if (alienTrucksToAdd.get(fort.type).getInternalTime() % 1000 == 0) {
+//		            System.out.println("update truck " + fort.type + 
+//		                    " accel " + alienTrucksToAdd.get(fort.type).getAccelerationRate() + " to " + alienTrucksToAdd.get(fort.type).getAccelerationRate() * 1.2f
+//		                    + ", max speed " + alienTrucksToAdd.get(fort.type).getMaxSpeed() + " to " + alienTrucksToAdd.get(fort.type).getMaxSpeed() * 1.1f);
+//		            alienTrucksToAdd.get(fort.type).setAccelerationRate(alienTrucksToAdd.get(fort.type).getAccelerationRate() * 1.2f);
+//		            alienTrucksToAdd.get(fort.type).setMaxSpeed(alienTrucksToAdd.get(fort.type).getMaxSpeed() * 1.1f);
+//		            float oldHealth = alienTrucksToAdd.get(fort.type).getHealthBar().getCurrentAmount();
+//		            float oldMax = alienTrucksToAdd.get(fort.type).getHealthBar().getMaxAmount();
+//		            alienTrucksToAdd.get(fort.type).getHealthBar().setMaxResource((int)
+//		                    (alienTrucksToAdd.get(fort.type).getHealthBar().getMaxAmount() * 1.1));
+//		            alienTrucksToAdd.get(fort.type).getHealthBar().setCurrentAmount((int)
+//                            (alienTrucksToAdd.get(fort.type).getHealthBar().getCurrentAmount() * 1.1));
+		            alienTrucksToAdd.get(fort.type).upgrade(1.1f);
+//		            if (oldHealth < oldMax) {
+//		                alienTrucksToAdd.get(fort.type).getHealthBar().setCurrentAmount((int) oldHealth);
+//		            } else {
+//		                alienTrucksToAdd.get(fort.type).getHealthBar().setCurrentAmount((int) oldMax);
+//		            }
+		            System.out.println("update truck " + fort.type + " health " + alienTrucksToAdd.get(fort.type).getHealthBar().getMaxAmount() + " to "
+		            + alienTrucksToAdd.get(fort.type).getHealthBar().getMaxAmount() * 1.1f);
+		        }
+		    }
+		}
 
 		// Check if the game should end
 		checkIfGameOver();
-
 		// ---- 1) Update camera and map properties each iteration -------- //
 		
 		// Set the TiledMapRenderer view based on what the camera sees
@@ -337,7 +381,7 @@ public class GameScreen extends BasicScreen {
 		for (Alientruck alientruck : this.alientrucks) {
 		    alientruck.update(batch);
 		    if (alientruck.getHealthBar().getCurrentAmount() <= 0) this.alientrucksToRemove.add(alientruck);
-            if (DEBUG_ENABLED) alientruck.drawDebug(shapeRenderer);
+        if (DEBUG_ENABLED) alientruck.drawDebug(shapeRenderer);
 		}
 
 		// Close layer 

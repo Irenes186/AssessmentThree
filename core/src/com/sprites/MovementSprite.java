@@ -242,6 +242,10 @@ public class MovementSprite extends SimpleSprite {
     public void setAccelerationRate(float rate) {
         this.accelerationRate = rate;
     }
+    
+    public float getAccelerationRate() {
+        return accelerationRate;
+    }
 
     /**
      * Sets the max speed the sprite can accelerate to.
