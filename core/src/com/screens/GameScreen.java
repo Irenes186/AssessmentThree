@@ -28,7 +28,6 @@ import java.util.ArrayList;
 
 // Class imports
 import com.kroy.Kroy;
-import com.sprites.SimpleSprite;
 import com.classes.Firetruck;
 import com.classes.Projectile;
 import com.classes.Firestation;
@@ -58,7 +57,6 @@ import static com.config.Constants.FiretruckThreeProperties;
 import static com.config.Constants.FiretruckFourProperties;
 import static com.config.Constants.AlientruckProperties;
 import static com.config.Constants.FIRETRUCK_DAMAGE;
-import static com.config.Constants.Direction;
 
 /**
  * Display the main game.
@@ -85,7 +83,7 @@ public class GameScreen implements Screen {
 	// Private values for the game
 
 	public static int score;
-	private int time, startTime, fortressAmount, focusedID;
+	private int time, startTime, focusedID;
 	private float zoomDelay;
 	private Texture projectileTexture;
 	private boolean upgraded;
@@ -111,7 +109,7 @@ public class GameScreen implements Screen {
 	 * @param gam The game object.
 	 */
 	public GameScreen(final Kroy gam) {
-		this.score = 0;
+		GameScreen.score = 0;
 	    this.baseDestroyed = false;
 		// Assign the game to a property so it can be used when transitioning screens
                 System.out.println ("HashCode");
@@ -191,7 +189,6 @@ public class GameScreen implements Screen {
 				Texture red = new Texture("FiretruckRed/FiretruckRED (6) A.png");
 				Texture yellow = new Texture("FiretruckYellow/FiretruckYELLOW (6) A.png");
 				Texture green = new Texture("FiretruckGreen/FiretruckGREEN (6) A.png");
-				Texture alienPink = new Texture("AlienTruckPink/AlientruckPINK (6) A.png");
 				firetruckBlue.add(blue);
 				firetruckRed.add(red);
 				firetruckYellow.add(yellow);
@@ -242,12 +239,6 @@ public class GameScreen implements Screen {
 		
 //		// Initialise ETFortresses array and add ETFortresses to it
 		this.ETFortresses = new ArrayList<ETFortress>();
-//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.CLIFFORDS_TOWER), 1, 1, 69 * TILE_DIMS, 51 * TILE_DIMS));
-//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.YORK_MINSTER), 2, 3.25f, 68.25f * TILE_DIMS, 82.25f * TILE_DIMS));
-//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.RAIL_STATION), 2, 2.5f, 1 * TILE_DIMS, 72.75f * TILE_DIMS));
-//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.STADIUM), 1, 1, 36 * TILE_DIMS, 69 * TILE_DIMS));
-//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.FIBBERS), 1, 1, 91 * TILE_DIMS, 70 * TILE_DIMS));
-//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.WINDMILL), 1, 1, 25 * TILE_DIMS, 48 * TILE_DIMS));
 		
 		ETFortressFactory factory = new ETFortressFactory();
 		this.ETFortresses.add(factory.createETFortress((ETFortressType.CLIFFORDS_TOWER)));
@@ -408,7 +399,7 @@ public class GameScreen implements Screen {
 		if (DEBUG_ENABLED) firestation.drawDebug(shapeRenderer);
 
 		// Draw the score, time and FPS to the screen at given co-ordinates
-		game.drawFont("Score: " + this.score,
+		game.drawFont("Score: " + GameScreen.score,
 			cameraPosition.x - this.camera.viewportWidth * SCORE_X * camera.zoom,
 			cameraPosition.y + this.camera.viewportHeight * FONT_Y * camera.zoom);
 		game.drawFont("Time: " + this.time, 
@@ -479,7 +470,7 @@ public class GameScreen implements Screen {
 		if (gameWon || gameLost) {
 			System.out.println("check2");
 			dispose();
-			this.game.setScreen(new ResultScreen(this.game, this.score));
+			this.game.setScreen(new ResultScreen(this.game, GameScreen.score));
 		}
 	}
 
@@ -501,7 +492,7 @@ public class GameScreen implements Screen {
 			for (ETFortress ETFortress : this.ETFortresses) {
 				if (ETFortress.getHealthBar().getCurrentAmount() > 0 && firetruckA.isInHoseRange(ETFortress.getHitBox())) {
 					ETFortress.getHealthBar().subtractResourceAmount(FIRETRUCK_DAMAGE);
-					this.score += 10;
+					GameScreen.score += 10;
 				}
 				if (ETFortress.isInRadius(firetruckA.getHitBox()) && ETFortress.canShootProjectile()) {
 					Projectile projectile = new Projectile(this.projectileTexture, ETFortress.getCentreX(), ETFortress.getCentreY(), ETFortress.getProjectileDamage());
@@ -513,14 +504,14 @@ public class GameScreen implements Screen {
             for (Alientruck alientruck : this.alientrucks) {
                 if (alientruck.getHealthBar().getCurrentAmount() > 0 && firetruckA.isInHoseRange(alientruck.getHitBox())) {
                     alientruck.getHealthBar().subtractResourceAmount(FIRETRUCK_DAMAGE);
-                    this.score += 10;
+                    GameScreen.score += 10;
                 }
             }
 			// Check if firetruck is hit with a projectile
 			for (Projectile projectile : this.projectiles) {
 				if (Intersector.overlapConvexPolygons(firetruckA.getHitBox(), projectile.getHitBox())) {
 					firetruckA.getHealthBar().subtractResourceAmount(projectile.getDamage());
-					if (this.score > 10) this.score -= 10;
+					if (GameScreen.score > 10) GameScreen.score -= 10;
 					projectilesToRemove.add(projectile);
 				}
 			}

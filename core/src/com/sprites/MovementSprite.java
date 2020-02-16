@@ -443,15 +443,7 @@ public class MovementSprite extends SimpleSprite {
                 }
             }
         } else {
-            if (targetCell == null) {
-                if (targetPos.x < 0 || targetPos.x >= collisionLayer.getWidth() || targetPos.y < 0 || targetPos.y >= collisionLayer.getHeight()) {
-                    System.out.println("Requested grid cell out of range! width=" + collisionLayer.getWidth() + " height=" + collisionLayer.getHeight());
-                } else {
-                    System.out.println("Requested grid cell is in range, but null!");
-//                    System.out.println("cell: " + collisionLayer.getCell((int) targetPos.x, (int) targetPos.y));
-                    System.out.println("cell: " + collisionLayer.getCell(1, 1));
-                }
-            } else if (targetCell.getTile() == null) {
+            if (targetCell.getTile() == null) {
                 System.out.println("Requested cell's tile is null!");
             } else {
                 System.out.println("Target location blocked!");

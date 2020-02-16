@@ -2,19 +2,13 @@ package com.classes;
 
 // LibGDX imports
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
-// Custom class import
-import com.sprites.MovementSprite;
 
 // Constants imports
 import static com.config.Constants.Direction;
-import static com.config.Constants.FIRETRUCK_HEIGHT;
-import static com.config.Constants.FIRETRUCK_WIDTH;
 import static com.config.Constants.TILE_DIMS;
 
 // Java util import

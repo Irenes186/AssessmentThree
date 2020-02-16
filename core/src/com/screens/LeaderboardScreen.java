@@ -104,7 +104,8 @@ public class LeaderboardScreen implements Screen {
             line = reader.readLine();
             index++;
         }
-        System.out.println(pairs);
+
+        reader.close();
         return pairs;
     }
 

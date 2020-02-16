@@ -16,7 +16,6 @@ public class Obstacle extends MovementSprite {
 
     public Obstacle (float x, float y, int speed, float offset) {
         super (new Texture ("MiniGame/UFO.png"));
-        System.out.println ("new flying");
         create (x, y, speed, offset);
     }
 

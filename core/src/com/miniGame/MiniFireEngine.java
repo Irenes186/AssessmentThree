@@ -2,11 +2,6 @@ package com.miniGame;
 
 
 // LibGDX imports
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Gdx;
@@ -17,7 +12,6 @@ import com.sprites.MovementSprite;
 
 public class MiniFireEngine extends MovementSprite {
 
-    private Texture texture;
     private static float originalY;
 
     private int jumpSpeed;
@@ -67,7 +61,7 @@ public class MiniFireEngine extends MovementSprite {
         this.translateY (jumpSpeed);
         jumpSpeed -= 1;
 
-        if (this.getY() <= this.originalY) {
+        if (this.getY() <= MiniFireEngine.originalY) {
             jumpSpeed = 0;
             jumped = false;
         }
