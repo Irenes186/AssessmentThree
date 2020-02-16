@@ -15,13 +15,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.Input.Keys;
 
 // Custom class import
-import com.sprites.MovementSprite;
 import com.classes.ResourceBar;
 
 // Constants imports
 import static com.config.Constants.Direction;
-import static com.config.Constants.FIRETRUCK_HEIGHT;
-import static com.config.Constants.FIRETRUCK_WIDTH;
 
 // Java util import
 import java.util.ArrayList;
@@ -36,12 +33,11 @@ public class Firetruck extends Truck {
 
     // Private values to be used in this class only
     private Boolean isFocused, isSpraying;
-    private int focusID, internalTime, toggleDelay;
+    private int focusID, toggleDelay;
     private float hoseWidth, hoseHeight;
     private ArrayList<Texture> waterFrames;
     private Polygon hoseRange;
     private ResourceBar waterBar;
-    private int maxWater, deliveryRate;
 
     /**
      * Overloaded constructor containing all possible parameters.
@@ -89,7 +85,6 @@ public class Firetruck extends Truck {
      * Also initialises any properties needed by the firetruck.
      */
     private void create() {
-        maxWater = 100;
         this.isSpraying = true;
         this.createWaterHose();
         this.setDeliveryRate((int) this.truckProperties[6]);

@@ -32,8 +32,7 @@ public final class PathFindUtil {
      * @return      The centre of the grid cell in which the coordinates reside
      */
     public static Vector2 centreCoordinatesInCell (Vector2 pos) {
-        return getCentreOfCell(new Vector2(floorFloat(pos.x / TILE_DIMS),
-                                            floorFloat(pos.y / TILE_DIMS)));
+        return getCentreOfCell(new Vector2(floorFloat(pos.x / TILE_DIMS),floorFloat(pos.y / TILE_DIMS)));
     }
     
     /**
@@ -42,8 +41,7 @@ public final class PathFindUtil {
      * @return      The centre of the grid cell in terms of screen space
      */
     public static Vector2 getCentreOfCell (Vector2 pos) {
-        return new Vector2((floorFloat(pos.x) + 0.5f) * TILE_DIMS, 
-                            (floorFloat(pos.y) + 0.5f) * TILE_DIMS);
+        return new Vector2((floorFloat(pos.x) + 0.5f) * TILE_DIMS, (floorFloat(pos.y) + 0.5f) * TILE_DIMS);
     }
     
     /**
@@ -122,8 +120,7 @@ public final class PathFindUtil {
         
         // Until a collision tile is detected or the search goes out of range
         while (validCell(currentCell, collisionLayer)) {
-//            System.out.println("Check cell: " + currentCell);
-//            System.out.println("Direction: " + direction);
+
             // Step right of the current cell
             currentCell.add(dir90);
             testCell = currentCell;
@@ -131,7 +128,6 @@ public final class PathFindUtil {
             // If this is in range and not a collision cell, add the current cell to the list of corners
             if (validCell(testCell, collisionLayer)) {
                 corners.add(currentCell);
-//                System.out.println("Child added: " + currentCell);
             } else {
                 // Step left of the current cell
                 currentCell.add(dir90rev);
@@ -140,14 +136,10 @@ public final class PathFindUtil {
                 // If this is in range and not a collision cell, add the current cell to the list of corners
                 if (validCell(testCell, collisionLayer)) {
                     corners.add(currentCell);
-//                    System.out.println("Child added: " + currentCell);
                 }
             }
-            
             currentCell.add(direction);
-//            System.out.println("New cell: " + currentCell.add(direction));
         }
-        
         // Return the complete list of corners along this road and direction (may be empty)
         return corners;
     }
@@ -161,7 +153,7 @@ public final class PathFindUtil {
      * @return                  A HashSet containing all reachable corners, crossroads and junctions along the cell's road. Can be empty
      */
     public static HashSet<Vector2> getChildNodes (Vector2 node, TiledMapTileLayer collisionLayer) {
-//        System.out.println("Expand node: " + node);
+
         // The working set of children
         HashSet<Vector2> children = new HashSet<Vector2>();
         

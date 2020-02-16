@@ -24,14 +24,12 @@ public class SimpleSprite extends Sprite {
     private float width, height, internalTime;
     private ResourceBar healthBar;
     private Polygon hitBox;
-    private int maxHealth;
 
     /**
      * Constructor that creates a sprite at a given position using a given texture..
      * Creates a sprite at (0,0) using a given texture.
      * 
-     * @param spriteTexture  The texture the sprite should use.
-     * @param maxHealth  The maximum health of this entity.
+     * @param spriteTexture The texture the sprite should use.
      */
     public SimpleSprite(Texture spriteTexture) {
         super(spriteTexture);
@@ -102,7 +100,6 @@ public class SimpleSprite extends Sprite {
         this.height = height;
         this.create();
         this.hitBox.setOrigin(width/2, height/2);
-        //this.hitBox.setPosition (this.getX(), this.getY());
     }
 
     /**
@@ -179,5 +176,4 @@ public class SimpleSprite extends Sprite {
     public void dispose() {
         texture.dispose();
     }
-
 }

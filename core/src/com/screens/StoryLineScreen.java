@@ -1,81 +1,33 @@
 package com.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.Align;
 import com.kroy.Kroy;
 
-import static com.config.Constants.SCREEN_HEIGHT;
-import static com.config.Constants.SCREEN_WIDTH;
-
-//Class imports
-
-
-public class StoryLineScreen implements Screen {
-
-    // A constant variable to store the game
-    final Kroy game;
-
-    // Private camera to see the screen
-    private OrthographicCamera camera;
-
-    protected Stage stage;
+/**
+ * Implements a screen to display the text of the story.
+ */
+public class StoryLineScreen extends BasicScreen {
     protected Texture texture;
-    protected Skin skin;
     protected Skin skin2;
-    protected TextureAtlas atlas;
-    private SpriteBatch batch;
-    private Viewport viewport;
     private String displayText;
 
+    /**
+     * Constructor, saves the text to display to memory.
+     * 
+     * @param game The game object for the screen to be displayed on.
+     */
+    public StoryLineScreen(Kroy game) {
+        super(game);
 
-
-    //Constructor
-    public StoryLineScreen(Kroy gam) {
-        this.game = gam;
-
-        atlas = new TextureAtlas("skin/uiskin.atlas");
-        skin = new Skin(Gdx.files.internal("skin/uiskin.json"), atlas);
         skin2 = new Skin(Gdx.files.internal("skin/uiskin2.json"), atlas);
-        //skin.add("default", new Texture("button.png"));
-
-
-        // Create new sprite batch
-        batch = new SpriteBatch();
-
-        // Create an orthographic camera
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
-        // tell the SpriteBatch to render in the
-        // coordinate system specified by the camera.
-        batch.setProjectionMatrix(camera.combined);
-
-        // Set font scale
-        game.getFont().getData().setScale(1.5f);
-
-        // Create a viewport
-        viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera);
-        viewport.apply();
-
-        // Set camera to centre of viewport
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
-        camera.update();
-
-        // Create a stage for buttons
-        stage = new Stage(viewport, batch);
             displayText = "It is a period of wars in the galaxy. A brave alliance of underground fire fighters has challenged the tyranny and oppression of the awesome ET EMPIRE.\n" +
                     "\n" +
                     "Striking from a fortress hidden among the billion buildings of york, rebel fire engines have won\n" +
@@ -87,10 +39,11 @@ public class StoryLineScreen implements Screen {
                     "system. Powerful enough to burn an entire city, its completion spells certain doom for the champions of freedom.";
     }
 
-
+    /**
+     * Displays all the buttons and text on the screen.
+     */
     @Override
     public void show() {
-
         // Allow stage to control screen inputs.
         Gdx.input.setInputProcessor(stage);
 
@@ -101,11 +54,10 @@ public class StoryLineScreen implements Screen {
 
         // Create buttons
         TextButton menuButton = new TextButton("Menu", skin);
-        //TextButton leaderboardButton = new TextButton("Leaderboard", skin);
 
         //Create label
         Label winLabel = new Label(displayText,skin2);
-        winLabel.setFontScale(2,2);
+        winLabel.setAlignment(Align.center);
 
         // Increase size of text
         menuButton.setTransform(true);
@@ -128,41 +80,5 @@ public class StoryLineScreen implements Screen {
         buttonTable.row();
         // Add table to stage
         stage.addActor(buttonTable);
-
-
-    }
-
-    @Override
-    public void render(float delta) {
-        // MUST BE FIRST: Clear the screen each frame to stop textures blurring
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // Draw the button stage
-        //stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();
-
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height);
-        camera.update();
-    }
-    @Override
-    public void pause() {
-
-    }
-    @Override
-    public void resume() {
-
-    }
-    @Override
-    public void hide() {
-
-    }
-    @Override
-    public void dispose() {
-        skin.dispose();
     }
 }
