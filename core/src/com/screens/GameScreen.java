@@ -117,7 +117,7 @@ public class GameScreen extends BasicScreen {
 		this.projectiles = new ArrayList<Projectile>();
 
 		// Decrease time every second, starting at 5 minutes.
-		this.time = 5 * 60;
+		this.time = 3 * 60;
 		this.startTime = this.time;
 		Timer.schedule(new Task() {
 			@Override
