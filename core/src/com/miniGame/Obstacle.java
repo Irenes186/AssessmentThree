@@ -11,7 +11,6 @@ public class Obstacle extends MovementSprite {
     public Obstacle (float x, float y, int speed) {
         super (new Texture ("MiniGame/Alien.png"));
         create (x, y, speed, 0);
-
     }
 
     public Obstacle (float x, float y, int speed, float offset) {
@@ -25,7 +24,6 @@ public class Obstacle extends MovementSprite {
         this.setAccelerationRate (0f);
         this.setSpeed (new Vector2(speed, 0));
     }
-
     public void update (SpriteBatch batch) {
         super.update (batch);
     }

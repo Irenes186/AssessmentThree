@@ -96,8 +96,8 @@ public class ResultScreen extends BasicScreen {
 
     public void writeLeaderboardFile(final ArrayList<LeaderboardPair> outputList) throws IOException{
         final File leaderboardFile = new File("leaderboard.txt");
-        final FileWriter dave = new FileWriter(leaderboardFile);
-        final BufferedWriter writer = new BufferedWriter(dave);
+        final FileWriter fileWriter = new FileWriter(leaderboardFile);
+        final BufferedWriter writer = new BufferedWriter(fileWriter);
 
         String outputString = "";
         for (final LeaderboardPair pair : outputList) {
@@ -178,18 +178,15 @@ public class ResultScreen extends BasicScreen {
             buttonTable.row();
             buttonTable.add(enterNameButton).padBottom(40).padRight(40).width(150).height(40);
             buttonTable.row();
-
         }
         buttonTable.add(menuButton).padBottom(40).padRight(40).width(150).height(40);
         buttonTable.row();
 
         // Add table to stage
         stage.addActor(buttonTable);
-
     }
     class ConfirmClick extends ClickListener{
-        public void clicked(final InputEvent event, final float x, final float y, final TextField field,
-                final String name) {
+        public void clicked(final InputEvent event, final float x, final float y, final TextField field, final String name) {
             Gdx.app.log("button","clicked");
         }
     }

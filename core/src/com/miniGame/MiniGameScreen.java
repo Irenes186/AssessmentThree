@@ -61,7 +61,6 @@ public class MiniGameScreen implements Screen {
         this.game = game;
         this.gameScreen = gameScreen;
         this.endGame = false;
-
         this.batch = new SpriteBatch ();
 
         // Create new sprite batch
@@ -70,8 +69,7 @@ public class MiniGameScreen implements Screen {
         // Create an orthographic camera
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
-        // tell the SpriteBatch to render in the
-        // coordinate system specified by the camera.
+        // tell the SpriteBatch to render in the coordinate system specified by the camera.
         batch.setProjectionMatrix(camera.combined);
 
         // Set font scale
@@ -95,7 +93,6 @@ public class MiniGameScreen implements Screen {
     private void initSprites () {
         roadSprite = new SimpleSprite (new Texture ("MiniGame/road.png"));
         engine = new MiniFireEngine (50, 175);
-
 
         roadSprite.setSize (75, SCREEN_WIDTH * 2);
         roadSprite.setPosition (SCREEN_WIDTH - 180, -1100);
@@ -142,7 +139,6 @@ public class MiniGameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         batch.begin ();
 
         if (endGame) {
@@ -156,7 +152,6 @@ public class MiniGameScreen implements Screen {
         }
 
         if (this.lives <= 0) {
-            //game.setScreen (gameScreen);
             endGameLabel.setText ("You have failed the mini game, press enter to continue!");
             gameScreen.getFiretruckInFocus().getHealthBar().setResourcePercentage(0);
             transitionToEndGame ();
@@ -164,20 +159,14 @@ public class MiniGameScreen implements Screen {
         } else if (this.obstacleCount == 0) {
             endGameLabel.setText ("You have won the mini game, press enter to continue!");
             transitionToEndGame ();
-
         } else {
             livesLabel.setText ("Number of Lives left: " + this.lives);
             obstacleLabel.setText ("Number of obstacles left: " + this.obstacleCount);
-
             if (obstacles.peek().getBoundingRectangle().overlaps (engine.getBoundingRectangle())) {
                 obstacles.remove();
                 this.lives--;
-
             }
-
-            if (obstacles.peek().getX() <= 0) {
-                obstacles.remove();
-            }
+            if (obstacles.peek().getX() <= 0) { obstacles.remove();}
 
             if (obstacles.size() < 3) {
                 this.obstacleCount--;
@@ -191,13 +180,11 @@ public class MiniGameScreen implements Screen {
             // Draw the button stage
             roadSprite.update(batch);
             engine.update(batch);
-
             roadSprite.translateX (-speed);
 
             if (roadSprite.getX() <=  180) {
                 roadSprite.setPosition (SCREEN_WIDTH - 180, -1100);
             }
-
             for (Obstacle obstacle : obstacles) {
                 obstacle.translateX (-speed);
                 obstacle.update(batch);
@@ -237,6 +224,4 @@ public class MiniGameScreen implements Screen {
 
     @Override
     public void show() {}
-
-
 }

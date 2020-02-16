@@ -1,6 +1,4 @@
 package com.miniGame;
-
-
 // LibGDX imports
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Input.Keys;
@@ -21,7 +19,6 @@ public class MiniFireEngine extends MovementSprite {
 
     public MiniFireEngine (float x, float y) {
         super (new Texture ("MiniGame/Fire_Engine_2D_blue.png"));
-
         this.setSize (100, 100);
         this.setPosition (x, y);
         this.setAccelerationRate (0f);

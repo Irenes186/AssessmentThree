@@ -117,7 +117,5 @@ public class MainMenuScreen extends BasicScreen {
 
 		// Add table to stage
 		stage.addActor(buttonTable);
-
 	}
-
 }

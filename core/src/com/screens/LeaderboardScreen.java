@@ -64,7 +64,6 @@ public class LeaderboardScreen extends BasicScreen {
 
         // Create buttons
         final TextButton menuButton = new TextButton("Menu", skin);
-        //TextButton leaderboardButton = new TextButton("Leaderboard", skin);
 
         String[] pairs = new String[5];
         try{
@@ -111,7 +110,6 @@ public class LeaderboardScreen extends BasicScreen {
         buttonTable.row();
         buttonTable.add(menuButton).padBottom(40).padRight(40).width(150).height(40);
         buttonTable.row();
-
         // Add table to stage
         stage.addActor(buttonTable);
     }

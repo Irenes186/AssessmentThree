@@ -25,7 +25,6 @@ import static com.config.Constants.FIRETRUCK_REPAIR_SPEED;
  * @since 17/12/2019
  */
 public class Firestation extends SimpleSprite {
-
     // Private values for this class to use
 	private Rectangle repairRange;
 	private boolean destroyed;

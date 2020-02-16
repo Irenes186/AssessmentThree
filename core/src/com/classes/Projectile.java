@@ -26,7 +26,6 @@ import static com.config.Constants.MAP_WIDTH;
  * @since 09/01/2020
  */
 public class Projectile extends MovementSprite {
-
     // Private values to be used in this class only
     Vector2 trajectory;
 	private int damage;

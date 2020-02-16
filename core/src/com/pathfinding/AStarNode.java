@@ -36,7 +36,6 @@ public class AStarNode {
         this.source = source;
         this.target = target;
         this.parent = parent;
-        
         // Set g and f to null values, and calculate the heuristic
         gVal = distFromParent;
         hVal = PathFindUtil.calculateHeuristic(pos, target);

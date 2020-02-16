@@ -110,7 +110,6 @@ public class Alientruck extends Truck {
     public void update(Batch batch) { //, Firetruck targetTruck, ShapeRenderer renderer
         super.update(batch);
         drawVoxelImage(batch);
-
         if (patrolPoints[patrolIndex].equals(new Vector2((int) getX() / TILE_DIMS, (int) getY() / TILE_DIMS))) {
             patrolIndex = (patrolIndex + 1) % patrolDirections.length;
         }

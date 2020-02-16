@@ -49,13 +49,10 @@ public class BasicScreen implements Screen {
         // Create new sprite batch
         batch = new SpriteBatch();
 
-        // tell the SpriteBatch to render in the
-        // coordinate system specified by the camera.
+        //SpriteBatch to render in the coordinate system specified by the camera.
         batch.setProjectionMatrix(camera.combined);
-
 		atlas = new TextureAtlas("skin/uiskin.atlas");
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"), atlas);
-        
         // Create a stage for buttons
         stage = new Stage(viewport, batch);
     }
