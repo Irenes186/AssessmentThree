@@ -1,5 +1,5 @@
-char,110
-charlotte,50
+empty,0
+empty,0
 empty,0
 empty,0
 empty,0
