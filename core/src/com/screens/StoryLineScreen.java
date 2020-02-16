@@ -44,11 +44,9 @@ public class StoryLineScreen extends BasicScreen {
 
         // Create buttons
         TextButton menuButton = new TextButton("Menu", skin);
-        //TextButton leaderboardButton = new TextButton("Leaderboard", skin);
 
         //Create label
         Label winLabel = new Label(displayText,skin2);
-
         winLabel.setAlignment(Align.center);
 
         // Increase size of text

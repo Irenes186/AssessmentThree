@@ -71,8 +71,7 @@ public class ResourceBar {
         }
 
         if (this.currentResourceAmount > 0) this.bar.draw(batch, 1);
-        // MUST return batch to correct alpha value
-        // otherwise it fades all layers out
+        // MUST return batch to correct alpha value otherwise it fades all layers out
         batch.setColor(1.0f, 1.0f, 1.0f, 1f);
     }
 
@@ -106,8 +105,7 @@ public class ResourceBar {
 
         // Colour to use for the bar, depending on health percentage
         Color color = this.currentResourceAmount <= this.maxResourceAmount * 0.5 ?
-            this.currentResourceAmount <= this.maxResourceAmount * 0.25 ?
-                this.colourRange[0] : this.colourRange[1] : this.colourRange[2];
+            this.currentResourceAmount <= this.maxResourceAmount * 0.25 ? this.colourRange[0] : this.colourRange[1] : this.colourRange[2];
         
         // Size of entire bar is shared between the resource bar and the empty bar
         int scaledResource = (int) (((float) this.currentResourceAmount / this.maxResourceAmount) * this.barWidth);
@@ -212,7 +210,6 @@ public class ResourceBar {
         this.currentResourceAmount = (percent * this.maxResourceAmount) / 100;
         this.bar.setStyle(getResourceBarStyle());
     }
-
     /**
      * Add a value to the resource bar.
      * 

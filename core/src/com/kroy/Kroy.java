@@ -15,7 +15,6 @@ import com.screens.MainMenuScreen;
  * @since 23/11/2019
  */
 public class Kroy extends Game {
-
 	// Batches to store drawn elements
   	public Batch batch;
 	public BitmapFont font;

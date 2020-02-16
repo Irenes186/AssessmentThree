@@ -222,7 +222,6 @@ public class MovementSprite extends SimpleSprite {
         this.restitution = bounce;
     }
 
-
     public void setDeliveryRate(int deliveryRate) {
         this.deliveryRate = deliveryRate;
     }
@@ -344,13 +343,9 @@ public class MovementSprite extends SimpleSprite {
                         return bestNode.getPos();
                     } else if (bestNode.getParent() != null) {
                         bestNode = bestNode.getParent();
-                    // If the sprite's position was not found, return null
-                    } else {
-                        return null;
                     }
                 }
             }
-            // Return null if some error occurred
             return null;
         }
     }
@@ -423,10 +418,6 @@ public class MovementSprite extends SimpleSprite {
                         }
                     }
                 }
-            }
-        } else {
-            if (targetCell.getTile() == null) {
-            } else {
             }
         }
     }

@@ -447,11 +447,11 @@ public class GameScreen extends BasicScreen {
 		//Check if fortress has to be upgraded and if so upgrade it.
 		checkForUpgrade();
 
-		//FOR fucks sake remove this it is for debugging clive
-		if (Gdx.input.isKeyJustPressed(Keys.P)){
-			for (ETFortress a: ETFortresses){
-				a.getHealthBar().subtractResourceAmount(5);
-			}
+		//debugging
+			if (Gdx.input.isKeyJustPressed(Keys.P)){
+				for (ETFortress a: ETFortresses){
+					a.getHealthBar().subtractResourceAmount(5);
+				}
 		}
 
 	}

@@ -71,10 +71,8 @@ public class MiniGameScreen extends BasicScreen {
             "Fire_Engine_2D_yellow.png",
             "Fire_Engine_2D_green.png");
 
-        System.out.println(focusID);
         roadSprite = new SimpleSprite (new Texture ("MiniGame/road.png"));
         engine = new MiniFireEngine (50f, 175f, "MiniGame/" + engineTextures.get(focusID - 1));
-
 
         roadSprite.setSize (75, SCREEN_WIDTH * 2);
         roadSprite.setPosition (SCREEN_WIDTH - 180, -1100);
@@ -121,7 +119,6 @@ public class MiniGameScreen extends BasicScreen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         batch.begin ();
 
         if (endGame) {
@@ -135,7 +132,6 @@ public class MiniGameScreen extends BasicScreen {
         }
 
         if (this.lives <= 0) {
-            //game.setScreen (gameScreen);
             endGameLabel.setText ("You have failed the mini game, press enter to continue!");
             gameScreen.getFiretruckInFocus().getHealthBar().setResourcePercentage(0);
             transitionToEndGame ();
@@ -143,20 +139,14 @@ public class MiniGameScreen extends BasicScreen {
         } else if (this.obstacleCount == 0) {
             endGameLabel.setText ("You have won the mini game, press enter to continue!");
             transitionToEndGame ();
-
         } else {
             livesLabel.setText ("Number of Lives left: " + this.lives);
             obstacleLabel.setText ("Number of obstacles left: " + this.obstacleCount);
-
             if (obstacles.peek().getBoundingRectangle().overlaps (engine.getBoundingRectangle())) {
                 obstacles.remove();
                 this.lives--;
-
             }
-
-            if (obstacles.peek().getX() <= 0) {
-                obstacles.remove();
-            }
+            if (obstacles.peek().getX() <= 0) { obstacles.remove();}
 
             if (obstacles.size() < 3) {
                 this.obstacleCount--;
@@ -170,13 +160,11 @@ public class MiniGameScreen extends BasicScreen {
             // Draw the button stage
             roadSprite.update(batch);
             engine.update(batch);
-
             roadSprite.translateX (-speed);
 
             if (roadSprite.getX() <=  180) {
                 roadSprite.setPosition (SCREEN_WIDTH - 180, -1100);
             }
-
             for (Obstacle obstacle : obstacles) {
                 obstacle.translateX (-speed);
                 obstacle.update(batch);
