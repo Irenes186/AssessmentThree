@@ -11,12 +11,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.kroy.Kroy;
 
+/**
+ * Implements a screen to display the text of the story.
+ */
 public class StoryLineScreen extends BasicScreen {
     protected Texture texture;
     protected Skin skin2;
     private String displayText;
 
-    //Constructor
+    /**
+     * Constructor, saves the text to display to memory.
+     * 
+     * @param game The game object for the screen to be displayed on.
+     */
     public StoryLineScreen(Kroy game) {
         super(game);
 
@@ -32,6 +39,9 @@ public class StoryLineScreen extends BasicScreen {
                     "system. Powerful enough to burn an entire city, its completion spells certain doom for the champions of freedom.";
     }
 
+    /**
+     * Displays all the buttons and text on the screen.
+     */
     @Override
     public void show() {
         // Allow stage to control screen inputs.
