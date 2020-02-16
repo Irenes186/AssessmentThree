@@ -2,10 +2,8 @@ package com.screens;
 
 // LibGDX imports
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -40,8 +38,6 @@ import com.config.ETFortressFactory;
 import com.config.ETFortressType;
 
 // Constants import
-import static com.config.Constants.SCREEN_HEIGHT;
-import static com.config.Constants.SCREEN_WIDTH;
 import static com.config.Constants.FONT_Y;
 import static com.config.Constants.SCORE_X;
 import static com.config.Constants.TIME_X;
@@ -64,14 +60,10 @@ import static com.config.Constants.FIRETRUCK_DAMAGE;
  * @author Archie
  * @since 23/11/2019
  */
-public class GameScreen implements Screen {
-	  
-	// A constant variable to store the game
-	final Kroy game;
+public class GameScreen extends BasicScreen {
 
 	// Private values for game screen logic
 	private ShapeRenderer shapeRenderer;
-	private OrthographicCamera camera;
 	private Batch batch;
 
 	// Private values for tiled map
@@ -108,18 +100,13 @@ public class GameScreen implements Screen {
 	 * 
 	 * @param gam The game object.
 	 */
-	public GameScreen(final Kroy gam) {
+	public GameScreen(final Kroy game) {
+		super(game);
+
 		GameScreen.score = 0;
 	    this.baseDestroyed = false;
-		// Assign the game to a property so it can be used when transitioning screens
-                System.out.println ("HashCode");
-		this.game = gam;
 		this.upgraded = true;
 		// ---- 1) Create new instance for all the objects needed for the game ---- //
-		
-		// Create an orthographic camera
-		this.camera = new OrthographicCamera();
-		this.camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 		// Load the map, set the unit scale
 		this.map = new TmxMapLoader().load("MapAssets/York_galletcity.tmx");
@@ -137,7 +124,6 @@ public class GameScreen implements Screen {
 			public void run() {
 				if (decreaseTime()) {
 			        firestation.removeSprite(new Texture("MapAssets/UniqueBuildings/firestation_destroyed.png"));
-//			        Timer.instance().stop();
 			    }
 			}
 		}, 1, 1 );
@@ -150,9 +136,6 @@ public class GameScreen implements Screen {
 		// Set the game batch
 		this.game.setBatch(this.batch);
 		
-		// Set the Batch to render in the coordinate system specified by the camera.
-		this.batch.setProjectionMatrix(this.camera.combined);
-
 		// ---- 3) Construct all textures to be used in the game here, ONCE ------ //
 
 		// Select background and foreground map layers, order matters
@@ -322,9 +305,6 @@ public class GameScreen implements Screen {
 			this.camera.zoom -= zoomSpeed * 2;
 		}
 		this.camera.update();
-
-		// Set font scale
-		this.game.getFont().getData().setScale(this.camera.zoom * 1.5f);
 
 		// ---- 2) Perform any checks for user input ---------------------- //
 
@@ -600,27 +580,6 @@ public class GameScreen implements Screen {
 		this.camera.viewportHeight = height;
 		this.camera.viewportWidth = width;
         this.camera.update();
-	}
-
-	/**
-	 * Actions to perform when the main game is hidden.
-	 */
-	@Override
-	public void hide() {
-	}
-
-	/**
-	 * Actions to perform when the main game is paused.
-	 */
-	@Override
-	public void pause() {
-	}
-
-	/**
-	 * Actions to perform when the main game is resumed.
-	 */
-	@Override
-	public void resume() {
 	}
 
 	/**

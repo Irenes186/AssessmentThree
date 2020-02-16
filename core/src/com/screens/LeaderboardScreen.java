@@ -1,20 +1,12 @@
 package com.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 
 //Class imports
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kroy.Kroy;
 //import javafx.util.Pair;
 
@@ -23,62 +15,20 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import static com.config.Constants.SCREEN_HEIGHT;
-import static com.config.Constants.SCREEN_WIDTH;
+public class LeaderboardScreen extends BasicScreen {
 
-public class LeaderboardScreen implements Screen {
-
-    // A constant variable to store the game
-    final Kroy game;
-
-    // Private camera to see the screen
-    private final OrthographicCamera camera;
-
-    protected Stage stage;
     protected Texture texture;
-    protected Skin skin;
     protected Skin skin2;
-    protected TextureAtlas atlas;
-    private final SpriteBatch batch;
-    private final Viewport viewport;
 
 
     /**
      * Constructor initialises key features of screen
      * @param gam
      */
-    public LeaderboardScreen (final Kroy gam){
-        this.game = gam;
+    public LeaderboardScreen (final Kroy game){
+        super(game);
 
-        atlas = new TextureAtlas("skin/uiskin.atlas");
-        skin = new Skin(Gdx.files.internal("skin/uiskin.json"), atlas);
         skin2 = new Skin(Gdx.files.internal("skin/uiskin2.json"), atlas);
-        //skin.add("default", new Texture("button.png"));
-
-
-        // Create new sprite batch
-        batch = new SpriteBatch();
-
-        // Create an orthographic camera
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
-        // tell the SpriteBatch to render in the
-        // coordinate system specified by the camera.
-        batch.setProjectionMatrix(camera.combined);
-
-        // Set font scale
-        game.getFont().getData().setScale(1.5f);
-
-        // Create a viewport
-        viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera);
-        viewport.apply();
-
-        // Set camera to centre of viewport
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
-        camera.update();
-
-        // Create a stage for buttons
-        stage = new Stage(viewport, batch);
 
     }
 
@@ -183,35 +133,9 @@ public class LeaderboardScreen implements Screen {
     }
 
     @Override
-    public void render(final float delta) {
-        // MUST BE FIRST: Clear the screen each frame to stop textures blurring
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // Draw the button stage
-        //stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();
-    }
-
-    @Override
     public void resize(final int width, final int height) {
         viewport.update(width, height);
         camera.update();
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
     }
 
     @Override
