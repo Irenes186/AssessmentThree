@@ -138,13 +138,6 @@ public class MiniGameScreen implements Screen {
         stage.addActor (obstacleLabel);
     }
 
-
-    @Override
-    public void show() {
-        // TODO Auto-generated method stub
-
-    }
-
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
@@ -159,9 +152,7 @@ public class MiniGameScreen implements Screen {
             if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
                 this.game.setScreen (this.gameScreen);
             }
-
             return;
-
         }
 
         if (this.lives <= 0) {
@@ -180,7 +171,6 @@ public class MiniGameScreen implements Screen {
 
             if (obstacles.peek().getBoundingRectangle().overlaps (engine.getBoundingRectangle())) {
                 obstacles.remove();
-
                 this.lives--;
 
             }
@@ -229,34 +219,24 @@ public class MiniGameScreen implements Screen {
         endGame = true;
     }
 
+    // TODO Auto-generated methods stub
     @Override
-    public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-
-    }
+    public void resize(int width, int height) {}
 
     @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-
-    }
+    public void resume() {}
 
     @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-
-    }
+    public void hide() {}
 
     @Override
-    public void dispose() {
-        // TODO Auto-generated method stub
+    public void dispose() {}
 
-    }
+    @Override
+    public void show() {}
+
 
 }

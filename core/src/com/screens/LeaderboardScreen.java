@@ -19,20 +19,15 @@ public class LeaderboardScreen extends BasicScreen {
 
     protected Texture texture;
     protected Skin skin2;
-
-
     /**
      * Constructor initialises key features of screen
      * @param gam
      */
     public LeaderboardScreen (final Kroy game){
         super(game);
-
         skin2 = new Skin(Gdx.files.internal("skin/uiskin2.json"), atlas);
 
     }
-
-
     /**
      * Reads leaderboard file and formats the name and score pai
      * @return array of pairs containing the string name and integer score
@@ -43,8 +38,6 @@ public class LeaderboardScreen extends BasicScreen {
         BufferedReader reader;
         final File leaderboardFile = new File("leaderboard.txt");
         reader = new BufferedReader(new FileReader(leaderboardFile));
-
-
         final String [] pairs = new String[5];
         String line;
         line = reader.readLine();
@@ -54,7 +47,6 @@ public class LeaderboardScreen extends BasicScreen {
             line = reader.readLine();
             index++;
         }
-
         reader.close();
         return pairs;
     }
@@ -74,16 +66,12 @@ public class LeaderboardScreen extends BasicScreen {
         final TextButton menuButton = new TextButton("Menu", skin);
         //TextButton leaderboardButton = new TextButton("Leaderboard", skin);
 
-
         String[] pairs = new String[5];
         try{
             pairs = readLeaderboardFile();
         }
         catch(final Exception e){
-            System.out.println("hello");
         }
-
-        System.out.println("hello");
 
         //Create label
         final Label titleLabel = new Label("LEADERBOARD",skin2);
@@ -93,7 +81,6 @@ public class LeaderboardScreen extends BasicScreen {
         final Label thirdLabel = new Label(pairs[2],skin);
         final Label fourthLabel = new Label(pairs[3],skin);
         final Label fifthLabel = new Label(pairs[4],skin);
-
 
         // Increase size of text
         menuButton.setTransform(true);
@@ -127,9 +114,6 @@ public class LeaderboardScreen extends BasicScreen {
 
         // Add table to stage
         stage.addActor(buttonTable);
-
-
-
     }
 
     @Override

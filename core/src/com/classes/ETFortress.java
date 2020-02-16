@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.config.ETFortressFactory;
+import com.config.ETFortressType;
 import com.badlogic.gdx.graphics.Texture;
 
 // Custom class import
@@ -31,6 +32,7 @@ public class ETFortress extends SimpleSprite {
     private Circle detectionRange;
 	private int projectileDamage;
     private int maxHealth;
+    public ETFortressType type;
 
     /**
      * Overloaded constructor containing all possible parameters.
@@ -43,35 +45,36 @@ public class ETFortress extends SimpleSprite {
      * @param xPos              The x-coordinate for the ETFortress.
      * @param yPos              The y-coordinate for the ETFortress.
      */
-    public ETFortress(ETFortressFactory params, float scaleX, float scaleY, float xPos, float yPos) {
-        super(params.texture);
-        this.maxHealth = params.maxHealth;
-        this.destroyed = params.destroyedTexture;
-        this.setScale(scaleX, scaleY);
-        this.setPosition(xPos, yPos);
-        this.projectileDamage = params.projectileDamage;
-        this.create();
-    }
+//    public ETFortress(ETFortressFactory params, float scaleX, float scaleY, float xPos, float yPos) {
+//        super(params.texture);
+//        this.maxHealth = params.maxHealth;
+//        this.destroyed = params.destroyedTexture;
+//        this.setScale(scaleX, scaleY);
+//        this.setPosition(xPos, yPos);
+//        this.projectileDamage = params.projectileDamage;
+//        this.create();
+//    }
     
-    public ETFortress(Texture texture, Texture destroyedTexture, int projectileDamage, int maxHealth, float scaleX, float scaleY, float xPos, float yPos) {
+    public ETFortress(Texture texture, Texture destroyedTexture, int projectileDamage, int maxHealth, float scaleX, float scaleY, float xPos, float yPos, ETFortressType type) {
         super(texture);
         this.maxHealth = maxHealth;
         this.destroyed = destroyedTexture;
         this.setScale(scaleX, scaleY);
         this.setPosition(xPos, yPos);
         this.projectileDamage = projectileDamage;
+        this.type = type;
         this.create();
     }
     
-    public ETFortress(Texture texture, Texture destroyedTexture, int projectileDamage, int maxHealth) {
-        super(texture);
-        this.maxHealth = maxHealth;
-        this.destroyed = destroyedTexture;
-        this.setScale(1, 1);
-        this.setPosition(0, 0);
-        this.projectileDamage = projectileDamage;
-        this.create();
-    }
+//    public ETFortress(Texture texture, Texture destroyedTexture, int projectileDamage, int maxHealth) {
+//        super(texture);
+//        this.maxHealth = maxHealth;
+//        this.destroyed = destroyedTexture;
+//        this.setScale(1, 1);
+//        this.setPosition(0, 0);
+//        this.projectileDamage = projectileDamage;
+//        this.create();
+//    }
 
     /**
      * Overloaded constructor containing most parameters.
@@ -169,7 +172,6 @@ public class ETFortress extends SimpleSprite {
         return polygon.contains(this.detectionRange.x, this.detectionRange.y);
     }
 
-
     /**
      * Overloaded method for drawing debug information. Draws the hitbox as well
      * as the range circle.
@@ -193,11 +195,7 @@ public class ETFortress extends SimpleSprite {
 	public void setMaxHealth(int max) {
 		this.maxHealth = max;
 	}
-	
-	/*Procedure called upgrade:
-	 maxHealth upgraded by +5
-	 ProjectileDamage is doubled (by *2 upgrade).
-	 */
+
 	public void upgrade() {
 		setMaxHealth(this.maxHealth + 5);
 		setProjectileDamage(this.projectileDamage * 2);

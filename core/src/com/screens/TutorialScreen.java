@@ -32,7 +32,6 @@ public class TutorialScreen extends BasicScreen {
                 "You must go back to the fire station in order to repair and refill.";
     }
 
-
     @Override
     public void show() {
 

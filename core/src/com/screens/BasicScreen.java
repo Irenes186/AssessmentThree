@@ -60,11 +60,6 @@ public class BasicScreen implements Screen {
         stage = new Stage(viewport, batch);
     }
 
-    @Override
-    public void show() {
-        // TODO Auto-generated method stub
-
-    }
 
     @Override
     public void render(float delta) {
@@ -73,35 +68,27 @@ public class BasicScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Draw the button stage
-        //stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-
     }
 
     @Override
     public void resize(int width, int height) {
 		viewport.update(width, height);
         camera.update();
-
     }
+
+    // TODO Auto-generated methods stub
+    @Override
+    public void pause() {}
 
     @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-
-    }
+    public void resume() {}
 
     @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-
-    }
+    public void hide() {}
 
     @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-
-    }
+    public void show() {}
 
     @Override
     public void dispose() {

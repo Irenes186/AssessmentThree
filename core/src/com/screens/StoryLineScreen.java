@@ -11,10 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.kroy.Kroy;
 
-
-//Class imports
-
-
 public class StoryLineScreen extends BasicScreen {
     protected Texture texture;
     protected Skin skin2;
@@ -25,8 +21,6 @@ public class StoryLineScreen extends BasicScreen {
         super(game);
 
         skin2 = new Skin(Gdx.files.internal("skin/uiskin2.json"), atlas);
-        //skin.add("default", new Texture("button.png"));
-
             displayText = "It is a period of wars in the galaxy. A brave alliance of underground fire fighters has challenged the tyranny and oppression of the awesome ET EMPIRE.\n" +
                     "\n" +
                     "Striking from a fortress hidden among the billion buildings of york, rebel fire engines have won\n" +
@@ -38,10 +32,8 @@ public class StoryLineScreen extends BasicScreen {
                     "system. Powerful enough to burn an entire city, its completion spells certain doom for the champions of freedom.";
     }
 
-
     @Override
     public void show() {
-
         // Allow stage to control screen inputs.
         Gdx.input.setInputProcessor(stage);
 
@@ -80,7 +72,5 @@ public class StoryLineScreen extends BasicScreen {
         buttonTable.row();
         // Add table to stage
         stage.addActor(buttonTable);
-
-
     }
 }

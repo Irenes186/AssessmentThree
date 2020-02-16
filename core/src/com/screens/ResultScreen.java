@@ -33,21 +33,16 @@ public class ResultScreen extends BasicScreen {
     public TextField field;
     public String name;
 
-
-
     //Constructor
     public ResultScreen(final Kroy game, final int score) {
         super(game);
-
         skin2 = new Skin(Gdx.files.internal("skin/uiskin2.json"), atlas);
-
         if (GameScreen.gameWon && !GameScreen.gameLost){
             displayText = "YOU WIN! Your score is " + GameScreen.score;
         }
         else if(!GameScreen.gameWon && GameScreen.gameLost ){
             displayText = "YOU LOSE";
         }
-
         this.score = score;
         this.leaderboard = new ArrayList<LeaderboardPair>();
         try{
@@ -55,9 +50,6 @@ public class ResultScreen extends BasicScreen {
         }
         catch(final Exception e){
         }
-
-
-
     }
 
     public ArrayList<LeaderboardPair> updateInternalLeaderboard(final ArrayList<LeaderboardPair> leaderboard, final String name){
@@ -71,7 +63,6 @@ public class ResultScreen extends BasicScreen {
             else {
                 outputPairs.add(pair);
             }
-
         }
         return outputPairs;
     }
@@ -82,18 +73,14 @@ public class ResultScreen extends BasicScreen {
      * @return boolean true if score is greater than last leaderboard score, otherwise false.
      */
     public boolean wantNickname(final ArrayList<LeaderboardPair> leaderboard){
-        System.out.println(leaderboard);
         return leaderboard.get(leaderboard.size()-1).score < this.score;
     }
-
 
     public ArrayList<LeaderboardPair> readLeaderboardFile() throws IOException {
         //read names and scores, add to
         BufferedReader reader;
         final File leaderboardFile = new File("leaderboard.txt");
         reader = new BufferedReader(new FileReader(leaderboardFile));
-
-
         final ArrayList<LeaderboardPair> pairs = new ArrayList<LeaderboardPair>();
         String line;
         String[] pair;
@@ -135,9 +122,6 @@ public class ResultScreen extends BasicScreen {
         TextButton enterNameButton = null;
         if (wantNickname(leaderboard)) {
             enterNameButton = new TextButton("Enter", skin);
-
-
-
             enterNameButton.addListener(new ClickListener(){
                 @Override
                 //transition to game screen
@@ -179,8 +163,6 @@ public class ResultScreen extends BasicScreen {
             }
         });
 
-
-
         // Add buttons to table and style them
         buttonTable.add(winLabel).padBottom(40).padRight(40).width(150).height(150);
         buttonTable.row();
@@ -204,14 +186,11 @@ public class ResultScreen extends BasicScreen {
         // Add table to stage
         stage.addActor(buttonTable);
 
-
     }
-
     class ConfirmClick extends ClickListener{
         public void clicked(final InputEvent event, final float x, final float y, final TextField field,
                 final String name) {
             Gdx.app.log("button","clicked");
-
-        };
+        }
     }
 }

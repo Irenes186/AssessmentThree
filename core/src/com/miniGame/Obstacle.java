@@ -26,7 +26,6 @@ public class Obstacle extends MovementSprite {
         this.setSpeed (new Vector2(speed, 0));
     }
 
-
     public void update (SpriteBatch batch) {
         super.update (batch);
     }

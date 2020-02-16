@@ -20,7 +20,6 @@ import com.kroy.Kroy;
  * @since 23/11/2019
  */
 public class MainMenuScreen extends BasicScreen {
-	
 	protected Texture texture;
 
 	/**
@@ -32,7 +31,6 @@ public class MainMenuScreen extends BasicScreen {
 	public MainMenuScreen(final Kroy game) {
 		super(game);
 	}
-
 	/**
 	 * Create the button stage.
 	 */
@@ -40,7 +38,6 @@ public class MainMenuScreen extends BasicScreen {
 	public void show() {
 		// Allow stage to control screen inputs.
 		Gdx.input.setInputProcessor(stage);
-
 		// Create table to arrange buttons.
 		final Table buttonTable = new Table();
 		buttonTable.setFillParent(true);
@@ -86,11 +83,6 @@ public class MainMenuScreen extends BasicScreen {
 		leaderboardButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(final InputEvent event, final float x, final float y) {
-				// Transition to leaderboard screen
-				//
-				// TO IMPLEMENT
-				//
-				// Currently main game screen
 				game.setScreen(new LeaderboardScreen(game));
 				dispose();
 			}

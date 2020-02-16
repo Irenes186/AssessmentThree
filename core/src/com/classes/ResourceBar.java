@@ -173,6 +173,15 @@ public class ResourceBar {
     public float getCurrentAmount() {
         return this.currentResourceAmount;
     }
+    
+    public void setCurrentAmount(int amount) {
+        if (amount > this.maxResourceAmount) {
+            this.currentResourceAmount = this.maxResourceAmount;
+        } else {
+            this.currentResourceAmount = amount;
+            this.bar.setStyle(getResourceBarStyle());
+        }
+    }
 
     /** 
      * Get the max resource amount.
@@ -190,6 +199,7 @@ public class ResourceBar {
     public void setMaxResource(int maxAmount) {
         this.currentResourceAmount = (this.currentResourceAmount / this.maxResourceAmount) * maxAmount;
         this.maxResourceAmount = maxAmount;
+        
         this.bar.setStyle(getResourceBarStyle());
     }
 
