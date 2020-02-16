@@ -1,7 +1,6 @@
 package com.screens;
 
 // LibGDX imports
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -37,14 +36,14 @@ public class MainMenuScreen implements Screen {
 	final Kroy game;
 	
 	// Private camera to see the screen
-	private OrthographicCamera camera;
+	private final OrthographicCamera camera;
 
 	protected Stage stage;
 	protected Texture texture;
 	protected Skin skin;
 	protected TextureAtlas atlas;
-	private SpriteBatch batch;
-	private Viewport viewport;
+	private final SpriteBatch batch;
+	private final Viewport viewport;
 
 	/**
 	 * The constructor for the main menu screen. All game logic for the main
@@ -91,7 +90,7 @@ public class MainMenuScreen implements Screen {
 	 * @param delta The delta time of the game, updated every second rather than frame.
 	 */
 	@Override
-	public void render(float delta) {
+	public void render(final float delta) {
 		// MUST BE FIRST: Clear the screen each frame to stop textures blurring
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -103,7 +102,7 @@ public class MainMenuScreen implements Screen {
 
 	// Below are all required methods of the screen class
 	@Override
-	public void resize(int width, int height) {
+	public void resize(final int width, final int height) {
 		viewport.update(width, height);
         camera.update();
 	}
@@ -117,16 +116,16 @@ public class MainMenuScreen implements Screen {
 		Gdx.input.setInputProcessor(stage);
 
 		// Create table to arrange buttons.
-		Table buttonTable = new Table();
+		final Table buttonTable = new Table();
 		buttonTable.setFillParent(true);
 		buttonTable.center();
 
 		// Create buttons
-		TextButton playButton = new TextButton("Play", skin);
-		TextButton tutorialButton = new TextButton("Tutorial", skin);
-		TextButton leaderboardButton = new TextButton("Leaderboard", skin);
-		TextButton storylineButton = new TextButton("Story Line", skin);
-		TextButton quitButton = new TextButton("Quit", skin);
+		final TextButton playButton = new TextButton("Play", skin);
+		final TextButton tutorialButton = new TextButton("Tutorial", skin);
+		final TextButton leaderboardButton = new TextButton("Leaderboard", skin);
+		final TextButton storylineButton = new TextButton("Story Line", skin);
+		final TextButton quitButton = new TextButton("Quit", skin);
 
 		// Increase size of text
 		playButton.setTransform(true);
@@ -144,7 +143,7 @@ public class MainMenuScreen implements Screen {
 		playButton.addListener(new ClickListener(){
 			@Override
 			//transition to game screen
-			public void clicked(InputEvent event, float x, float y){
+			public void clicked(final InputEvent event, final float x, final float y){
 				game.setScreen(new GameScreen(game));
 				dispose();
 			}
@@ -152,7 +151,7 @@ public class MainMenuScreen implements Screen {
 		tutorialButton.addListener(new ClickListener(){
 		@Override
 		//transition to tutorial screen
-		public void clicked(InputEvent event, float x, float y){
+		public void clicked(final InputEvent event, final float x, final float y){
 			game.setScreen(new TutorialScreen(game));
 			dispose();
 		}
@@ -160,7 +159,7 @@ public class MainMenuScreen implements Screen {
 
 		leaderboardButton.addListener(new ClickListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
+			public void clicked(final InputEvent event, final float x, final float y) {
 				// Transition to leaderboard screen
 				//
 				// TO IMPLEMENT
@@ -174,7 +173,7 @@ public class MainMenuScreen implements Screen {
 		storylineButton.addListener(new ClickListener(){
 			@Override
 			//transition to storyline screen
-			public void clicked(InputEvent event, float x, float y){
+			public void clicked(final InputEvent event, final float x, final float y){
 				game.setScreen(new StoryLineScreen(game));
 				dispose();
 			}
@@ -182,7 +181,7 @@ public class MainMenuScreen implements Screen {
 
 		quitButton.addListener(new ClickListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
+			public void clicked(final InputEvent event, final float x, final float y) {
 				Gdx.app.exit();
 			}
 		});
@@ -218,6 +217,5 @@ public class MainMenuScreen implements Screen {
 	@Override
 	public void dispose() {
 		skin.dispose();
-		this.texture.dispose();
 	}
 }

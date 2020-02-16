@@ -7,7 +7,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -21,7 +20,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.classes.LeaderboardPair;
 import com.kroy.Kroy;
 
-import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -35,15 +33,15 @@ public class ResultScreen implements Screen {
     final Kroy game;
 
     // Private camera to see the screen
-    private OrthographicCamera camera;
+    private final OrthographicCamera camera;
 
     protected Stage stage;
     protected Texture texture;
     protected Skin skin;
     protected Skin skin2;
     protected TextureAtlas atlas;
-    private SpriteBatch batch;
-    private Viewport viewport;
+    private final SpriteBatch batch;
+    private final Viewport viewport;
     private String displayText;
     public int score;
     public ArrayList<LeaderboardPair> leaderboard;
@@ -53,7 +51,7 @@ public class ResultScreen implements Screen {
 
 
     //Constructor
-    public ResultScreen(Kroy gam, int score) {
+    public ResultScreen(final Kroy gam, final int score) {
         this.game = gam;
 
         atlas = new TextureAtlas("skin/uiskin.atlas");
@@ -98,17 +96,17 @@ public class ResultScreen implements Screen {
         try{
             this.leaderboard = readLeaderboardFile();
         }
-        catch(Exception e){
+        catch(final Exception e){
         }
 
 
 
     }
 
-    public ArrayList<LeaderboardPair> updateInternalLeaderboard(ArrayList<LeaderboardPair> leaderboard, String name){
-        ArrayList<LeaderboardPair> outputPairs = new ArrayList<>();
+    public ArrayList<LeaderboardPair> updateInternalLeaderboard(final ArrayList<LeaderboardPair> leaderboard, final String name){
+        final ArrayList<LeaderboardPair> outputPairs = new ArrayList<>();
         boolean notWritten = true;
-        for (LeaderboardPair pair: leaderboard ){
+        for (final LeaderboardPair pair: leaderboard ){
             if (pair.score < this.score && notWritten){
                 outputPairs.add(new LeaderboardPair(name, this.score));
                 notWritten = false;
@@ -126,7 +124,7 @@ public class ResultScreen implements Screen {
      * @param leaderboard
      * @return boolean true if score is greater than last leaderboard score, otherwise false.
      */
-    public boolean wantNickname(ArrayList<LeaderboardPair> leaderboard){
+    public boolean wantNickname(final ArrayList<LeaderboardPair> leaderboard){
         System.out.println(leaderboard);
         return leaderboard.get(leaderboard.size()-1).score < this.score;
     }
@@ -135,11 +133,11 @@ public class ResultScreen implements Screen {
     public ArrayList<LeaderboardPair> readLeaderboardFile() throws IOException {
         //read names and scores, add to
         BufferedReader reader;
-        File leaderboardFile = new File("leaderboard.txt");
+        final File leaderboardFile = new File("leaderboard.txt");
         reader = new BufferedReader(new FileReader(leaderboardFile));
 
 
-        ArrayList<LeaderboardPair> pairs = new ArrayList<LeaderboardPair>();
+        final ArrayList<LeaderboardPair> pairs = new ArrayList<LeaderboardPair>();
         String line;
         String[] pair;
         line = reader.readLine();
@@ -152,13 +150,13 @@ public class ResultScreen implements Screen {
         return pairs;
     }
 
-    public void writeLeaderboardFile(ArrayList<LeaderboardPair> outputList) throws IOException{
-        File leaderboardFile = new File("leaderboard.txt");
-        FileWriter dave = new FileWriter(leaderboardFile);
-        BufferedWriter writer = new BufferedWriter(dave);
+    public void writeLeaderboardFile(final ArrayList<LeaderboardPair> outputList) throws IOException{
+        final File leaderboardFile = new File("leaderboard.txt");
+        final FileWriter dave = new FileWriter(leaderboardFile);
+        final BufferedWriter writer = new BufferedWriter(dave);
 
         String outputString = "";
-        for (LeaderboardPair pair : outputList) {
+        for (final LeaderboardPair pair : outputList) {
             outputString = outputString + pair.name + "," + pair.score + "\n";
         }
         writer.write(outputString);
@@ -171,21 +169,21 @@ public class ResultScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         // Create table to arrange buttons.
-        Table buttonTable = new Table();
+        final Table buttonTable = new Table();
         buttonTable.setFillParent(true);
         buttonTable.center();
 
         // Create buttons
-        TextButton menuButton = new TextButton("Menu", skin);
+        final TextButton menuButton = new TextButton("Menu", skin);
         TextButton enterNameButton = null;
         if (wantNickname(leaderboard)) {
             enterNameButton = new TextButton("Enter", skin);
         }
 
         //Create labels
-        Label winLabel = new Label(displayText, skin2);
+        final Label winLabel = new Label(displayText, skin2);
         winLabel.setFontScale(2,2);
-        Label newHighscoreLabel = new Label("New Highscore! Enter your nickname to add to leaderboard",skin2);
+        final Label newHighscoreLabel = new Label("New Highscore! Enter your nickname to add to leaderboard",skin2);
         newHighscoreLabel.setFontScale(1.5f,1.5f);
 
 
@@ -198,7 +196,7 @@ public class ResultScreen implements Screen {
         menuButton.addListener(new ClickListener(){
             @Override
             //transition to game screen
-            public void clicked(InputEvent event, float x, float y){
+            public void clicked(final InputEvent event, final float x, final float y){
                 game.setScreen(new MainMenuScreen(game));
                 dispose();
             }
@@ -208,13 +206,13 @@ public class ResultScreen implements Screen {
         enterNameButton.addListener(new ClickListener(){
             @Override
             //transition to game screen
-            public void clicked(InputEvent event, float x, float y){
-                String input = field.getText();
+            public void clicked(final InputEvent event, final float x, final float y){
+                final String input = field.getText();
                 name = input;
                 leaderboard = updateInternalLeaderboard(leaderboard,name);
                 try {
                     writeLeaderboardFile(leaderboard);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     e.printStackTrace();
                 }
                 game.setScreen(new LeaderboardScreen(game));
@@ -251,7 +249,7 @@ public class ResultScreen implements Screen {
     }
 
     @Override
-    public void render(float delta) {
+    public void render(final float delta) {
         // MUST BE FIRST: Clear the screen each frame to stop textures blurring
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -264,7 +262,7 @@ public class ResultScreen implements Screen {
 
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(final int width, final int height) {
         viewport.update(width, height);
         camera.update();
     }
@@ -287,7 +285,8 @@ public class ResultScreen implements Screen {
     }
 
     class ConfirmClick extends ClickListener{
-        public void clicked(InputEvent event, float x, float y, TextField field, String name) {
+        public void clicked(final InputEvent event, final float x, final float y, final TextField field,
+                final String name) {
             Gdx.app.log("button","clicked");
 
         };

@@ -16,14 +16,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kroy.Kroy;
-import com.classes.LeaderboardPair;
 //import javafx.util.Pair;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import static com.config.Constants.SCREEN_HEIGHT;
 import static com.config.Constants.SCREEN_WIDTH;
@@ -34,22 +32,22 @@ public class LeaderboardScreen implements Screen {
     final Kroy game;
 
     // Private camera to see the screen
-    private OrthographicCamera camera;
+    private final OrthographicCamera camera;
 
     protected Stage stage;
     protected Texture texture;
     protected Skin skin;
     protected Skin skin2;
     protected TextureAtlas atlas;
-    private SpriteBatch batch;
-    private Viewport viewport;
+    private final SpriteBatch batch;
+    private final Viewport viewport;
 
 
     /**
      * Constructor initialises key features of screen
      * @param gam
      */
-    public LeaderboardScreen (Kroy gam){
+    public LeaderboardScreen (final Kroy gam){
         this.game = gam;
 
         atlas = new TextureAtlas("skin/uiskin.atlas");
@@ -93,11 +91,11 @@ public class LeaderboardScreen implements Screen {
     public String[] readLeaderboardFile() throws IOException{
         //read names and scores
         BufferedReader reader;
-        File leaderboardFile = new File("leaderboard.txt");
+        final File leaderboardFile = new File("leaderboard.txt");
         reader = new BufferedReader(new FileReader(leaderboardFile));
 
 
-        String [] pairs = new String[5];
+        final String [] pairs = new String[5];
         String line;
         line = reader.readLine();
         int index=0;
@@ -117,12 +115,12 @@ public class LeaderboardScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         // Create table to arrange buttons.
-        Table buttonTable = new Table();
+        final Table buttonTable = new Table();
         buttonTable.setFillParent(true);
         buttonTable.center();
 
         // Create buttons
-        TextButton menuButton = new TextButton("Menu", skin);
+        final TextButton menuButton = new TextButton("Menu", skin);
         //TextButton leaderboardButton = new TextButton("Leaderboard", skin);
 
 
@@ -130,20 +128,20 @@ public class LeaderboardScreen implements Screen {
         try{
             pairs = readLeaderboardFile();
         }
-        catch(Exception e){
+        catch(final Exception e){
             System.out.println("hello");
         }
 
         System.out.println("hello");
 
         //Create label
-        Label titleLabel = new Label("LEADERBOARD",skin2);
+        final Label titleLabel = new Label("LEADERBOARD",skin2);
         titleLabel.setFontScale(2,2);
-        Label firstLabel = new Label(pairs[0],skin);
-        Label secondLabel = new Label(pairs[1],skin);
-        Label thirdLabel = new Label(pairs[2],skin);
-        Label fourthLabel = new Label(pairs[3],skin);
-        Label fifthLabel = new Label(pairs[4],skin);
+        final Label firstLabel = new Label(pairs[0],skin);
+        final Label secondLabel = new Label(pairs[1],skin);
+        final Label thirdLabel = new Label(pairs[2],skin);
+        final Label fourthLabel = new Label(pairs[3],skin);
+        final Label fifthLabel = new Label(pairs[4],skin);
 
 
         // Increase size of text
@@ -154,7 +152,7 @@ public class LeaderboardScreen implements Screen {
         menuButton.addListener(new ClickListener(){
             @Override
             //transition to game screen
-            public void clicked(InputEvent event, float x, float y){
+            public void clicked(final InputEvent event, final float x, final float y){
                 game.setScreen(new MainMenuScreen(game));
                 dispose();
             }
@@ -184,7 +182,7 @@ public class LeaderboardScreen implements Screen {
     }
 
     @Override
-    public void render(float delta) {
+    public void render(final float delta) {
         // MUST BE FIRST: Clear the screen each frame to stop textures blurring
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -195,7 +193,7 @@ public class LeaderboardScreen implements Screen {
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(final int width, final int height) {
         viewport.update(width, height);
         camera.update();
     }
