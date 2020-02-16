@@ -127,6 +127,8 @@ public class MiniGameScreen extends BasicScreen {
     /**
      * This is called every frame and handles the main game logic as well as
      * drawring things to the screen.
+     * 
+     * @param delta The time from the last call from render.
      */
     @Override
     public void render(float delta) {
@@ -146,7 +148,9 @@ public class MiniGameScreen extends BasicScreen {
 
         if (this.lives <= 0) {
             endGameLabel.setText ("You have failed the mini game, press enter to continue!");
-            gameScreen.getFiretruckInFocus().getHealthBar().setResourcePercentage(0);
+            try {
+                gameScreen.getFiretruckInFocus().getHealthBar().setResourcePercentage(0);
+            } catch (Exception e) {}
             transitionToEndGame ();
 
         } else if (this.obstacleCount == 0) {

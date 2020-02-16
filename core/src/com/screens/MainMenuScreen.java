@@ -27,7 +27,7 @@ public class MainMenuScreen extends BasicScreen {
 	 * The constructor for the main menu screen. All game logic for the main
 	 * menu screen is contained.
 	 *
-	 * @param gam The game object.
+	 * @param game The game object.
 	 */
 	public MainMenuScreen(final Kroy game) {
 		super(game);

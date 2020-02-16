@@ -1,4 +1,5 @@
 package com.miniGame;
+
 // LibGDX imports
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Input.Keys;
@@ -6,8 +7,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+// Class imports
 import com.sprites.MovementSprite;
 
+/**
+ * This is the class that represents the fire engine in the minigame.
+ */
 public class MiniFireEngine extends MovementSprite {
 
     private static float originalY;
@@ -17,6 +22,13 @@ public class MiniFireEngine extends MovementSprite {
     private boolean ducked;
     private float originalWidth;
 
+    /**
+     * This is the constructor to create the fire engine.
+     * 
+     * @param x This is the x position to draw the fire engine too.
+     * @param y This is the y position to draw the fire engine too.
+     * @param textureName The filename of the texture to use for the fire engine.
+     */
     public MiniFireEngine (float x, float y, String textureName) {
         super (new Texture (textureName));
 
@@ -32,6 +44,12 @@ public class MiniFireEngine extends MovementSprite {
         originalWidth = this.getWidth();
     }
 
+    /**
+     * This is called every frame, it is mainly used to handle the input from the user
+     * to control the fireengine.
+     * 
+     * @param batch This is the batch from minigame screen to draw the fireengine.
+     */
     public void update (SpriteBatch batch) {
         super.update(batch);
 
@@ -65,6 +83,11 @@ public class MiniFireEngine extends MovementSprite {
         }
     }
 
+    /**
+     * This is to retrive the resting y value of the fire engine
+     * 
+     * @return The resting y value
+     */
     public float getOriginalY() {
         return originalY;
     }
