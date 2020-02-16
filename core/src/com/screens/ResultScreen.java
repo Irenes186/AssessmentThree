@@ -1,19 +1,26 @@
 package com.screens;
 
-import com.badlogic.gdx.Gdx;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 //Class imports
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.classes.LeaderboardPair;
 import com.kroy.Kroy;
-
-import java.io.*;
-import java.util.ArrayList;
 
 
 public class ResultScreen extends BasicScreen {
@@ -148,8 +155,6 @@ public class ResultScreen extends BasicScreen {
                 }
     
             });
-
-            
         }
 
         //Create labels
@@ -158,8 +163,8 @@ public class ResultScreen extends BasicScreen {
         final Label newHighscoreLabel = new Label("New Highscore! Enter your nickname to add to leaderboard",skin2);
         newHighscoreLabel.setFontScale(1.5f,1.5f);
 
-
-
+        winLabel.setAlignment (Align.center);
+        newHighscoreLabel.setAlignment (Align.center);
 
         // Increase size of text
         menuButton.setTransform(true);

@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.kroy.Kroy;
 
 
@@ -26,9 +27,9 @@ public class TutorialScreen extends BasicScreen {
 
         skin2 = new Skin(Gdx.files.internal("skin/uiskin2.json"), atlas);
 
-            displayText = "Keyboard buttons “W”, “A”, “S”, and “D”, as well as the arrow keys, are used to move the truck up, left, down, and right respectively. The truck will rotate as you change direction.\n" +
-                    "There are two fire trucks available, these can be switched between by using the keyboard button “TAB”. \n Using the keyboard button “E”, you are able to toggle your hose water on and off. The water will aim in the direction of your mouse cursor." +
-                    "You must go back to the fire station in order to repair and refill.";
+        displayText = "Keyboard buttons “W”, “A”, “S”, and “D”, as well as the arrow keys, are used to move the truck up, left, down, and right respectively. The truck will rotate as you change direction.\n" +
+                "There are two fire trucks available, these can be switched between by using the keyboard button “TAB”. \n Using the keyboard button “E”, you are able to toggle your hose water on and off.\n The water will aim in the direction of your mouse cursor." +
+                "You must go back to the fire station in order to repair and refill.";
     }
 
 
@@ -48,7 +49,9 @@ public class TutorialScreen extends BasicScreen {
 
         //Create label
         Label winLabel = new Label(displayText,skin2);
-        winLabel.setFontScale(2,2);
+        //winLabel.setFontScale(2,2);
+
+        winLabel.setAlignment(Align.center);
 
         // Increase size of text
         menuButton.setTransform(true);
