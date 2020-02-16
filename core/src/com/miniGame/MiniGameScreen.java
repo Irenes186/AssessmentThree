@@ -1,48 +1,39 @@
 package com.miniGame;
 
-import com.sprites.SimpleSprite;
-import com.miniGame.MiniFireEngine;
+//importing of constants
+import static com.config.Constants.SCREEN_WIDTH;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.utils.Align;
-
+//java import statements
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
+import java.util.List;
+import java.util.Arrays;
 
-import static com.config.Constants.SCREEN_HEIGHT;
-import static com.config.Constants.SCREEN_WIDTH;
-
+//GDX import statements
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Align;
+//importing custom classes
 import com.kroy.Kroy;
+import com.screens.BasicScreen;
 import com.screens.GameScreen;
+import com.sprites.SimpleSprite;
 
-public class MiniGameScreen implements Screen {
-    final Kroy game;
+/**
+ * This is the main class of the minigame, we switch to this screen
+ * every time we collide with alien patrols
+ */
+public class MiniGameScreen extends BasicScreen {
     GameScreen gameScreen;
 
-    private OrthographicCamera camera;
-
-    protected Stage stage;
     protected Texture texture;
-    protected Skin skin;
-    protected TextureAtlas atlas;
-    private SpriteBatch batch;
-    private Viewport viewport;
     private SimpleSprite roadSprite;
     private MiniFireEngine engine; 
 
@@ -57,44 +48,32 @@ public class MiniGameScreen implements Screen {
     private Label obstacleLabel;
     private Label endGameLabel;
 
+    /**
+     * This is the main constructor for minigame screen
+     * 
+     * @param game This is the running instance of the game used to switch screens.
+     * @param gameScreen This is the instance of the game screen to switch back too.
+     * @param focusID This is the id of the fire engine currently in focus.
+     */
     public MiniGameScreen (final Kroy game, GameScreen gameScreen, int focusID) {
-        this.game = game;
+        super(game);
         this.gameScreen = gameScreen;
         this.endGame = false;
 
-        this.batch = new SpriteBatch ();
-
-        // Create new sprite batch
-        batch = new SpriteBatch();
-
-        // Create an orthographic camera
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
-        // tell the SpriteBatch to render in the
-        // coordinate system specified by the camera.
-        batch.setProjectionMatrix(camera.combined);
-
-        // Set font scale
-        game.getFont().getData().setScale(1.5f);
-
-        // Create a viewport
-        viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera);
-        viewport.apply();
-
-        // Set camera to centre of viewport
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
-        camera.update();
-
-        // Create a stage for labels
-        stage = new Stage(viewport, batch);
-
-        initSprites();
+        initSprites(focusID);
         initLabels();
     }
 
-    private void initSprites () {
+    private void initSprites (int focusID) {
+        List<String> engineTextures = Arrays.asList(
+            "Fire_Engine_2D_blue.png",
+            "Fire_Engine_2D_red.png",
+            "Fire_Engine_2D_yellow.png",
+            "Fire_Engine_2D_green.png");
+
+        System.out.println(focusID);
         roadSprite = new SimpleSprite (new Texture ("MiniGame/road.png"));
-        engine = new MiniFireEngine (50, 175);
+        engine = new MiniFireEngine (50f, 175f, "MiniGame/" + engineTextures.get(focusID - 1));
 
 
         roadSprite.setSize (75, SCREEN_WIDTH * 2);
@@ -218,25 +197,4 @@ public class MiniGameScreen implements Screen {
         stage.addActor (endGameLabel);
         endGame = true;
     }
-
-    // TODO Auto-generated methods stub
-    @Override
-    public void resize(int width, int height) {}
-
-    @Override
-    public void pause() {}
-
-    @Override
-    public void resume() {}
-
-    @Override
-    public void hide() {}
-
-    @Override
-    public void dispose() {}
-
-    @Override
-    public void show() {}
-
-
 }

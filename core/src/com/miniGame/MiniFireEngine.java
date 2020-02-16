@@ -19,8 +19,8 @@ public class MiniFireEngine extends MovementSprite {
     private boolean ducked;
     private float originalWidth;
 
-    public MiniFireEngine (float x, float y) {
-        super (new Texture ("MiniGame/Fire_Engine_2D_blue.png"));
+    public MiniFireEngine (float x, float y, String textureName) {
+        super (new Texture (textureName));
 
         this.setSize (100, 100);
         this.setPosition (x, y);
