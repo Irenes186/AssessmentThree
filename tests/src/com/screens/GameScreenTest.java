@@ -10,6 +10,7 @@ import java.io.File;
 
 // Import Kroy game
 import com.kroy.Kroy;
+import com.classes.ETFortress;
 
 class GameScreenTest {
 	

@@ -123,14 +123,20 @@ public class MainMenuScreen implements Screen {
 
 		// Create buttons
 		TextButton playButton = new TextButton("Play", skin);
+		TextButton tutorialButton = new TextButton("Tutorial", skin);
 		TextButton leaderboardButton = new TextButton("Leaderboard", skin);
+		TextButton storylineButton = new TextButton("Story Line", skin);
 		TextButton quitButton = new TextButton("Quit", skin);
 
 		// Increase size of text
 		playButton.setTransform(true);
 		playButton.scaleBy(0.25f);
+		tutorialButton.setTransform(true);
+		tutorialButton.scaleBy(0.25f);
 		leaderboardButton.setTransform(true);
 		leaderboardButton.scaleBy(0.25f);
+		storylineButton.setTransform(true);
+		storylineButton.scaleBy(0.25f);
 		quitButton.setTransform(true);
 		quitButton.scaleBy(0.25f);
 
@@ -143,6 +149,14 @@ public class MainMenuScreen implements Screen {
 				dispose();
 			}
 		});
+		tutorialButton.addListener(new ClickListener(){
+		@Override
+		//transition to tutorial screen
+		public void clicked(InputEvent event, float x, float y){
+			game.setScreen(new TutorialScreen(game));
+			dispose();
+		}
+	});
 
 		leaderboardButton.addListener(new ClickListener() {
 			@Override
@@ -157,18 +171,32 @@ public class MainMenuScreen implements Screen {
 			}
 		});
 
+		storylineButton.addListener(new ClickListener(){
+			@Override
+			//transition to storyline screen
+			public void clicked(InputEvent event, float x, float y){
+				game.setScreen(new StoryLineScreen(game));
+				dispose();
+			}
+		});
+
 		quitButton.addListener(new ClickListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) { Gdx.app.exit();
+			public void clicked(InputEvent event, float x, float y) {
+				Gdx.app.exit();
 			}
 		});
 		
 		// Add buttons to table and style them
 		buttonTable.add(playButton).padBottom(40).padRight(40).width(150).height(40);
 		buttonTable.row();
+		buttonTable.add(storylineButton).padBottom(40).padRight(40).width(150).height(40);
+		buttonTable.row();
 		buttonTable.add(leaderboardButton).padBottom(40).padRight(40).width(150).height(40);
 		buttonTable.row();
-		buttonTable.add(quitButton).width(150).padRight(40).height(40);
+		buttonTable.add(tutorialButton).padBottom(40).padRight(40).width(150).height(40);
+		buttonTable.row();
+		buttonTable.add(quitButton).padBottom(40).padRight(40).width(150).height(40);
 
 		// Add table to stage
 		stage.addActor(buttonTable);
@@ -190,5 +218,6 @@ public class MainMenuScreen implements Screen {
 	@Override
 	public void dispose() {
 		skin.dispose();
+		this.texture.dispose();
 	}
 }

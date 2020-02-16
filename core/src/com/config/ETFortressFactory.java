@@ -81,8 +81,8 @@ public class ETFortressFactory {
                 scaleY = 1;
 		        break;
 		    case FIBBERS:
-		        texture = new Texture("MapAssets/UniqueBuildings/Fibbers.png");
-                destroyedTexture = new Texture("MapAssets/UniqueBuildings/Fibbers_wet.png");
+		        texture = new Texture("MapAssets/UniqueBuildings/fibbers.png");
+                destroyedTexture = new Texture("MapAssets/UniqueBuildings/fibbers_wet.png");
                 projectileDamage = 13;
                 maxHealth = 75;
                 x = 91;

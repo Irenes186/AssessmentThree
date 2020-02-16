@@ -111,6 +111,7 @@ public class GameScreen implements Screen {
 	 * @param gam The game object.
 	 */
 	public GameScreen(final Kroy gam) {
+		this.score = 0;
 	    this.baseDestroyed = false;
 		// Assign the game to a property so it can be used when transitioning screens
                 System.out.println ("HashCode");
@@ -190,7 +191,7 @@ public class GameScreen implements Screen {
 				Texture red = new Texture("FiretruckRed/FiretruckRED (6) A.png");
 				Texture yellow = new Texture("FiretruckYellow/FiretruckYELLOW (6) A.png");
 				Texture green = new Texture("FiretruckGreen/FiretruckGREEN (6) A.png");
-				Texture alienPink = new Texture("AlientruckPink/AlientruckPINK (6) A.png");
+				Texture alienPink = new Texture("AlienTruckPink/AlientruckPINK (6) A.png");
 				firetruckBlue.add(blue);
 				firetruckRed.add(red);
 				firetruckYellow.add(yellow);
@@ -200,7 +201,7 @@ public class GameScreen implements Screen {
 				Texture red = new Texture("FiretruckRed/FiretruckRED (" + i + ").png");
 				Texture yellow = new Texture("FiretruckYellow/FiretruckYELLOW (" + i + ").png");
 				Texture green = new Texture("FiretruckGreen/FiretruckGREEN (" + i + ").png");
-				Texture alienPink = new Texture("AlientruckPink/AlientruckPINK (" + i + ").png");
+				Texture alienPink = new Texture("AlienTruckPink/AlientruckPINK (" + i + ").png");
 				firetruckBlue.add(blue);
 				firetruckRed.add(red);
 				firetruckYellow.add(yellow);
@@ -290,6 +291,10 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+		// Check if the game should end
+		checkIfGameOver();
+
 		// ---- 1) Update camera and map properties each iteration -------- //
 		
 		// Set the TiledMapRenderer view based on what the camera sees
@@ -336,9 +341,9 @@ public class GameScreen implements Screen {
 		if (Gdx.input.isKeyJustPressed(Keys.E)) {
 			focusedTruck.toggleHose();
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.Q)) {
-                        this.game.setScreen (new MiniGameScreen (game));
-                }
+		//if (Gdx.input.isKeyJustPressed(Keys.Q)) {
+                //        this.game.setScreen (new MiniGameScreen (game, this));
+                //}
 		if (Gdx.input.isKeyJustPressed(Keys.TAB)) {
 			this.focusedID += 1;
 			if (this.focusedID > this.firetrucks.size()) {
@@ -359,7 +364,7 @@ public class GameScreen implements Screen {
 		// Call the update function of the sprites to draw and update them
 		for (Firetruck firetruck : this.firetrucks) {
 			firetruck.update(batch, this.camera);
-			if (firetruck.getHealthBar().getCurrentAmount() <= 0) this.firetrucksToRemove.add(firetruck);
+			if (firetruck.getHealthBar().getCurrentAmount() <= 0 && firetrucks.size() > 1) this.firetrucksToRemove.add(firetruck);
 			if (DEBUG_ENABLED) firetruck.drawDebug(shapeRenderer);
 		}
 		
@@ -428,19 +433,41 @@ public class GameScreen implements Screen {
 
 		// Check for any collisions
 		checkForCollisions();
+                detectPatrolCollision ();
 
 		//Check if fortress has to be upgraded and if so upgrade it.
 		checkForUpgrade();
-		
-		// Check if the game should end
-		checkIfGameOver();
+
+		//FOR fucks sake remove this it is for debugging clive
+		if (Gdx.input.isKeyJustPressed(Keys.P)){
+			for (ETFortress a: ETFortresses){
+				a.getHealthBar().subtractResourceAmount(5);
+			}
+		}
+
 	}
+
+        private void detectPatrolCollision () {
+            Alientruck toRemove = null;
+            for (Firetruck truck : firetrucks) {
+                for (Alientruck alien : alientrucks) {
+                    if (truck.getHitBox().getBoundingRectangle().overlaps(alien.getHitBox().getBoundingRectangle())) {
+                        toRemove = alien;
+                        game.setScreen (new MiniGameScreen (game, this, this.focusedID));
+                    }
+                }
+            }
+
+            alientrucks.remove (toRemove);
+        }
 
 	/**
      * Checks to see if the player has won or lost the game. Navigates back to the main menu
 	 * if they won or lost.
      */
 	private void checkIfGameOver() {
+		gameLost = true;
+		gameWon = true;
 		// Check if any firetrucks are still alive
 		for (Firetruck firetruck : this.firetrucks) {
 			if (firetruck.getHealthBar().getCurrentAmount() > 0) gameLost = false;
@@ -450,8 +477,9 @@ public class GameScreen implements Screen {
 			if (ETFortress.getHealthBar().getCurrentAmount() > 0) gameWon = false;
 		}
 		if (gameWon || gameLost) {
+			System.out.println("check2");
 			dispose();
-			this.game.setScreen(new ResultScreen(this.game));
+			this.game.setScreen(new ResultScreen(this.game, this.score));
 		}
 	}
 
@@ -542,7 +570,7 @@ public class GameScreen implements Screen {
 	 * 
 	 * @return The firetruck with user's focus.
 	 */
-	private Firetruck getFiretruckInFocus() {
+	public Firetruck getFiretruckInFocus() {
 		for (Firetruck firetruck : this.firetrucks) {
 			if (firetruck.isFocused() && firetruck.getHealthBar().getCurrentAmount() > 0) {
 				return firetruck;
