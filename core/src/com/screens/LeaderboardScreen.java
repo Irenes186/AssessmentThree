@@ -44,6 +44,11 @@ public class LeaderboardScreen implements Screen {
     private SpriteBatch batch;
     private Viewport viewport;
 
+
+    /**
+     * Constructor initialises key features of screen
+     * @param gam
+     */
     public LeaderboardScreen (Kroy gam){
         this.game = gam;
 
@@ -80,9 +85,13 @@ public class LeaderboardScreen implements Screen {
     }
 
 
-
+    /**
+     * Reads leaderboard file and formats the name and score pai
+     * @return array of pairs containing the string name and integer score
+     * @throws IOException
+     */
     public String[] readLeaderboardFile() throws IOException{
-        //read names and scores, add to
+        //read names and scores
         BufferedReader reader;
         File leaderboardFile = new File("leaderboard.txt");
         reader = new BufferedReader(new FileReader(leaderboardFile));
@@ -100,10 +109,6 @@ public class LeaderboardScreen implements Screen {
         System.out.println(pairs);
         return pairs;
     }
-
-
-
-
 
     @Override
     public void show() {
@@ -158,15 +163,15 @@ public class LeaderboardScreen implements Screen {
         // Add buttons to table and style them
         buttonTable.add(titleLabel).padBottom(40).padRight(40).width(150).height(50);
         buttonTable.row();
-        buttonTable.add(firstLabel).padBottom(40).padRight(40).width(150).height(30);
+        buttonTable.add(firstLabel).padBottom(40).padRight(40).padLeft(20).width(150).height(30);
         buttonTable.row();
-        buttonTable.add(secondLabel).padBottom(40).padRight(40).width(150).height(30);
+        buttonTable.add(secondLabel).padBottom(40).padRight(40).padLeft(20).width(150).height(30);
         buttonTable.row();
-        buttonTable.add(thirdLabel).padBottom(40).padRight(40).width(150).height(30);
+        buttonTable.add(thirdLabel).padBottom(40).padRight(40).padLeft(20).width(150).height(30);
         buttonTable.row();
-        buttonTable.add(fourthLabel).padBottom(40).padRight(40).width(150).height(30);
+        buttonTable.add(fourthLabel).padBottom(40).padRight(40).padLeft(20).width(150).height(30);
         buttonTable.row();
-        buttonTable.add(fifthLabel).padBottom(40).padRight(40).width(150).height(30);
+        buttonTable.add(fifthLabel).padBottom(40).padRight(40).padLeft(20).width(150).height(30);
         buttonTable.row();
         buttonTable.add(menuButton).padBottom(40).padRight(40).width(150).height(40);
         buttonTable.row();
@@ -212,6 +217,7 @@ public class LeaderboardScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        skin.dispose();
+        skin2.dispose();
     }
 }

@@ -7,17 +7,21 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.classes.LeaderboardPair;
 import com.kroy.Kroy;
 
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -161,13 +165,8 @@ public class ResultScreen implements Screen {
         writer.close();
     }
 
-
-
-
-
     @Override
     public void show() {
-
         // Allow stage to control screen inputs.
         Gdx.input.setInputProcessor(stage);
 
@@ -183,11 +182,11 @@ public class ResultScreen implements Screen {
             enterNameButton = new TextButton("Enter", skin);
         }
 
-        //TextButton leaderboardButton = new TextButton("Leaderboard", skin);
-
-        //Create label
-        Label winLabel = new Label(displayText,skin2);
+        //Create labels
+        Label winLabel = new Label(displayText, skin2);
         winLabel.setFontScale(2,2);
+        Label newHighscoreLabel = new Label("New Highscore! Enter your nickname to add to leaderboard",skin2);
+        newHighscoreLabel.setFontScale(1.5f,1.5f);
 
 
 
@@ -234,6 +233,8 @@ public class ResultScreen implements Screen {
             field = new TextField("", skin );;
             field.setPosition(24,73);
             field.setSize(88, 14);
+            buttonTable.add(newHighscoreLabel).padBottom(40).padRight(40).width(150).height(40);
+            buttonTable.row();
             buttonTable.add(field).padBottom(40).padRight(40).width(150).height(40);
             buttonTable.row();
             buttonTable.add(enterNameButton).padBottom(40).padRight(40).width(150).height(40);
@@ -282,6 +283,7 @@ public class ResultScreen implements Screen {
     @Override
     public void dispose() {
         skin.dispose();
+
     }
 
     class ConfirmClick extends ClickListener{
