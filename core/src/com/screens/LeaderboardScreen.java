@@ -16,7 +16,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * 
+ * Leaderboard implementation, displays the values from the leaderboard file.
  */
 public class LeaderboardScreen extends BasicScreen {
 
@@ -24,7 +24,7 @@ public class LeaderboardScreen extends BasicScreen {
     protected Skin skin2;
     /**
      * Constructor initialises key features of screen
-     * @param gam
+     * @param game
      */
     public LeaderboardScreen (final Kroy game){
         super(game);
@@ -54,6 +54,9 @@ public class LeaderboardScreen extends BasicScreen {
         return pairs;
     }
 
+    /**
+     * Displays all the buttons and text on the screen.
+     */
     @Override
     public void show() {
 
@@ -117,12 +120,20 @@ public class LeaderboardScreen extends BasicScreen {
         stage.addActor(buttonTable);
     }
 
+    /**
+	 * Resize the screen.
+	 * @param width The width of the screen.
+	 * @param height The height of the screen.
+	 */
     @Override
     public void resize(final int width, final int height) {
         viewport.update(width, height);
         camera.update();
     }
 
+    /**
+	 * Dispose of screen assets.
+	 */
     @Override
     public void dispose() {
         skin.dispose();

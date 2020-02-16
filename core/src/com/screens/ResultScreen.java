@@ -23,6 +23,9 @@ import com.classes.LeaderboardPair;
 import com.kroy.Kroy;
 
 
+/**
+ * Screen displays the results of the game and prompts for new highscore.
+ */
 public class ResultScreen extends BasicScreen {
 
     protected Texture texture;
@@ -33,7 +36,12 @@ public class ResultScreen extends BasicScreen {
     public TextField field;
     public String name;
 
-    //Constructor
+    /**
+     * Constructor 
+     * 
+     * @param game The game object that the screen will be displayed on.
+     * @param score The score from the end of the game.
+     */
     public ResultScreen(final Kroy game, final int score) {
         super(game);
         skin2 = new Skin(Gdx.files.internal("skin/uiskin2.json"), atlas);
@@ -52,6 +60,14 @@ public class ResultScreen extends BasicScreen {
         }
     }
 
+    /**
+     * 
+     * 
+     * @param leaderboard
+     * @param name
+     * 
+     * @return The list of pairs from 
+     */
     public ArrayList<LeaderboardPair> updateInternalLeaderboard(final ArrayList<LeaderboardPair> leaderboard, final String name){
         final ArrayList<LeaderboardPair> outputPairs = new ArrayList<>();
         boolean notWritten = true;
