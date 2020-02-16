@@ -32,6 +32,7 @@ public class Alientruck extends Truck {
     private Vector2[] patrolPoints;
     private Direction[] patrolDirections;
     private int patrolIndex;
+    private int upgradesDone;
 
     /**
      * Overloaded constructor containing all possible parameters.
@@ -74,6 +75,7 @@ public class Alientruck extends Truck {
      * Also initialises any properties needed by the Alientruck.
      */
     private void create() {
+        this.upgradesDone = 0;
         // Generate path directions
         this.patrolDirections = new Direction[patrolPoints.length];
         if (patrolPoints.length > 0) {
@@ -136,5 +138,12 @@ public class Alientruck extends Truck {
             patrolIndex = (patrolIndex + 1) % patrolDirections.length;
         }
         applyAcceleration(patrolDirections[patrolIndex]);
+    }
+
+    public void upgrade(float f) {
+        if (this.upgradesDone < 10) {
+            getHealthBar().setMaxResource((int) (getHealthBar().getMaxAmount() * 1.1));
+            getHealthBar().setCurrentAmount((int) (getHealthBar().getCurrentAmount() * 1.1));
+        }
     }
 }
