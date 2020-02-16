@@ -45,15 +45,7 @@ public class ETFortress extends SimpleSprite {
      * @param xPos              The x-coordinate for the ETFortress.
      * @param yPos              The y-coordinate for the ETFortress.
      */
-//    public ETFortress(ETFortressFactory params, float scaleX, float scaleY, float xPos, float yPos) {
-//        super(params.texture);
-//        this.maxHealth = params.maxHealth;
-//        this.destroyed = params.destroyedTexture;
-//        this.setScale(scaleX, scaleY);
-//        this.setPosition(xPos, yPos);
-//        this.projectileDamage = params.projectileDamage;
-//        this.create();
-//    }
+
     
     public ETFortress(Texture texture, Texture destroyedTexture, int projectileDamage, int maxHealth, float scaleX, float scaleY, float xPos, float yPos, ETFortressType type) {
         super(texture);
@@ -66,15 +58,6 @@ public class ETFortress extends SimpleSprite {
         this.create();
     }
     
-//    public ETFortress(Texture texture, Texture destroyedTexture, int projectileDamage, int maxHealth) {
-//        super(texture);
-//        this.maxHealth = maxHealth;
-//        this.destroyed = destroyedTexture;
-//        this.setScale(1, 1);
-//        this.setPosition(0, 0);
-//        this.projectileDamage = projectileDamage;
-//        this.create();
-//    }
 
     /**
      * Overloaded constructor containing most parameters.
@@ -184,18 +167,36 @@ public class ETFortress extends SimpleSprite {
         renderer.circle(this.detectionRange.x, this.detectionRange.y, this.detectionRange.radius);
     }
 
+    /**
+     * Sets the damage of any projectiles that will be created by this object.
+     * 
+     * @param damage The new damage to used by projectiles.
+     */
     public void setProjectileDamage(int damage) {
     	this.projectileDamage = damage;
     }
     
+    /**
+     * Gets the damage that will be assigned to any projectiles created.
+     * 
+     * @return The damage that the projectiles use.
+     */
 	public int getProjectileDamage() {
 		return this.projectileDamage;
 	}
-	
+    
+    /**
+     * Sets the maximum possible health of the fortress.
+     * 
+     * @param max The new value for the maximum health.
+     */
 	public void setMaxHealth(int max) {
 		this.maxHealth = max;
 	}
 
+    /**
+     * Increases the Maximum health of the fortress and increases the damage of its projectiles.
+     */
 	public void upgrade() {
 		setMaxHealth(this.maxHealth + 5);
 		setProjectileDamage(this.projectileDamage * 2);

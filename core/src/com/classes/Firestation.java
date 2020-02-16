@@ -124,14 +124,25 @@ public class Firestation extends SimpleSprite {
         renderer.rect(this.repairRange.x, this.repairRange.y, this.repairRange.width, this.repairRange.height);
     }
     
+    /**
+     * Sets the destroyed flag to true.
+     */
     public void destroy() {
         this.destroyed = true;
     }
     
+    /**
+     * Sets the destoyed flag to false.
+     */
     public void undestroy() {
         this.destroyed = false;
     }
     
+    /**
+     * Checks if the firestation has been destroyed.
+     * 
+     * @return true if the station has been destroyed otherwise false.
+     */
     public boolean isDestroyed() {
         return this.destroyed;
     }

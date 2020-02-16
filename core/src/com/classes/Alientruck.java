@@ -118,6 +118,9 @@ public class Alientruck extends Truck {
             applyAcceleration(patrolDirections[patrolIndex]);
     }
 
+    /**
+     * Increases the truck's current health and maximum possible health
+     */
     public void upgrade(float f) {
         if (this.upgradesDone < 10) {
             getHealthBar().setMaxResource((int) (getHealthBar().getMaxAmount() * 1.1));

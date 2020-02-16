@@ -116,10 +116,20 @@ public class Projectile extends MovementSprite {
         return outVerticalView || outHorizontalView;
     }
     
+    /**
+     * Sets the damage of the object.
+     * 
+     * @param damage The integer damage of this projectile.
+     */
     public void setDamage(int damage) {
     	this.damage = damage;
     }
     
+    /**
+     * Gets the integer damage of this projectile.
+     * 
+     * @return The projectile's damage.
+     */
     public int getDamage() {
     	return this.damage;
     }
