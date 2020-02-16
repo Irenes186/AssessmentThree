@@ -124,8 +124,7 @@ public class Alientruck extends Truck {
 //        } else if (currentPathFindDirection.equals(new Vector2(0, -1))) {
 //            applyAcceleration(Direction.DOWN);
 //        }
-//        System.out.println(currentPathFindDirection);
-        
+
         if (patrolPoints[patrolIndex].equals(new Vector2((int) getX() / TILE_DIMS, (int) getY() / TILE_DIMS))) {
             patrolIndex = (patrolIndex + 1) % patrolDirections.length;
         }

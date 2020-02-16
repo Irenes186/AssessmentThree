@@ -82,7 +82,6 @@ public class ResultScreen extends BasicScreen {
      * @return boolean true if score is greater than last leaderboard score, otherwise false.
      */
     public boolean wantNickname(final ArrayList<LeaderboardPair> leaderboard){
-        System.out.println(leaderboard);
         return leaderboard.get(leaderboard.size()-1).score < this.score;
     }
 

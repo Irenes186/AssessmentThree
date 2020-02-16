@@ -80,10 +80,8 @@ public class LeaderboardScreen extends BasicScreen {
             pairs = readLeaderboardFile();
         }
         catch(final Exception e){
-            System.out.println("hello");
         }
 
-        System.out.println("hello");
 
         //Create label
         final Label titleLabel = new Label("LEADERBOARD",skin2);

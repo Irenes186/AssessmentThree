@@ -279,8 +279,6 @@ public class GameScreen extends BasicScreen {
 
 		// Get the firetruck thats being driven so that the camera can follow it
 		Firetruck focusedTruck = getFiretruckInFocus();
-//		System.out.println((int) focusedTruck.getCentreX() / TILE_DIMS + ", " + (int) focusedTruck.getCentreY() / TILE_DIMS);
-
 		// Tell the camera to update to the sprites position with a delay based on lerp and game time
 		Vector3 cameraPosition = this.camera.position;
 		float xDifference = focusedTruck.getCentreX() - cameraPosition.x;
@@ -448,7 +446,6 @@ public class GameScreen extends BasicScreen {
 			if (ETFortress.getHealthBar().getCurrentAmount() > 0) gameWon = false;
 		}
 		if (gameWon || gameLost) {
-			System.out.println("check2");
 			dispose();
 			this.game.setScreen(new ResultScreen(this.game, GameScreen.score));
 		}
