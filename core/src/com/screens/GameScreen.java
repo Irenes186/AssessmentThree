@@ -136,7 +136,6 @@ public class GameScreen implements Screen {
 			public void run() {
 				if (decreaseTime()) {
 			        firestation.removeSprite(new Texture("MapAssets/UniqueBuildings/firestation_destroyed.png"));
-//			        Timer.instance().stop();
 			    }
 			}
 		}, 1, 1 );
@@ -237,17 +236,9 @@ public class GameScreen implements Screen {
 		this.alienTrucksToAdd.put(ETFortressType.YORK_MINSTER, new Alientruck(alientruckPink, AlientruckProperties, (TiledMapTileLayer) map.getLayers().get("Collision"),
                 62 * TILE_DIMS, 100 * TILE_DIMS, 
                 alientruckPath3));
-		
-//		        new Direction[] {Direction.RIGHT, Direction.DOWN, Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP, Direction.LEFT, Direction.UP}));
-		
+				
 //		// Initialise ETFortresses array and add ETFortresses to it
 		this.ETFortresses = new ArrayList<ETFortress>();
-//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.CLIFFORDS_TOWER), 1, 1, 69 * TILE_DIMS, 51 * TILE_DIMS));
-//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.YORK_MINSTER), 2, 3.25f, 68.25f * TILE_DIMS, 82.25f * TILE_DIMS));
-//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.RAIL_STATION), 2, 2.5f, 1 * TILE_DIMS, 72.75f * TILE_DIMS));
-//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.STADIUM), 1, 1, 36 * TILE_DIMS, 69 * TILE_DIMS));
-//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.FIBBERS), 1, 1, 91 * TILE_DIMS, 70 * TILE_DIMS));
-//		this.ETFortresses.add(new ETFortress(new ETFortressFactory(ETFortressType.WINDMILL), 1, 1, 25 * TILE_DIMS, 48 * TILE_DIMS));
 		
 		ETFortressFactory factory = new ETFortressFactory();
 		this.ETFortresses.add(factory.createETFortress((ETFortressType.CLIFFORDS_TOWER)));
@@ -302,42 +293,16 @@ public class GameScreen implements Screen {
 		        if (fort.getHealthBar().getCurrentAmount() < fort.getHealthBar().getMaxAmount() &&
 		                alienTrucksToAdd.get(fort.type) != null) {
 		            alientrucks.add(alienTrucksToAdd.get(fort.type));
-//		            alienTrucksToAdd.remove(fort.type);
 		            hasSpawned.put(fort.type, true);
 		        }
 		    } else {
 		        if (alienTrucksToAdd.get(fort.type).getInternalTime() % 1000 == 0) {
-//		            System.out.println("update truck " + fort.type + 
-//		                    " accel " + alienTrucksToAdd.get(fort.type).getAccelerationRate() + " to " + alienTrucksToAdd.get(fort.type).getAccelerationRate() * 1.2f
-//		                    + ", max speed " + alienTrucksToAdd.get(fort.type).getMaxSpeed() + " to " + alienTrucksToAdd.get(fort.type).getMaxSpeed() * 1.1f);
-//		            alienTrucksToAdd.get(fort.type).setAccelerationRate(alienTrucksToAdd.get(fort.type).getAccelerationRate() * 1.2f);
-//		            alienTrucksToAdd.get(fort.type).setMaxSpeed(alienTrucksToAdd.get(fort.type).getMaxSpeed() * 1.1f);
-//		            float oldHealth = alienTrucksToAdd.get(fort.type).getHealthBar().getCurrentAmount();
-//		            float oldMax = alienTrucksToAdd.get(fort.type).getHealthBar().getMaxAmount();
-//		            alienTrucksToAdd.get(fort.type).getHealthBar().setMaxResource((int)
-//		                    (alienTrucksToAdd.get(fort.type).getHealthBar().getMaxAmount() * 1.1));
-//		            alienTrucksToAdd.get(fort.type).getHealthBar().setCurrentAmount((int)
-//                            (alienTrucksToAdd.get(fort.type).getHealthBar().getCurrentAmount() * 1.1));
 		            alienTrucksToAdd.get(fort.type).upgrade(1.1f);
-//		            if (oldHealth < oldMax) {
-//		                alienTrucksToAdd.get(fort.type).getHealthBar().setCurrentAmount((int) oldHealth);
-//		            } else {
-//		                alienTrucksToAdd.get(fort.type).getHealthBar().setCurrentAmount((int) oldMax);
-//		            }
 		            System.out.println("update truck " + fort.type + " health " + alienTrucksToAdd.get(fort.type).getHealthBar().getMaxAmount() + " to "
 		            + alienTrucksToAdd.get(fort.type).getHealthBar().getMaxAmount() * 1.1f);
 		        }
 		    }
 		}
-		
-//		for (Alientruck truck: alientrucks) {
-//		    if (truck != null) {
-//		        System.out.println("A truck is in the game!");
-//		        break;
-//		    } else {
-//		        System.out.println("null truck!");
-//		    }
-//		}
 		
 		// ---- 1) Update camera and map properties each iteration -------- //
 		
@@ -414,7 +379,7 @@ public class GameScreen implements Screen {
 		
 		for (Alientruck alientruck : this.alientrucks) {
 		    alientruck.update(batch); //this.getFiretruckInFocus()
-//		    if (alientruck.getHealthBar().getCurrentAmount() <= 0) this.alientrucksToRemove.add(alientruck);
+		    if (alientruck.getHealthBar().getCurrentAmount() <= 0) this.alientrucksToRemove.add(alientruck);
             if (DEBUG_ENABLED) alientruck.drawDebug(shapeRenderer);
 		}
 
