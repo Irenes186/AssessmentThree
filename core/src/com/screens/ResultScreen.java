@@ -128,6 +128,28 @@ public class ResultScreen extends BasicScreen {
         TextButton enterNameButton = null;
         if (wantNickname(leaderboard)) {
             enterNameButton = new TextButton("Enter", skin);
+
+
+
+            enterNameButton.addListener(new ClickListener(){
+                @Override
+                //transition to game screen
+                public void clicked(final InputEvent event, final float x, final float y){
+                    final String input = field.getText();
+                    name = input;
+                    leaderboard = updateInternalLeaderboard(leaderboard,name);
+                    try {
+                        writeLeaderboardFile(leaderboard);
+                    } catch (final IOException e) {
+                        e.printStackTrace();
+                    }
+                    game.setScreen(new LeaderboardScreen(game));
+                    dispose();
+                }
+    
+            });
+
+            
         }
 
         //Create labels
@@ -153,23 +175,6 @@ public class ResultScreen extends BasicScreen {
         });
 
 
-        enterNameButton.addListener(new ClickListener(){
-            @Override
-            //transition to game screen
-            public void clicked(final InputEvent event, final float x, final float y){
-                final String input = field.getText();
-                name = input;
-                leaderboard = updateInternalLeaderboard(leaderboard,name);
-                try {
-                    writeLeaderboardFile(leaderboard);
-                } catch (final IOException e) {
-                    e.printStackTrace();
-                }
-                game.setScreen(new LeaderboardScreen(game));
-                dispose();
-            }
-        });
-
 
         // Add buttons to table and style them
         buttonTable.add(winLabel).padBottom(40).padRight(40).width(150).height(150);
@@ -177,7 +182,6 @@ public class ResultScreen extends BasicScreen {
 
         //add text field if nickname wanted
         if (wantNickname(leaderboard)) {
-
             field = new TextField("", skin );;
             field.setPosition(24,73);
             field.setSize(88, 14);
