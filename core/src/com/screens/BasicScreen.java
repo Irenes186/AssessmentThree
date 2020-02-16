@@ -106,6 +106,7 @@ public class BasicScreen implements Screen {
     @Override
     public void dispose() {
         skin.dispose();
+        stage.dispose();
     }
 
 }
