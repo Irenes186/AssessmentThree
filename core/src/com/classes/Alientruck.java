@@ -125,6 +125,7 @@ public class Alientruck extends Truck {
         if (this.upgradesDone < 10) {
             getHealthBar().setMaxResource((int) (getHealthBar().getMaxAmount() * 1.1));
             getHealthBar().setCurrentAmount((int) (getHealthBar().getCurrentAmount() * 1.1));
+            this.upgradesDone++;
         }
     }
 }
